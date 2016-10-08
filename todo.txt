@@ -1,5 +1,5 @@
 Doku Vorlage besorgen -> tobi 8.10
-done! -- Versionsverwaltung in VS integrieren -> gerold 8.10
+done -- Versionsverwaltung in VS integrieren -> gerold 8.10
 Solution/Projektsetup in VS (Artikel Walkthrough)-> gerold 9.10
 Unterlagen lesen die Angegeben wurden -> 9.10
 Testing von DLLs -> gerold 10.10
