@@ -1,0 +1,10 @@
+//API:
+? getAccountsByCID(uint CID);
+? getCustomers(uint AID); 
+? getAccountByAID(uint AID);
+? getCurrencies();
+//Internal:
+string getTime();
+int writeLog(string message);
+int writeJournal(string message);
+string readJournal(string FromTime, string ToTime, string Filter, string DebugLevel)
