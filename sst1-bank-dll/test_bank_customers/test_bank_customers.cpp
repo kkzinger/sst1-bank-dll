@@ -10,7 +10,7 @@
 using namespace std;
 int main()
 {
-
+	Create("Tobias", "Mayer", "Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
     return 0;
 }
 
