@@ -9,4 +9,41 @@ extern "C" BANK_CUSTOMERS_API int helloWorld()
 	return 0;
 }
 
+extern "C" BANK_CUSTOMERS_API  unsigned int  Create(char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
+{
+	//struct holen von entity
+	return 0;
+}
 
+extern "C" BANK_CUSTOMERS_API void Read(unsigned int CID)
+{
+	//gibt ausgelesene Variablen des struct zurück
+}
+
+extern "C" BANK_CUSTOMERS_API unsigned int Update(unsigned int AID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
+{
+	//ändert Variablen in struct, gibt 0 für success zurück
+	return -1;
+}
+
+extern "C" BANK_CUSTOMERS_API unsigned int Acivate(unsigned int CID)
+{
+	//ändert die active-Variable auf true, 0 bei success
+	return -1;
+}
+extern "C" BANK_CUSTOMERS_API unsigned int Deactivate(unsigned int CID)
+{
+	//ändert die active-Variable auf false, 0 bei success
+	return -1;
+}
+
+bool IsActive(unsigned int CID)
+{
+	//gibt den Wert der active-Variable zurück
+	return false;
+}
+unsigned int createCID()
+{
+	//generiert die nächste CID
+	return -1;
+}

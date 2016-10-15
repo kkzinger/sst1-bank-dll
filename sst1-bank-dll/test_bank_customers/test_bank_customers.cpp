@@ -3,11 +3,13 @@
 
 
 #include "stdafx.h"
+#include <iostream>
+#include <string>
 
 #include "../bank_customers/bank_customers.h"
+using namespace std;
 int main()
 {
-	printf("%i\n", helloWorld());
 
     return 0;
 }
