@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{62791190-548D-4770-8A71-45844E8EDC0E}</ProjectGuid>
+    <ProjectGuid>{D995DC86-1952-40F7-9630-76C36A83B3E5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>bank_accounts</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
