@@ -5,7 +5,7 @@
 #else
 #define BANK_CUSTOMERS_API __declspec(dllimport) 
 #endif
- struct Customer
+struct Customer
 {
 	unsigned int CID;
 	char* FirstName;
