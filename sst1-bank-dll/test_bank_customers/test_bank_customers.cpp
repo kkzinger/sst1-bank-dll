@@ -10,7 +10,12 @@
 using namespace std;
 int main()
 {
-	Create("Tobias", "Mayer", "Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
-    return 0;
+	Customer * Customer = Create("Tobias", "Mayer", "Salzburgerstr.", "17a", "Neumarkt am Wallersee", "5202", "AUSTRIA");
+	printf("%i: %s %s\n%s %s\n%s %s\n%s", Customer->CID, Customer->FirstName, Customer->LastName, Customer->Street, Customer->StreetNr, Customer->PostalCode, Customer->City, Customer->Country);
+    
+	Customer = Create("Gerold", "Katzinger", "Salzburgerstr.", "17a", "Neumarkt am Wallersee", "5202", "AUSTRIA");
+	printf("%i: %s %s\n%s %s\n%s %s\n%s", Customer->CID, Customer->FirstName, Customer->LastName, Customer->Street, Customer->StreetNr, Customer->PostalCode, Customer->City, Customer->Country);
+
+	return 0;
 }
 

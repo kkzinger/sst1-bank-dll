@@ -5,18 +5,18 @@
 #else
 #define BANK_CUSTOMERS_API __declspec(dllimport) 
 #endif
-typedef struct Customer
+ struct Customer
 {
 	unsigned int CID;
 	char* FirstName;
-	char* LastName;
-	char* Street;
-	char* StreetNr;
-	char* City;
+	char* LastName ;
+	char* Street ;
+	char* StreetNr ;
+	char* City ;
 	char* PostalCode;
 	char* Country;
 	bool Active;
-}Customer;
+};
 
 
 //API (C)
