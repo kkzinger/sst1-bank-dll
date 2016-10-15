@@ -7,4 +7,4 @@
 #endif
 
 
-extern "C" BANK_ACCOUNTS_API int helloWorlda();
+extern "C" BANK_ACCOUNTS_API int helloWorld();
