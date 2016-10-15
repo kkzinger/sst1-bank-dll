@@ -1,14 +1,12 @@
 // test_bank_customers.cpp : Defines the entry point for the console application.
-//$(SolutionDir)\Release\bank_customers.lib;
-
-
+//
+#pragma comment(lib, "../Release/bank_accounts.lib")
 #include "stdafx.h"
+#include "../bank_accounts/bank_accounts.h"
 
-#include "../bank_customers/bank_customers.h"
 int main()
 {
-	printf("%i\n", helloWorld());
-
+	printf("%i\n", helloWorlda());
     return 0;
 }
 

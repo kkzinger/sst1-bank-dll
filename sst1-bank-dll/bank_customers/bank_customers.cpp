@@ -6,7 +6,7 @@
 
 extern "C" BANK_CUSTOMERS_API int helloWorld()
 {
-	return 0;
+	return 5;
 }
 
 

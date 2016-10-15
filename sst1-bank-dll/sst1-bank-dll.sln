@@ -20,8 +20,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bank_accounts", "bank_accou
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bank_customers", "test_bank_customers\test_bank_customers.vcxproj", "{EC33A9EC-905A-4B7C-A129-D15B58004B0E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bank_accounts", "test_bank_accounts\test_bank_accounts.vcxproj", "{5B6BA97F-7554-4890-B72D-CDE6DC405F04}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,16 +90,6 @@ Global
 		{EC33A9EC-905A-4B7C-A129-D15B58004B0E}.Release|x64.Build.0 = Release|x64
 		{EC33A9EC-905A-4B7C-A129-D15B58004B0E}.Release|x86.ActiveCfg = Release|Win32
 		{EC33A9EC-905A-4B7C-A129-D15B58004B0E}.Release|x86.Build.0 = Release|Win32
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Debug|x64.ActiveCfg = Debug|x64
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Debug|x64.Build.0 = Debug|x64
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Debug|x86.ActiveCfg = Debug|Win32
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Debug|x86.Build.0 = Debug|Win32
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Release|Any CPU.ActiveCfg = Release|Win32
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Release|x64.ActiveCfg = Release|x64
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Release|x64.Build.0 = Release|x64
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Release|x86.ActiveCfg = Release|Win32
-		{5B6BA97F-7554-4890-B72D-CDE6DC405F04}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

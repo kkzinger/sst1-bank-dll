@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "bank_accounts.h"
 
-extern "C" BANK_ACCOUNTS_API int helloWorld()
+extern "C" BANK_ACCOUNTS_API int helloWorlda()
 {
-	return 0;
+	return 2;
 }
 
