@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bank_accounts", "..\bank_accounts\bank_accounts.vcxproj", "{62791190-548D-4770-8A71-45844E8EDC0E}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bank_account_actions", "bank_account_actions\bank_account_actions.vcxproj", "{8F94089F-721F-4EB4-8070-F115374E84CE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bank_entitycomponent", "bank_entitycomponent\bank_entitycomponent.vcxproj", "{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}"
@@ -26,14 +24,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{62791190-548D-4770-8A71-45844E8EDC0E}.Debug|x64.ActiveCfg = Debug|x64
-		{62791190-548D-4770-8A71-45844E8EDC0E}.Debug|x64.Build.0 = Debug|x64
-		{62791190-548D-4770-8A71-45844E8EDC0E}.Debug|x86.ActiveCfg = Debug|Win32
-		{62791190-548D-4770-8A71-45844E8EDC0E}.Debug|x86.Build.0 = Debug|Win32
-		{62791190-548D-4770-8A71-45844E8EDC0E}.Release|x64.ActiveCfg = Release|x64
-		{62791190-548D-4770-8A71-45844E8EDC0E}.Release|x64.Build.0 = Release|x64
-		{62791190-548D-4770-8A71-45844E8EDC0E}.Release|x86.ActiveCfg = Release|Win32
-		{62791190-548D-4770-8A71-45844E8EDC0E}.Release|x86.Build.0 = Release|Win32
 		{8F94089F-721F-4EB4-8070-F115374E84CE}.Debug|x64.ActiveCfg = Debug|x64
 		{8F94089F-721F-4EB4-8070-F115374E84CE}.Debug|x64.Build.0 = Debug|x64
 		{8F94089F-721F-4EB4-8070-F115374E84CE}.Debug|x86.ActiveCfg = Debug|Win32
