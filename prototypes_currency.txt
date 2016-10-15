@@ -1,0 +1,5 @@
+//API:
+int UpdateCurrencyExRate(string CurID, float newRate);
+float getExRate(string CurID);
+//Internal:
+-

@@ -1,0 +1,8 @@
+//API:
+int WithDraw(uint AID, double amount);
+int Deposit(uint AID, double amount);
+int Transfer(uint FromAID, uint ToAID, double amount);
+? BankAccountStatement(uint AID);
+double Balancing(uint AID);
+//Internal:
+-

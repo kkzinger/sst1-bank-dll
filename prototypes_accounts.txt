@@ -1,0 +1,13 @@
+//API:
+uint Open(uint CID, string CurID, string Type);
+int Close (uint AID);
+uint* getOwners(uint AID);
+int addOwners(uint AID, uint CID);
+int removeOwners(uint AID);
+int freeze(uint AID);
+int unfreeze(uint AID);
+//Internal:
+string getType(uint AID);
+bool IsUnFrozen(uint AID);
+bool IsOpen(uint AID);
+uint createAID();

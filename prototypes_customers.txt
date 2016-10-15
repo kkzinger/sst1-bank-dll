@@ -1,0 +1,9 @@
+//API:
+uint Create(string FirstName, string LastName, string Street, string StreetNr, string City, string PostalCode, string Country);
+? Read(uint CID);
+? Update(uint AID, string FirstName, string LastName, string Street, string StreetNr, string City, string PostalCode, string Country);
+int Acivate(uint CID);
+int Deactivate(uint CID);
+//Internal:
+bool IsActive(uint CID);
+uint createCID();
