@@ -11,8 +11,8 @@ extern "C" BANK_CUSTOMERS_API int helloWorld()
 
 extern "C" BANK_CUSTOMERS_API  unsigned int  Create(char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
 {
-	//struct holen von entity
-	return 0;
+	//struct holen von entity, pointer darauf returnen (Customer*)
+	return -1;
 }
 
 extern "C" BANK_CUSTOMERS_API void Read(unsigned int CID)
