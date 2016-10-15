@@ -2,8 +2,9 @@
 //$(SolutionDir)\Release\bank_accounts.lib;
 
 #include "stdafx.h"
-
+#include "../bank_entitycomponent/bank_entitycomponent.h"
 #include "../bank_accounts/bank_accounts.h"
+
 int main()
 {
 	printf("%i\n", helloWorld());

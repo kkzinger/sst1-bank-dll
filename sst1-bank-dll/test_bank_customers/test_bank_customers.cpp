@@ -7,6 +7,8 @@
 #include <string>
 
 #include "../bank_customers/bank_customers.h"
+//#include "../bank_entitycomponent/bank_entitycomponent.h" #vorher noch struct aus bank_customers.h entfernen
+
 using namespace std;
 int main()
 {
