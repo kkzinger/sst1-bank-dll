@@ -1,5 +1,5 @@
 //API:
-uint Open(uint CID, string CurID, string Type);
+Account* Open(uint CID, string CurID, string Type);
 int Close (uint AID);
 uint* getOwners(uint AID);
 int addOwners(uint AID, uint CID);

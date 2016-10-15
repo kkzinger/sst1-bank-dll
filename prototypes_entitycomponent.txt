@@ -1,7 +1,8 @@
 //API:
-? getAccountsByCID(uint CID);
-? getCustomers(uint AID); 
-? getAccountByAID(uint AID);
+AccountList getAccountsByCID(uint CID);
+CustomerList getCustomersByAID(uint AID); 
+Customer* getCustomerByCID(uint CID);
+Account* getAccountByAID(uint AID);
 ? getCurrencies();
 //Internal:
 string getTime();
