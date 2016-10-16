@@ -9,14 +9,15 @@
 //{
 //	return 0;
 //}
+extern Customer newCustomer = {};
 
 extern "C" BANK_CUSTOMERS_API Customer * Create(char * FirstName, char * LastName, char * Street, char * StreetNr, char * City, char * PostalCode, char * Country)
 {
 	/*struct holen von entity, pointer darauf returnen (Customer*)*/
 	unsigned int newCID = _createCID();
-	//customer_list* cl = helloWorld(true, newCID, FirstName,LastName, Street, StreetNr, City, PostalCode, Country);
-	static Customer newCustomer = {} /*(*((*cl).end()))*/;
-	newCustomer.CID = newCID;
+	customer_list* cl = helloWorld(true, newCID, FirstName, LastName, Street, StreetNr, City, PostalCode, Country);
+
+    newCustomer =  (*((*cl).end()));
 
 	return  &newCustomer;
 }
@@ -54,8 +55,9 @@ unsigned int _createCID()
 {
 	//generiert die nächste CID
 	customer_list* cl = helloWorld(false,0, "", "", "", "", "", "", "");
-	if (!(*cl).empty())
-		return (*(*cl).end()).CID++;
-	else
-		return 222;
+	
+
+
+	return ++(*(*cl).end()).CID;
+
 }

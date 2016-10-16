@@ -14,11 +14,19 @@
 using namespace std;
 int main()
 {
-	Customer* C = Create("Tobias", "Mayer", "Str.", "Nr.", "Plz", "Stadt", "AUSTRIA");
-	printf("%i %p\n", (*C).CID, C);
-		
+	Create("Tobias", "Mayer", "Str.", "Nr.", "Plz", "Stadt", "AUSTRIA");
 	
+	Create("T", "M", "Straﬂe", "#", "5202", "Neumarkt", "÷sterreich");
 	
+	customer_list* cl = helloWorld(false, 0, "", "", "", "", "", "", "");
+	printf("\nThere are %i customers in total\n", (*cl).size());
+	
+
+	customer_list::const_iterator iterator;
+	for (iterator = (*cl).begin(); iterator != (*cl).end(); ++iterator) {
+		printf("\n%i %p %s %s %s %s %s %s %s \n\n", (*iterator).CID, &(*iterator), (*iterator).FirstName, (*iterator).LastName, (*iterator).Street, (*iterator).StreetNr, (*iterator).City, (*iterator).PostalCode, (*iterator).Country);
+
+	}
 
 	return 0;
 }

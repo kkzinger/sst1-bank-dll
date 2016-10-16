@@ -6,22 +6,27 @@
 #include <list>
 using namespace std;
 
-
+ static customer_list All_Customers;
 
 extern "C" BANK_ACCOUNTS_API customer_list* helloWorld(bool IsCreated,unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
 {
-	static customer_list All_Customers;
-	Customer* C = { };
-	C->CID = CID;
-	C->FirstName = FirstName;
-	C->LastName = LastName;
-	C->Street = Street;
-	C->StreetNr = StreetNr;
-	C->City = City;
-	C->PostalCode = PostalCode;
-	C->Country = Country;
-	C->Active = IsCreated;
-		All_Customers.push_back((*C));
+	customer_list All_Customers_Help;
+	Customer* C = new Customer;
+	if (IsCreated)
+	{
+		All_Customers_Help.push_back(*C);
+		(*All_Customers_Help.end()).CID = CID;
+		(*All_Customers_Help.end()).FirstName = FirstName;
+		(*All_Customers_Help.end()).LastName = LastName;
+		(*All_Customers_Help.end()).Street = Street;
+		(*All_Customers_Help.end()).StreetNr = StreetNr;
+		(*All_Customers_Help.end()).City = City;
+		(*All_Customers_Help.end()).PostalCode = PostalCode;
+		(*All_Customers_Help.end()).Country = Country;
+		All_Customers.push_back(*All_Customers_Help.end());
+
+	}
+
 	return &All_Customers;
 }
 
