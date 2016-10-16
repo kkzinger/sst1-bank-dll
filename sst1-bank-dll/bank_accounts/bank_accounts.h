@@ -12,18 +12,18 @@ struct Customer
 {
 	unsigned int CID;
 	char* FirstName;
-	char* LastName;
-	char* Street;
-	char* StreetNr;
-	char* City;
+	char* LastName ;
+	char* Street ;
+	char* StreetNr ;
+	char* City ;
 	char* PostalCode;
-	char* Country;
-	bool Active;
+	char* Country ;
+	unsigned int Active;
 };
 
 typedef list <Customer> customer_list;
 
-extern "C" BANK_ACCOUNTS_API customer_list* helloWorld(bool IsCreated, unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country);
+extern "C" BANK_ACCOUNTS_API customer_list* helloWorld(unsigned int IsCreated, unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country);
 //API (C)
 extern "C" BANK_ACCOUNTS_API unsigned int Open(unsigned int CID, char* CurID, char* Type);
 extern "C" BANK_ACCOUNTS_API unsigned int Close(unsigned int AID);
