@@ -3,11 +3,29 @@
 
 #include "stdafx.h"
 #include "bank_accounts.h"
+#include <list>
+using namespace std;
 
-extern "C" BANK_ACCOUNTS_API int helloWorld()
+
+
+extern "C" BANK_ACCOUNTS_API customer_list* helloWorld(bool IsCreated,unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
 {
-	return 0;
+	static customer_list All_Customers;
+	Customer* C = { };
+	C->CID = CID;
+	C->FirstName = FirstName;
+	C->LastName = LastName;
+	C->Street = Street;
+	C->StreetNr = StreetNr;
+	C->City = City;
+	C->PostalCode = PostalCode;
+	C->Country = Country;
+	C->Active = IsCreated;
+		All_Customers.push_back((*C));
+	return &All_Customers;
 }
+
+
 
 extern "C" BANK_ACCOUNTS_API unsigned int Open(unsigned int CID, char* CurID, char* Type)
 {
@@ -21,10 +39,10 @@ extern "C" BANK_ACCOUNTS_API unsigned int Close(unsigned int AID)
 	return -1;
 }
 
-extern "C" BANK_ACCOUNTS_API unsigned int getOwners(unsigned int AID)
+extern "C" BANK_ACCOUNTS_API customer_list* getOwners(unsigned int AID)
 {
 	//gibt eine Liste an Customer* zurück
-	return -1;
+	return nullptr;
 }
 
 extern "C" BANK_ACCOUNTS_API unsigned int addOwners(unsigned int AID, unsigned int CID)

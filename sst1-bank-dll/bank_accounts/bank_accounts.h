@@ -5,13 +5,29 @@
 #else
 #define BANK_ACCOUNTS_API __declspec(dllimport) 
 #endif
+#include <list>
 
+using namespace std;
+struct Customer
+{
+	unsigned int CID;
+	char* FirstName;
+	char* LastName;
+	char* Street;
+	char* StreetNr;
+	char* City;
+	char* PostalCode;
+	char* Country;
+	bool Active;
+};
 
-extern "C" BANK_ACCOUNTS_API int helloWorld();
+typedef list <Customer> customer_list;
+
+extern "C" BANK_ACCOUNTS_API customer_list* helloWorld(bool IsCreated, unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country);
 //API (C)
 extern "C" BANK_ACCOUNTS_API unsigned int Open(unsigned int CID, char* CurID, char* Type);
 extern "C" BANK_ACCOUNTS_API unsigned int Close(unsigned int AID);
-extern "C" BANK_ACCOUNTS_API unsigned int getOwners(unsigned int AID);
+extern "C" BANK_ACCOUNTS_API customer_list* getOwners(unsigned int AID);
 extern "C" BANK_ACCOUNTS_API unsigned int addOwners(unsigned int AID, unsigned int CID);
 extern "C" BANK_ACCOUNTS_API unsigned int removeOwners(unsigned int AID);
 extern "C" BANK_ACCOUNTS_API unsigned int Freeze(unsigned int AID);

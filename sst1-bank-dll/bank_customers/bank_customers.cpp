@@ -5,39 +5,27 @@
 #include "bank_customers.h"
 
 
-extern "C" BANK_CUSTOMERS_API int helloWorld()
+//extern "C" BANK_CUSTOMERS_API int helloWorld()
+//{
+//	return 0;
+//}
+
+extern "C" BANK_CUSTOMERS_API Customer * Create(char * FirstName, char * LastName, char * Street, char * StreetNr, char * City, char * PostalCode, char * Country)
 {
-	return 0;
+	/*struct holen von entity, pointer darauf returnen (Customer*)*/
+	unsigned int newCID = _createCID();
+	//customer_list* cl = helloWorld(true, newCID, FirstName,LastName, Street, StreetNr, City, PostalCode, Country);
+	static Customer newCustomer = {} /*(*((*cl).end()))*/;
+	newCustomer.CID = newCID;
+
+	return  &newCustomer;
 }
 
-extern struct Customer C =
-{
-};
-
-
-extern "C" BANK_CUSTOMERS_API  Customer*  Create( char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
-{
-	//struct holen von entity, pointer darauf returnen (Customer*)
-	 C =
-	{
-		_createCID(),
-		FirstName,
-		LastName,
-		Street,
-		StreetNr,
-		 City,
-		PostalCode,
-		Country,
-		false
-	};
-
-
-	return &C;
-}
 
 extern "C" BANK_CUSTOMERS_API void Read(unsigned int CID)
 {
 	//gibt ausgelesene Variablen des struct zurück
+	
 }
 
 extern "C" BANK_CUSTOMERS_API unsigned int Update(unsigned int AID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
@@ -65,5 +53,9 @@ bool _IsActive(unsigned int CID)
 unsigned int _createCID()
 {
 	//generiert die nächste CID
-	return 222;
+	customer_list* cl = helloWorld(false,0, "", "", "", "", "", "", "");
+	if (!(*cl).empty())
+		return (*(*cl).end()).CID++;
+	else
+		return 222;
 }
