@@ -10,13 +10,15 @@ extern "C" BANK_CUSTOMERS_API int helloWorld()
 	return 0;
 }
 
-
+extern struct Customer C =
+{
+};
 
 
 extern "C" BANK_CUSTOMERS_API  Customer*  Create( char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
 {
 	//struct holen von entity, pointer darauf returnen (Customer*)
-	static struct Customer C =
+	 C =
 	{
 		_createCID(),
 		FirstName,
