@@ -26,7 +26,7 @@ int main()
 		printf("\n%u %s %s %s %s %s %s %s %u \n\n", C.CID, C.FirstName, C.LastName, C.Street, C.StreetNr, C.City, C.PostalCode, C.Country, C.Active);
 	}
 
-	if (Update(1, "Tobias", "Huber", "Foobar Str.", "17a", "Ried im Innkreis", "4910", "AUSTRIA", 0) != 0)
+	if (Update(1, "Tobias", "Huber", "Foobar Str.", "17a", "Ried im Innkreis", "4910", "AUSTRIA") != 0)
 		return -1;
 	
 	if (Read(1, &C) == 0)
