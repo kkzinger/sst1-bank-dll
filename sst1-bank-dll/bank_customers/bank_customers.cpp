@@ -10,17 +10,7 @@ extern "C" BANK_CUSTOMERS_API int Create(char * FirstName, char * LastName, char
 	/*struct holen von entity, pointer darauf returnen (CUSTOMER*)*/
 	if ((strlen(FirstName) >= 2) && (strlen(LastName) >= 2) && (strlen(Street) >= 3) && (strlen(StreetNr) >= 1) && (strlen(City) >= 3) && (strlen(PostalCode) >= 4) && (strlen(Country) >= 3))
 	{
-		//nächste CID generieren
-		//unsigned int newCID = _createCID();
-		//Pointer aller Customers holen
-		//customer_list* cl = helloWorld(1, newCID, FirstName, LastName, Street, StreetNr, City, PostalCode, Country);
-		//aktuellen Customer speichern
-		//customer_list::const_iterator iterator;
-		//for (iterator = (*cl).begin(); iterator != (*cl).end(); iterator++)
-		//{
-		//	if((*iterator).CID==newCID)
-		//		newCustomer = (*iterator);
-		//}
+		
 		if(_addCustomer(FirstName, LastName, Street, StreetNr, City, PostalCode, Country) != 0)
 			return -2; //Something gone wrong in Entity Component
 
@@ -38,7 +28,7 @@ extern "C" BANK_CUSTOMERS_API int Read(unsigned int CID, CUSTOMER* resultCustome
 	return 0;
 	
 	//gibt ausgelesene Variablen des struct zurück
-	//return Update(CID, "", "", "", "", "", "", "", 2);
+
 }
 
 extern "C" BANK_CUSTOMERS_API int Update(unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
@@ -95,7 +85,6 @@ extern "C" BANK_CUSTOMERS_API int Activate(unsigned int CID)
 
 	return -1; // Data did not meet required format/standards
 
-	//return Update(CID, "", "", "", "", "", "", "", 1);
 }
 extern "C" BANK_CUSTOMERS_API int Deactivate(unsigned int CID)
 {
@@ -115,7 +104,7 @@ extern "C" BANK_CUSTOMERS_API int Deactivate(unsigned int CID)
 
 
 
-	//return Update(CID, "", "", "", "", "", "", "", 0);
+
 }
 
 unsigned int _IsActive(unsigned int CID)
@@ -125,8 +114,8 @@ unsigned int _IsActive(unsigned int CID)
 		return -2; //Something gone wrong in Entity Component
 
 	if (C.Active)
-		return 0;  // Customer is active
+		return 1;  // Customer is active
 	else
-		return -1; // Customer is not active
+		return 0; // Customer is not active
 }
 
