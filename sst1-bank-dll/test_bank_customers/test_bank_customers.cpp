@@ -8,28 +8,48 @@
 #include <string>
 
 #include "../bank_customers/bank_customers.h"
-#include "../bank_accounts/bank_accounts.h"
-//#include "../bank_entitycomponent/bank_entitycomponent.h" #vorher noch struct aus bank_accounts.h entfernen
+#include "../bank_entitycomponent/bank_entitycomponent.h"
 
-using namespace std;
+//using namespace std;
 int main()
 {
-	Customer* C = Create("Tobias", "Mayer", "Salzburger Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
-	
+	CUSTOMER C;
+	_initEntity();
+	Create("Tobias", "Mayer", "Salzburger Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
 	Create( "T", "M", "Straße", "#", "5202", "Neumarkt", "Österreich");
 	
-	customer_list* cl = helloWorld(0, 0, "", "", "", "", "", "", "");
-	printf("\n %i customers in total\n", (*cl).size());
+	//customer_list* cl = helloWorld(0, 0, "", "", "", "", "", "", "");
+	//printf("\n %i customers in total\n", (*cl).size());
 	
-
-	customer_list::const_iterator iterator;
-	for (iterator = (*cl).begin(); iterator != (*cl).end(); ++iterator)
+	if (Read(1, &C) == 0)
 	{
-		printf("\n%i %p %s %s %s %s %s %s %s \n\n", (*iterator).CID, &(*iterator), (*iterator).FirstName, (*iterator).LastName, (*iterator).Street, (*iterator).StreetNr, (*iterator).City, (*iterator).PostalCode, (*iterator).Country);
-
+		printf("\n%u %s %s %s %s %s %s %s %u \n\n", C.CID, C.FirstName, C.LastName, C.Street, C.StreetNr, C.City, C.PostalCode, C.Country, C.Active);
 	}
 
-	C= Update(1, "Tobias", "Mayer", "Str.", "17a", "Stadt", "Plz", "AUSTRIA", 2);
+	if (Update(1, "Tobias", "Huber", "Foobar Str.", "17a", "Ried im Innkreis", "4910", "AUSTRIA", 0) != 0)
+		return -1;
+	
+	if (Read(1, &C) == 0)
+	{
+		printf("\n%u %s %s %s %s %s %s %s %u \n\n", C.CID, C.FirstName, C.LastName, C.Street, C.StreetNr, C.City, C.PostalCode, C.Country, C.Active);
+	}
+	
+	printf("CID %u\n", C.CID);
+	printf("Active? %u\n", C.Active);
+	
+	Activate(C.CID);
+	if (Read(1, &C) != 0)
+		return -1;
+	
+	printf("Active? %u\n", C.Active);
+	
+	Deactivate(C.CID);
+	if (Read(1, &C) != 0)
+		return -1;
+	
+	printf("Active? %u\n", C.Active);
+
+	/*C= Update(1, "Tobias", "Mayer", "Str.", "17a", "Stadt", "Plz", "AUSTRIA", 2);
 	C= Update(1, "", "Huber", "", "", "", "", "", 2);
 	printf("\n %i customers in total\n", (*cl).size());
 	for (iterator = (*cl).begin(); iterator != (*cl).end(); ++iterator)
@@ -47,7 +67,7 @@ int main()
 	C = Read(C->CID);
 	printf("\nREAD: %i %p %s %s %s %s %s %s %s \n\n", C->CID, &C, C->FirstName, C->LastName, C->Street, C->StreetNr, C->City, C->PostalCode, C->Country);
 
-
+*/
 	return 0;
 }
 

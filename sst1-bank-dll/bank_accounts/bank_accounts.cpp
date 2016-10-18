@@ -6,31 +6,31 @@
 #include <list>
 using namespace std;
 
- static customer_list All_Customers;
 
-extern "C" BANK_ACCOUNTS_API customer_list* helloWorld(unsigned int IsCreated,unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
-{
-	
-	if (IsCreated==1)
-	{
-		customer_list All_Customers_Help;
-		Customer* C = new Customer;
-		All_Customers_Help.push_back(*C);
-		(*All_Customers_Help.end()).CID = CID;
-		(*All_Customers_Help.end()).FirstName = FirstName;
-		(*All_Customers_Help.end()).LastName = LastName;
-		(*All_Customers_Help.end()).Street = Street;
-		(*All_Customers_Help.end()).StreetNr = StreetNr;
-		(*All_Customers_Help.end()).City = City;
-		(*All_Customers_Help.end()).PostalCode = PostalCode;
-		(*All_Customers_Help.end()).Country = Country;
-		(*All_Customers_Help.end()).Active = IsCreated;
-		All_Customers.push_back(*All_Customers_Help.end());
 
-	}
-
-	return &All_Customers;
-}
+//extern "C" BANK_ACCOUNTS_API customer_list* helloWorld(unsigned int IsCreated,unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
+//{
+//	
+//	if (IsCreated==1)
+//	{
+//		customer_list All_Customers_Help;
+//		Customer* C = new Customer;
+//		All_Customers_Help.push_back(*C);
+//		(*All_Customers_Help.end()).CID = CID;
+//		(*All_Customers_Help.end()).FirstName = FirstName;
+//		(*All_Customers_Help.end()).LastName = LastName;
+//		(*All_Customers_Help.end()).Street = Street;
+//		(*All_Customers_Help.end()).StreetNr = StreetNr;
+//		(*All_Customers_Help.end()).City = City;
+//		(*All_Customers_Help.end()).PostalCode = PostalCode;
+//		(*All_Customers_Help.end()).Country = Country;
+//		(*All_Customers_Help.end()).Active = IsCreated;
+//		All_Customers.push_back(*All_Customers_Help.end());
+//
+//	}
+//
+//	return &All_Customers;
+//}
 
 
 

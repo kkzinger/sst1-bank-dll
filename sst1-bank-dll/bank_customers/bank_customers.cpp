@@ -5,45 +5,68 @@
 #include "bank_customers.h"
 
 
-//extern "C" BANK_CUSTOMERS_API int helloWorld()
-//{
-//	return 0;
-//}
-extern Customer newCustomer = {};
-
-extern "C" BANK_CUSTOMERS_API Customer * Create(char * FirstName, char * LastName, char * Street, char * StreetNr, char * City, char * PostalCode, char * Country)
+extern "C" BANK_CUSTOMERS_API int Create(char * FirstName, char * LastName, char * Street, char * StreetNr, char * City, char * PostalCode, char * Country)
 {
-	/*struct holen von entity, pointer darauf returnen (Customer*)*/
+	/*struct holen von entity, pointer darauf returnen (CUSTOMER*)*/
 	if ((strlen(FirstName) >= 2) && (strlen(LastName) >= 2) && (strlen(Street) >= 3) && (strlen(StreetNr) >= 1) && (strlen(City) >= 3) && (strlen(PostalCode) >= 4) && (strlen(Country) >= 3))
 	{
 		//nächste CID generieren
-		unsigned int newCID = _createCID();
+		//unsigned int newCID = _createCID();
 		//Pointer aller Customers holen
-		customer_list* cl = helloWorld(1, newCID, FirstName, LastName, Street, StreetNr, City, PostalCode, Country);
+		//customer_list* cl = helloWorld(1, newCID, FirstName, LastName, Street, StreetNr, City, PostalCode, Country);
 		//aktuellen Customer speichern
-		customer_list::const_iterator iterator;
-		for (iterator = (*cl).begin(); iterator != (*cl).end(); iterator++)
-		{
-			if((*iterator).CID==newCID)
-				newCustomer = (*iterator);
-		}
+		//customer_list::const_iterator iterator;
+		//for (iterator = (*cl).begin(); iterator != (*cl).end(); iterator++)
+		//{
+		//	if((*iterator).CID==newCID)
+		//		newCustomer = (*iterator);
+		//}
+		if(_addCustomer(FirstName, LastName, Street, StreetNr, City, PostalCode, Country) != 0)
+			return -2; //Something gone wrong in Entity Component
 
-		return  &newCustomer;
+		return  0;
 	}
-	return nullptr;
+	return -1; // Data did not meet required format/standards
 }
 
 
-extern "C" BANK_CUSTOMERS_API Customer* Read(unsigned int CID)
+extern "C" BANK_CUSTOMERS_API int Read(unsigned int CID, CUSTOMER* resultCustomer)
 {
+	if(_getCustomerByCID(CID, resultCustomer) != 0)
+		return -2; //Something gone wrong in Entity Component
+
+	return 0;
+	
 	//gibt ausgelesene Variablen des struct zurück
-	return Update(CID, "", "", "", "", "", "", "", 2);
+	//return Update(CID, "", "", "", "", "", "", "", 2);
 }
 
-extern "C" BANK_CUSTOMERS_API Customer* Update(unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country, unsigned int IsActive)
+extern "C" BANK_CUSTOMERS_API int Update(unsigned int CID, char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country, unsigned int IsActive)
 {
+	CUSTOMER C;
+	if(_getCustomerByCID(CID, &C) != 0)
+		return -2; //Something gone wrong in Entity Component
+
+	if ((strlen(FirstName) >= 2) && (strlen(LastName) >= 2) && (strlen(Street) >= 3) && (strlen(StreetNr) >= 1) && (strlen(City) >= 3) && (strlen(PostalCode) >= 4) && (strlen(Country) >= 3))
+	{
+		C.FirstName = FirstName;
+		C.LastName = LastName;
+		C.Street = Street;
+		C.StreetNr = StreetNr;
+		C.City = City;
+		C.PostalCode = PostalCode;
+		C.Country = Country;
+		C.Active = IsActive;
+		
+		if (_updateCustomer(&C) != 0)
+			return -2; //Something in went wrong in Entity Component
+		return 0;
+	}
+
+	return -1; // Data did not meet required format/standards
+
 	//ändert Variablen in struct, gibt 0 für success zurück
-	customer_list* cl = helloWorld(0, 0, "", "", "", "", "", "", "");
+	/*customer_list* cl = helloWorld(0, 0, "", "", "", "", "", "", "");
 	customer_list::const_iterator iterator;
 	customer_list::const_iterator pos;
 	for (iterator = (*cl).begin(); iterator != (*cl).end(); )
@@ -53,7 +76,7 @@ extern "C" BANK_CUSTOMERS_API Customer* Update(unsigned int CID, char* FirstName
 
 			pos = iterator;
 			(*cl).erase(iterator++);
-			Customer* C = new Customer;
+			CUSTOMER* C = new Customer;
 			C->CID = (*pos).CID;
 
 			if (strlen(FirstName) >= 2)
@@ -115,42 +138,58 @@ extern "C" BANK_CUSTOMERS_API Customer* Update(unsigned int CID, char* FirstName
 	
 
 
-	return nullptr;
+	return nullptr;*/
 }
 
-extern "C" BANK_CUSTOMERS_API Customer* Activate(unsigned int CID)
+extern "C" BANK_CUSTOMERS_API int Activate(unsigned int CID)
 {
 	//ändert die active-Variable auf true, 0 bei success
-		
-	return Update(CID, "", "", "", "", "", "", "", 1);
+	
+	CUSTOMER C;
+	if (_getCustomerByCID(CID, &C) != 0)
+		return -2; //Something gone wrong in Entity Component
+	
+	C.Active = 1;
+
+	if (_updateCustomer(&C) != 0)
+		return -2; //Something in went wrong in Entity Component
+	return 0;
+
+
+	return -1; // Data did not meet required format/standards
+
+	//return Update(CID, "", "", "", "", "", "", "", 1);
 }
-extern "C" BANK_CUSTOMERS_API Customer* Deactivate(unsigned int CID)
+extern "C" BANK_CUSTOMERS_API int Deactivate(unsigned int CID)
 {
 	//ändert die active-Variable auf false, 0 bei success
-	
-	return Update(CID, "", "", "", "", "", "", "", 0);
+	CUSTOMER C;
+	if (_getCustomerByCID(CID, &C) != 0)
+		return -2; //Something gone wrong in Entity Component
+
+	C.Active = 0;
+
+	if (_updateCustomer(&C) != 0)
+		return -2; //Something in went wrong in Entity Component
+	return 0;
+
+
+	return -1; // Data did not meet required format/standards
+
+
+
+	//return Update(CID, "", "", "", "", "", "", "", 0);
 }
 
 unsigned int _IsActive(unsigned int CID)
 {
-	//gibt den Wert der active-Variable zurück
-	customer_list* cl = helloWorld(false, 0, "", "", "", "", "", "", "");
-	customer_list::const_iterator iterator;
-	unsigned int active = 0;
-	for (iterator = (*cl).begin(); iterator != (*cl).end(); ++iterator)
-	{
-		if ((*iterator).CID == CID)
-			active = (*iterator).Active;
-	}
-	return active;
-}
-unsigned int _createCID()
-{
-	//generiert die nächste CID
-	customer_list* cl = helloWorld(0,0, "", "", "", "", "", "", "");
-	if (!cl->empty())
-		return ++(*(*cl).end()).CID;
-	else
-		return 1;
+	CUSTOMER C;
+	if (_getCustomerByCID(CID, &C) != 0)
+		return -2; //Something gone wrong in Entity Component
 
+	if (C.Active)
+		return 0;  // Customer is active
+	else
+		return -1; // Customer is not active
 }
+

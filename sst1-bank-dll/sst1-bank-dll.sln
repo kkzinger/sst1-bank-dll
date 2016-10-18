@@ -4,12 +4,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bank_account_actions", "bank_account_actions\bank_account_actions.vcxproj", "{8F94089F-721F-4EB4-8070-F115374E84CE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95} = {732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bank_entitycomponent", "bank_entitycomponent\bank_entitycomponent.vcxproj", "{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bank_currency", "bank_currency\bank_currency.vcxproj", "{1BE04035-C4F9-4480-9F72-0954226CDCE8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95} = {732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bank_customers", "bank_customers\bank_customers.vcxproj", "{D58CA75A-BC44-4BF7-A0FF-F5210E2204CE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95} = {732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26B6432C-F8D0-4BAB-B12E-3816C2F64286}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,16 +26,38 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bank_accounts", "bank_accounts\bank_accounts.vcxproj", "{D995DC86-1952-40F7-9630-76C36A83B3E5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95} = {732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bank_customers", "test_bank_customers\test_bank_customers.vcxproj", "{EC33A9EC-905A-4B7C-A129-D15B58004B0E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95} = {732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}
+		{D58CA75A-BC44-4BF7-A0FF-F5210E2204CE} = {D58CA75A-BC44-4BF7-A0FF-F5210E2204CE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bank_accounts", "test_bank_accounts\test_bank_accounts.vcxproj", "{5B6BA97F-7554-4890-B72D-CDE6DC405F04}"
+	ProjectSection(ProjectDependencies) = postProject
+		{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95} = {732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}
+		{D995DC86-1952-40F7-9630-76C36A83B3E5} = {D995DC86-1952-40F7-9630-76C36A83B3E5}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bank_account_actions", "test_bank_account_actions\test_bank_account_actions.vcxproj", "{633DA0C5-6194-4D53-8736-C3AEA9D0B68A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95} = {732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}
+		{8F94089F-721F-4EB4-8070-F115374E84CE} = {8F94089F-721F-4EB4-8070-F115374E84CE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bank_currency", "test_bank_currency\test_bank_currency.vcxproj", "{E776AC9F-1F97-4EEA-AF41-52B2D0D0E279}"
+	ProjectSection(ProjectDependencies) = postProject
+		{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95} = {732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}
+		{1BE04035-C4F9-4480-9F72-0954226CDCE8} = {1BE04035-C4F9-4480-9F72-0954226CDCE8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bank_entitycomponent", "test_bank_entitycomponent\test_bank_entitycomponent.vcxproj", "{8D155C1D-CDF2-4EBF-ADB9-B560CB33A117}"
+	ProjectSection(ProjectDependencies) = postProject
+		{732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95} = {732FCB32-1D0A-4FE7-BFD2-1AAB9261AD95}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

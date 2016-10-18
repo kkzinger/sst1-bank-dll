@@ -24,7 +24,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\test_bank_entitycomponent\bank_entitycomponent.h">
+    <ClInclude Include="bank_entitycomponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bank_datatypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

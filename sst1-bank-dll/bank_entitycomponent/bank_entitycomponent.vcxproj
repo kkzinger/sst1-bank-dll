@@ -145,7 +145,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\test_bank_entitycomponent\bank_entitycomponent.h" />
+    <ClInclude Include="bank_datatypes.h" />
+    <ClInclude Include="bank_entitycomponent.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
