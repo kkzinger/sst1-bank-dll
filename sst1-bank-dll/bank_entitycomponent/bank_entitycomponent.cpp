@@ -3,16 +3,16 @@
 
 #include "stdafx.h"
 #include "bank_entitycomponent.h"
-#include "../include/rapidjson/document.h" // rapidjson's DOM-style API
-#include "../include/rapidjson/prettywriter.h" // for stringify JSON
 
 extern "C" BANK_ENTITYCOMPONENT_API int _getAccountsByCID(unsigned int CID, unsigned int* aidList)
 {
+	//todo
 	return 0;
 }
 
 extern "C" BANK_ENTITYCOMPONENT_API int _getCustomersByAID(unsigned int AID, unsigned int* cidList)
 {
+	//todo
 	return 0;
 }
 
@@ -137,7 +137,8 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addAccount(account_t type, currency_t c
 	A->currency = currency;
 	A->balance = balance;
 	A->depositors = depositors;
-	A->Active = 1;
+	A->unfrozen = 1;
+	A->open = 1;
 
 	allAccounts->push_back(*A);
 
@@ -158,7 +159,8 @@ extern "C" BANK_ENTITYCOMPONENT_API int _updateAccount(ACCOUNT* changedAccount)
 			it->currency = changedAccount->currency;
 			it->balance = changedAccount->balance;
 			it->depositors = changedAccount->depositors;
-			it->Active = changedAccount->Active;
+			it->unfrozen = changedAccount->unfrozen;
+			it->open = changedAccount->open;
 
 			return 0;
 		}

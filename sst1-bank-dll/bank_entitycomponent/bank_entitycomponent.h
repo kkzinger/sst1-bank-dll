@@ -6,7 +6,12 @@
 #define  BANK_ENTITYCOMPONENT_API __declspec(dllimport) 
 #endif
 
+#include <fstream>
+
 #include "bank_datatypes.h"
+#include "../include/rapidjson/document.h" // rapidjson's DOM-style API
+#include "../include/rapidjson/prettywriter.h" // for stringify JSON
+
 
 // Lists of Customer/Account Structs, that represents all available Customers 
 //TODO make singleton so that only one allCustomers/allAccounts exists
@@ -39,3 +44,4 @@ extern "C" BANK_ENTITYCOMPONENT_API char* _readJournal(char* FromTime, char* ToT
 unsigned int _createCID();
 unsigned int _createAID();
 extern "C" BANK_ENTITYCOMPONENT_API customer_list* _getCustomerListPtr();
+

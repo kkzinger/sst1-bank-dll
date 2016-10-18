@@ -18,7 +18,8 @@ struct ACCOUNT
 	currency_t currency;
 	float balance;
 	unsigned int* depositors;
-	unsigned char Active;
+	unsigned char unfrozen;
+	unsigned char open;
 };
 typedef list <ACCOUNT> account_list;
 
