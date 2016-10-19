@@ -6,12 +6,18 @@
 #define  BANK_ENTITYCOMPONENT_API __declspec(dllimport) 
 #endif
 
-#include <fstream>
+#include <stdio.h>
+#include <string.h>
+
 
 #include "bank_datatypes.h"
 #include "../include/rapidjson/document.h" // rapidjson's DOM-style API
-#include "../include/rapidjson/prettywriter.h" // for stringify JSON
+#include "../include/rapidjson/filewritestream.h" // rapidjson's Stream Writer
+#include "../include/rapidjson/filereadstream.h"
+#include "../include/rapidjson/writer.h"
 
+using namespace rapidjson;
+using namespace std;
 
 // Lists of Customer/Account Structs, that represents all available Customers 
 //TODO make singleton so that only one allCustomers/allAccounts exists
@@ -35,7 +41,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _updateAccount(ACCOUNT* changedAccount);
 
 
 extern "C" BANK_ENTITYCOMPONENT_API char* _getTime();
-extern "C" BANK_ENTITYCOMPONENT_API int _writeLog(char* message);
+extern "C" BANK_ENTITYCOMPONENT_API int _writeLog(/*char* message*/);
 extern "C" BANK_ENTITYCOMPONENT_API int _writeJournal(char* message);
 extern "C" BANK_ENTITYCOMPONENT_API char* _readJournal(char* FromTime, char* ToTime, char* Filter, char* DebugLevel);
 
@@ -45,3 +51,10 @@ unsigned int _createCID();
 unsigned int _createAID();
 extern "C" BANK_ENTITYCOMPONENT_API customer_list* _getCustomerListPtr();
 
+int _writeJsonToFile(char* file, Document* json);
+int _readJsonFromFile(char* file, Document* json);
+
+int _writeCustomers();
+int _writeAccounts();
+int _readCustomers();
+int _readAccounts();

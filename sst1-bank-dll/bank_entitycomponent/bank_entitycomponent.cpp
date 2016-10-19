@@ -27,6 +27,8 @@ extern "C" BANK_ENTITYCOMPONENT_API int _getCustomerByCID(unsigned int CID, CUST
 			return 0;
 		}
 	}
+
+	return -1;
 	
 }
 
@@ -42,26 +44,46 @@ extern "C" BANK_ENTITYCOMPONENT_API int _getAccountByAID(unsigned int AID, ACCOU
 		}
 	}
 
-	return 0;
+	return -1;
 }
 
 extern "C" BANK_ENTITYCOMPONENT_API char* _getTime()
 {
+	//TODO
 	return nullptr;
 }
 
-extern "C" BANK_ENTITYCOMPONENT_API int _writeLog(char * message)
+extern "C" BANK_ENTITYCOMPONENT_API int _writeLog(/*char * message*/)
 {
+	//Document doc;
+	//char* json = "{ \"hello\": \"world\",\"t\" : true ,\"f\" : false }";
+	//doc.Parse(json);
+
+	//_writeJsonToFile("json.txt", &doc);
+
+	//Document foo;
+	//_readJsonFromFile("json.txt", &foo);
+
+	//StringBuffer buffer;
+	//Writer<StringBuffer> writer(buffer);
+	//foo.Accept(writer);
+
+	//const char* output = buffer.GetString();
+	//printf("Read Json:\n%s", output);
+	_writeCustomers();
+	_readCustomers();
 	return 0;
 }
 
 extern "C" BANK_ENTITYCOMPONENT_API int _writeJournal(char * message)
 {
+	//TODO
 	return 0;
 }
 
 extern "C" BANK_ENTITYCOMPONENT_API char* _readJournal(char * FromTime, char * ToTime, char * Filter, char * DebugLevel)
 {
+	//TODO
 	return 0;
 }
 
@@ -169,7 +191,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _updateAccount(ACCOUNT* changedAccount)
 	return -2; //AID not found in list
 }
 
-
+//create new Customer ID
 unsigned int _createCID()
 {
 	//generiert die nächste CID
@@ -181,6 +203,7 @@ unsigned int _createCID()
 
 }
 
+//create new Account ID
 unsigned int _createAID()
 {
 	//generiert die nächste AID
@@ -191,3 +214,109 @@ unsigned int _createAID()
 		return 1;
 
 }
+
+//Writes Rapid Json Documents into File
+int _writeJsonToFile(char* file, Document* json)
+{
+
+	FILE* fp;
+	errno_t err;
+	if((err = fopen_s(&fp,file, "wb")) != 0)
+		return -1; // Fail on open file
+
+	char writeBuf[65536];
+	FileWriteStream os(fp, writeBuf, sizeof(writeBuf));
+	Writer<FileWriteStream> writer(os);
+	json->Accept(writer);
+	
+	fclose(fp);
+	return 0;
+}
+
+//Reads Json from file into a Rapid Json document
+int _readJsonFromFile(char* file, Document* json)
+{
+	
+	FILE* fp;
+	errno_t err;
+	if ((err = fopen_s(&fp, file, "rb")) != 0)
+		return -1; //fail on open file
+
+	char readBuffer[65536];
+	FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+	json->ParseStream(is);
+	fclose(fp);
+	return 0;
+}
+
+int _writeCustomers()
+{
+	
+	//Create DOM Tree of allCustomers
+	Document d;
+	d.SetObject();
+	//Array that holds Customer Objects
+	Value arr(kArrayType);
+	
+	//iterate over allCustomers List and generate Rapidjson Customer Objects which are placed in array
+	customer_list::iterator it;
+	for (it = allCustomers->begin(); it != allCustomers->end(); it++)
+	{
+		Value customer(kObjectType);
+		customer.AddMember("CID", it->CID, d.GetAllocator());
+		customer.AddMember("FirstName",Value().SetString(it->FirstName,d.GetAllocator()), d.GetAllocator());
+		customer.AddMember("LastName", Value().SetString(it->LastName, d.GetAllocator()), d.GetAllocator());
+		customer.AddMember("Street", Value().SetString(it->Street, d.GetAllocator()), d.GetAllocator());
+		customer.AddMember("StreetNr", Value().SetString(it->StreetNr, d.GetAllocator()), d.GetAllocator());
+		customer.AddMember("City", Value().SetString(it->City, d.GetAllocator()), d.GetAllocator());
+		customer.AddMember("PostalCode", Value().SetString(it->PostalCode, d.GetAllocator()), d.GetAllocator());
+		customer.AddMember("Country", Value().SetString(it->Country, d.GetAllocator()), d.GetAllocator());
+		customer.AddMember("Active", it->Active, d.GetAllocator());
+		arr.PushBack(customer, d.GetAllocator());
+	}
+	//add array with all Customer Objects to Document
+	d.AddMember("data", arr, d.GetAllocator());
+
+	_writeJsonToFile("allCustomers.txt", &d);
+	return 0;
+}
+
+int _writeAccounts()
+{
+	//TODO 
+	return 0;
+}
+
+int _readCustomers()
+{
+	Document d;
+
+	_readJsonFromFile("allCustomers.txt", &d);
+
+	for (Value::ConstValueIterator itr = d["data"].Begin(); itr != d["data"].End(); ++itr)
+	{
+		
+		
+		for (Value::ConstMemberIterator itrObject = itr->MemberBegin(); itrObject != itr->MemberEnd(); ++itrObject)
+		{
+			
+			//WIP
+			//if (itrObject->value.IsInt()) continue;
+			printf("entry -- ");
+		}
+
+	}
+	return 0;
+}
+
+int _readAccounts()
+{
+	//TODO
+	return 0;
+}
+
+//assert(doc.IsObject());
+
+//assert(doc.HasMember("hello"));
+//assert(doc.["hello"].IsString());
+//printf("hello = %s\n", doc["hello"].GetString());

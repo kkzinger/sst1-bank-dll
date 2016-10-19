@@ -3,7 +3,9 @@
 
 #include "stdafx.h"
 #include "../bank_entitycomponent/bank_entitycomponent.h"
+#include "../bank_entitycomponent/bank_datatypes.h"
 #include "../bank_accounts/bank_accounts.h"
+
 
 int main()
 {
@@ -20,13 +22,13 @@ int main()
 	Open(CustIDs, SAVING, USD, 1000);
 
 
-
-	printf("AID %u\n", A.AID);
+	//FAIL because there is no "Read" function to fetch Account Struct of entity component
+	/*printf("AID %u\n", A.AID);
 	printf("Open? %u\n", A.open);
 
 	printf("AID %u\n", A.AID);
 	printf("Unfrozen? %u\n", A.unfrozen);
-
+	*/
 
 
 	return 0;
