@@ -10,12 +10,11 @@
 
 extern "C" BANK_ENTITYCOMPONENT_API int _getAccountsByCID(unsigned int CID, unsigned int* aidList)
 {
-	aidList[1] = 0;
 	//check if aidList has correct size
-	if (sizeof(aidList) / sizeof(aidList[0]) < MAX_ACCNTS_PER_CUST)
-	{
-		return (sizeof(aidList) / sizeof(unsigned int)); //provided array of aid is to small
-	}
+	//if (sizeof(aidList) / sizeof(aidList[0]) < MAX_ACCNTS_PER_CUST)
+	//{
+	//	return (sizeof(aidList) / sizeof(unsigned int)); //provided array of aid is to small
+	//}
 	//clean aidList 
 	for(int i = 0; i < MAX_ACCNTS_PER_CUST; i++)
 	{

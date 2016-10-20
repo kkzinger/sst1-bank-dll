@@ -68,8 +68,9 @@ unsigned int getOwners(unsigned int AID, unsigned int* Depositors)
 extern "C" BANK_ACCOUNTS_API unsigned int addOwners(unsigned int AID, unsigned int* Depositors)
 {
 	//fügt CIDs dem Array hinzu
-	if (sizeof(Depositors) / sizeof(Depositors[0]) > MAX_CUST_PER_ACCNT)
-		return -1; //provided array of cid is to big
+	//if (sizeof(Depositors) / sizeof(Depositors[0]) > MAX_CUST_PER_ACCNT)
+		//return -1; //provided array of cid is to big
+
 	ACCOUNT A;
 	if (_getAccountByAID(AID, &A) != 0)
 		return -2; //Something gone wrong in Entity Component
