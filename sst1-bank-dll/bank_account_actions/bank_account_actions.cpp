@@ -55,11 +55,12 @@ extern "C" BANK_ACCOUNT_ACTIONS_API int transfer(unsigned int FromAID, unsigned 
 		return -1; //Amount is to high for the current balance or one of the accounts is frozen/closed
 	}
 }
-extern "C" BANK_ACCOUNT_ACTIONS_API int bankAccountStatement(unsigned int AID, TRANSACTION* transactionsList)
+extern "C" BANK_ACCOUNT_ACTIONS_API int bankAccountStatement(unsigned int AID, TRANSACTION* transactionsList, unsigned int len)
 {
-	//TODO
-	//Determine how many Transactions there will be
-	//create array mit (int *)malloc(initialSize * sizeof(int));
+	if (_getTransactions(AID, transactionsList, len) == -1)
+	{
+		return -1; //transactionList Array was to small. There would be more Transactions.
+	}
 	return 0;
 }
 extern "C" BANK_ACCOUNT_ACTIONS_API float balancing(unsigned int AID)

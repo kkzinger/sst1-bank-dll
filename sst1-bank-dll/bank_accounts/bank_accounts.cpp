@@ -10,13 +10,13 @@ using namespace std;
 
 extern "C" BANK_ACCOUNTS_API unsigned int Open(unsigned int* Depositors, account_t Type, currency_t CurID, float Balance)
 {
-	if (sizeof(Depositors) / sizeof(Depositors[0]) > MAX_CUST_PER_ACCNT)
+	if (sizeof(Depositors) / sizeof(Depositors[0]) > MAX_CUST_PER_ACCNT) //TODO Need other verification. sizeof is not suitable to control length of arrays that are obtained by pointer.
 		return -1; //provided array of cid is to big
 
 	if (Balance < 0)
 		return -1;//no negative balance supported
 
-	unsigned int _Depositors[MAX_CUST_PER_ACCNT] = { 0 };
+	unsigned int _Depositors[MAX_CUST_PER_ACCNT] = {};
 	for (int i = 0; i < sizeof(Depositors) / sizeof(Depositors[0]); i++)
 		_Depositors[i] = Depositors[i];
 

@@ -25,6 +25,7 @@ using namespace std;
 static customer_list* allCustomers;
 static account_list* allAccounts;
 static transaction_list* allTransactions;
+static unsigned long transactionSequenceNumber;
 
 //internal functions
 //Initialize entity_component. Must not be called twice (no Singleton at this time implemented)
@@ -53,6 +54,8 @@ extern "C" BANK_ENTITYCOMPONENT_API int _updateAccount(ACCOUNT* changedAccount);
 
 //Add a Transaction Struct to allTransactions list. This provides functionality to store informations about a transfer between Accounts.
 extern "C" BANK_ENTITYCOMPONENT_API int _addTransaction(unsigned int sourceAID, unsigned int destinationAID, unsigned int ordererCID, float amount);
+//Search function, provides data for ACCOUNT struct for given AID
+extern "C" BANK_ENTITYCOMPONENT_API int _getTransactions(unsigned int AID, TRANSACTION* transactionList, unsigned int len);
 
 //not in use
 extern "C" BANK_ENTITYCOMPONENT_API char* _getTime();
@@ -68,7 +71,7 @@ extern "C" BANK_ENTITYCOMPONENT_API char* _readJournal(char* FromTime, char* ToT
 unsigned int _createCID();
 unsigned int _createAID();
 //provides Timestamp/Sequence Number for Transactions
-extern "C" BANK_ENTITYCOMPONENT_API char* _createTimestamp();
+extern "C" BANK_ENTITYCOMPONENT_API unsigned long _createTimestamp();
 //returns Pointer to allCustomers list (is used for testing) should not be used in production because it allows datamanipulation without data checking
 extern "C" BANK_ENTITYCOMPONENT_API customer_list* _getCustomerListPtr();
 

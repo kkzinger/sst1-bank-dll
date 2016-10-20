@@ -41,7 +41,7 @@ typedef list <CUSTOMER> customer_list;
 // Transaction
 struct TRANSACTION
 {
-	char* timestamp;
+	unsigned long timestamp;
 	unsigned int sourceAID;
 	unsigned int destinationAID;
 	unsigned int ordererCID;

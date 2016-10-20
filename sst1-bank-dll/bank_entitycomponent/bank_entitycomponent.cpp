@@ -6,10 +6,19 @@
 
 extern "C" BANK_ENTITYCOMPONENT_API int _getAccountsByCID(unsigned int CID, unsigned int* aidList)
 {
+	aidList[1] = 0;
 	//check if aidList has correct size
-	if (sizeof(aidList) / sizeof(unsigned int) < MAX_ACCNTS_PER_CUST)
-		return -1; //provided array of aid is to small
-	
+	if (sizeof(aidList) / sizeof(aidList[0]) < MAX_ACCNTS_PER_CUST)
+	{
+		return (sizeof(aidList) / sizeof(unsigned int)); //provided array of aid is to small
+	}
+	//clean aidList 
+	for(int i = 0; i < MAX_ACCNTS_PER_CUST; i++)
+	{
+		aidList[i] = 0;
+	}
+
+
 	unsigned int aidListPos = 0;
 
 	//search in all accounts (depositor list) for the CID. If found save AID to aidList
@@ -126,7 +135,8 @@ extern "C" BANK_ENTITYCOMPONENT_API int _initEntity()
 	allCustomers = new customer_list;
 	allAccounts = new account_list; 
 	allTransactions = new transaction_list;
-	//read customers, accunts from file
+	transactionSequenceNumber = 0;
+	//read customers, accounts, transactions, transactionsSequenceNumber from file
 
 	return 0;
 }
@@ -318,7 +328,34 @@ int _writeCustomers()
 
 int _writeAccounts()
 {
-	//TODO 
+	////Create DOM Tree of allAccounts
+	//Document d;
+	//d.SetObject();
+	////Array that holds Account Objects
+	//Value arr(kArrayType);
+
+	////iterate over allCustomers List and generate Rapidjson Customer Objects which are placed in array
+	//account_list::iterator it;
+	//for (it = allAccounts->begin(); it != allAccounts->end(); it++)
+	//{
+	//	Value customer(kObjectType);
+	//	customer.AddMember("AID", it->AID, d.GetAllocator());
+	//	customer.AddMember("Balance", Value().SetFloat(it->balance), d.GetAllocator());
+	// WIP	
+	//	customer.AddMember("Type", Value().Set SetString(it->type, d.GetAllocator()), d.GetAllocator());
+	//	customer.AddMember("Street", Value().SetString(it->Street, d.GetAllocator()), d.GetAllocator());
+	//	customer.AddMember("StreetNr", Value().SetString(it->StreetNr, d.GetAllocator()), d.GetAllocator());
+	//	customer.AddMember("City", Value().SetString(it->City, d.GetAllocator()), d.GetAllocator());
+	//	customer.AddMember("PostalCode", Value().SetString(it->PostalCode, d.GetAllocator()), d.GetAllocator());
+	//	customer.AddMember("Country", Value().SetString(it->Country, d.GetAllocator()), d.GetAllocator());
+	//	customer.AddMember("Active", it->Active, d.GetAllocator());
+	//	arr.PushBack(customer, d.GetAllocator());
+	//}
+	////add array with all Customer Objects to Document
+	//d.AddMember("data", arr, d.GetAllocator());
+
+	//_writeJsonToFile("allCustomers.txt", &d);
+	//return 0;
 	return 0;
 }
 
@@ -358,6 +395,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addTransaction(unsigned int sourceAID, 
 	T->sourceAID = sourceAID;
 	T->destinationAID = destinationAID;
 	T->ordererCID = ordererCID;
+	T->amount = amount;
 	
 	allTransactions->push_back(*T);
 
@@ -365,8 +403,35 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addTransaction(unsigned int sourceAID, 
 
 }
 
-char* _createTimestamp()
+unsigned long _createTimestamp()
 {
-	// 
-	return "123456";
+	transactionSequenceNumber += 1;
+	
+	return transactionSequenceNumber;
+}
+
+extern "C" BANK_ENTITYCOMPONENT_API int _getTransactions(unsigned int AID, TRANSACTION* transactionList, unsigned int len)
+{
+	unsigned int acc = 0;
+
+	transaction_list::iterator it;
+	for (it = allTransactions->begin(); it != allTransactions->end(); it++)
+	{
+		//only search for Transactions where AID is present
+		if (it->destinationAID == AID || it->sourceAID == AID)
+		{
+			if (acc == len)
+				return -1; //Transaction list is full but there would be more transactions
+
+			transactionList[acc].timestamp = it->timestamp;
+			transactionList[acc].amount = it->amount;
+			transactionList[acc].destinationAID = it->destinationAID;
+			transactionList[acc].sourceAID = it->sourceAID;
+			transactionList[acc].ordererCID = it->ordererCID;
+			acc += 1;
+		}
+		
+	}
+
+	return 0;
 }

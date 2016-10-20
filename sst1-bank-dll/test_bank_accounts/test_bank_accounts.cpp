@@ -21,6 +21,18 @@ int main()
 
 	Open(CustIDs, SAVING, USD, 1000);
 
+	unsigned int list[MAX_ACCNTS_PER_CUST] = {};
+	if(int foo=_getAccountsByCID(1, list)) printf("benis %d\n", foo);
+
+	printf("\n--- Account List of CID 1 ---\n");
+	for(int i = 0; i < MAX_ACCNTS_PER_CUST; i++)
+	{
+		if (list[i] != 0)
+		{
+			printf("AID: %d\n", list[i]);
+		}
+	}
+	printf("\n-----------------------------\n");
 
 	//FAIL because there is no "Read" function to fetch Account Struct of entity component
 	/*printf("AID %u\n", A.AID);

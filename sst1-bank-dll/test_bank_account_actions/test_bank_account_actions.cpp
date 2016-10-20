@@ -34,6 +34,24 @@ int main()
 	printf("Balance 1: %.2f\n", balancing(1));
 	printf("Balance 2: %.2f\n", balancing(2));
 	printf("\n--------------------------------\n\n");
+
+	transfer(1, 2, 1, 50);
+	transfer(1, 2, 1, 40);
+	transfer(1, 2, 1, 60);
+	transfer(1, 2, 1, 20);
+	transfer(2, 1, 2, 90);
+
+	unsigned int len = 50;
+	TRANSACTION foo[50] = {};
+	bankAccountStatement(1, foo, len);
+
+	printf("\n--- Bank Account Statement for AID 1 ---\n");
+	for (unsigned int i = 0; i < len; i++)
+	{
+		if (foo[i].timestamp == 0) continue;
+		printf("%lu -- from: %d-- to: %d -- orderCID: %d -- %.2f\n", foo[i].timestamp, foo[i].sourceAID, foo[i].destinationAID, foo[i].ordererCID, foo[i].amount);
+	}
+
 	
 	return 0;
 }
