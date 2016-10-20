@@ -6,14 +6,48 @@
 
 extern "C" BANK_ENTITYCOMPONENT_API int _getAccountsByCID(unsigned int CID, unsigned int* aidList)
 {
-	//todo
+	//check if aidList has correct size
+	if (sizeof(aidList) / sizeof(unsigned int) < MAX_ACCNTS_PER_CUST)
+		return -1; //provided array of aid is to small
+	
+	unsigned int aidListPos = 0;
+
+	//search in all accounts (depositor list) for the CID. If found save AID to aidList
+	account_list::iterator it;
+	for (it = allAccounts->begin(); it != allAccounts->end(); it++)
+	{
+		for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
+		{
+			if (CID == it->depositors[i])
+			{
+				aidList[aidListPos] = it->AID;
+				aidListPos++;
+			}
+		}
+	}
+
+	if (aidListPos == 0) return -2; //No Accounts connected to this CID were found
+
 	return 0;
 }
 
 extern "C" BANK_ENTITYCOMPONENT_API int _getCustomersByAID(unsigned int AID, unsigned int* cidList)
 {
-	//todo
-	return 0;
+	//check if cidList has correct size
+	if (sizeof(cidList) / sizeof(unsigned int) < MAX_CUST_PER_ACCNT)
+		return -1; //provided array of cid is to small
+	
+	account_list::iterator it;
+	for (it = allAccounts->begin(); it != allAccounts->end(); it++)
+	{
+		if (it->AID == AID)
+		{
+			cidList = it->depositors;
+			return 0; //Found Account and return depositor list
+		}
+	}
+
+	return -1; //Did not found Account
 }
 
 extern "C" BANK_ENTITYCOMPONENT_API int _getCustomerByCID(unsigned int CID, CUSTOMER* customer)
@@ -90,7 +124,8 @@ extern "C" BANK_ENTITYCOMPONENT_API char* _readJournal(char * FromTime, char * T
 extern "C" BANK_ENTITYCOMPONENT_API int _initEntity()
 {
 	allCustomers = new customer_list;
-	allAccounts = new account_list;
+	allAccounts = new account_list; 
+	allTransactions = new transaction_list;
 	//read customers, accunts from file
 
 	return 0;
@@ -315,8 +350,23 @@ int _readAccounts()
 	return 0;
 }
 
-//assert(doc.IsObject());
+extern "C" BANK_ENTITYCOMPONENT_API int _addTransaction(unsigned int sourceAID, unsigned int destinationAID, unsigned int ordererCID, float amount)
+{
+	TRANSACTION* T = new TRANSACTION;
 
-//assert(doc.HasMember("hello"));
-//assert(doc.["hello"].IsString());
-//printf("hello = %s\n", doc["hello"].GetString());
+	T->timestamp = _createTimestamp();
+	T->sourceAID = sourceAID;
+	T->destinationAID = destinationAID;
+	T->ordererCID = ordererCID;
+	
+	allTransactions->push_back(*T);
+
+	return 0;
+
+}
+
+char* _createTimestamp()
+{
+	// 
+	return "123456";
+}

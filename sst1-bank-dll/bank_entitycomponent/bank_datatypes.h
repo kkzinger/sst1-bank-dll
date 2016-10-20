@@ -37,3 +37,15 @@ struct CUSTOMER
 	unsigned char Active;
 };
 typedef list <CUSTOMER> customer_list;
+
+// Transaction
+struct TRANSACTION
+{
+	char* timestamp;
+	unsigned int sourceAID;
+	unsigned int destinationAID;
+	unsigned int ordererCID;
+	float amount;
+	
+};
+typedef list <TRANSACTION> transaction_list;

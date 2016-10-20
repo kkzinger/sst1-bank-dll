@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 
 #include "bank_datatypes.h"
@@ -23,6 +24,7 @@ using namespace std;
 //TODO make singleton so that only one allCustomers/allAccounts exists
 static customer_list* allCustomers;
 static account_list* allAccounts;
+static transaction_list* allTransactions;
 
 //internal functions
 extern "C" BANK_ENTITYCOMPONENT_API int _initEntity();
@@ -38,7 +40,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _updateCustomer(CUSTOMER* changedCustome
 extern "C" BANK_ENTITYCOMPONENT_API int _addAccount(account_t type, currency_t currency, float balance, unsigned int* depositors);
 extern "C" BANK_ENTITYCOMPONENT_API int _updateAccount(ACCOUNT* changedAccount);
 
-
+extern "C" BANK_ENTITYCOMPONENT_API int _addTransaction(unsigned int sourceAID, unsigned int destinationAID, unsigned int ordererCID, float amount);
 
 extern "C" BANK_ENTITYCOMPONENT_API char* _getTime();
 extern "C" BANK_ENTITYCOMPONENT_API int _writeLog(/*char* message*/);
@@ -49,6 +51,7 @@ extern "C" BANK_ENTITYCOMPONENT_API char* _readJournal(char* FromTime, char* ToT
 //DLL intern functions
 unsigned int _createCID();
 unsigned int _createAID();
+extern "C" BANK_ENTITYCOMPONENT_API char* _createTimestamp();
 extern "C" BANK_ENTITYCOMPONENT_API customer_list* _getCustomerListPtr();
 
 int _writeJsonToFile(char* file, Document* json);
