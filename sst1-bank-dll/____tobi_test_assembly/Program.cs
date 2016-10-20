@@ -9,11 +9,12 @@ namespace ____tobi_test_assembly
 {
     class Program
     {
-        [DllImport("bank_customers.dll")]
-        public static extern int Create
+        [DllImport("../../../Release/bank_currency.dll")]
+        public static extern int bar();
 
         static void Main(string[] args)
         {
+            Console.WriteLine(bar());
         }
     }
 }
