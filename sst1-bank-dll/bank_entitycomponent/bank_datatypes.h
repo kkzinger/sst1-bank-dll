@@ -1,3 +1,7 @@
+// sst1-ws16-lb -- bank dlls
+// Authors: Tobias Mayer      
+//         Gerold Katzinger
+
 #pragma once
 
 #include <list>

@@ -1,3 +1,7 @@
+// sst1-ws16-lb -- bank dlls
+// Authors: Tobias Mayer      
+//         Gerold Katzinger
+
 // bank_accounts.cpp : Defines the exported functions for the DLL application.
 //
 

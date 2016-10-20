@@ -1,5 +1,9 @@
+// sst1-ws16-lb -- bank dlls
+// Authors: Tobias Mayer      
+//         Gerold Katzinger
+
 // test_bank_customers.cpp : Defines the entry point for the console application.
-//$(SolutionDir)\Release\bank_customers.lib;
+//
 
 
 #include "stdafx.h"

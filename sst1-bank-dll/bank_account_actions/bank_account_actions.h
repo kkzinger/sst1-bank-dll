@@ -1,3 +1,7 @@
+// sst1-ws16-lb -- bank dlls
+// Authors: Tobias Mayer      
+//         Gerold Katzinger
+
 #pragma once
 #ifdef BANK_ACCOUNT_ACTIONS_EXPORTS
 #define BANK_ACCOUNT_ACTIONS_API __declspec(dllexport) 

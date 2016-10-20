@@ -1,3 +1,7 @@
+// sst1-ws16-lb -- bank dlls
+// Authors: Tobias Mayer      
+//         Gerold Katzinger
+
 // bank_entitycomponent.cpp : Defines the exported functions for the DLL application.
 //
 
