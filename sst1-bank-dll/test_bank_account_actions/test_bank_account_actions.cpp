@@ -13,8 +13,8 @@ int main()
 	Create("Tobias", "Mayer", "Salzburger Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
 	Create("Tobi", "Mayor", "Ignaz-Harrer-Str", "17a", "Salzburg", "5020", "AUSTRIA");
 
-	unsigned int cid_1[MAX_CUST_PER_ACCNT] = { 1 };
-	unsigned int cid_2[MAX_CUST_PER_ACCNT] = { 2 };
+	unsigned int cid_1[1] = { 1 };
+	unsigned int cid_2[1] = { 2 };
 
 	Open(cid_1, SAVING, USD, 1000);
 	Open(cid_2, SAVING, USD, 3000);

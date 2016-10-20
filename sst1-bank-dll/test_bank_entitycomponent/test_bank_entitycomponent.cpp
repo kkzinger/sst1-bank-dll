@@ -30,7 +30,7 @@ int main()
 	_getCustomerByCID(2,&ptr);
 	printf("\n%i %s %s %s %s %s %s %s %i \n\n", ptr.CID, ptr.FirstName, ptr.LastName, ptr.Street, ptr.StreetNr, ptr.City, ptr.PostalCode, ptr.Country, ptr.Active);
 
-
+	printf("Timestamp for Transaction Log: %s", _createTimestamp());
 
 	_writeLog();
 
