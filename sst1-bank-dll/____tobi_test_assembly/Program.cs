@@ -6,6 +6,21 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;     // DLL support
 namespace ____tobi_test_assembly
 {
+    // Customer Data
+    [StructLayout(LayoutKind.Sequential)]
+    public class CUSTOMER
+    {
+        public uint CID;
+        public String FirstName;
+        public String LastName;
+        public String Street;
+        public String StreetNr;
+        public String City;
+        public String PostalCode;
+        public String Country;
+        public Byte Active;
+    };
+
     class Program
     {
         //[DllImport("../../../Release/bank_currency.dll")]
@@ -16,12 +31,13 @@ namespace ____tobi_test_assembly
 
         [DllImport("../../../Release/bank_customers.dll")]
         public static extern int Create(StringBuilder FirstName, StringBuilder LastName, StringBuilder Street, StringBuilder StreetNr, StringBuilder City, StringBuilder PostalCode, StringBuilder Country);
-
+        [DllImport("../../../Release/bank_customers.dll")]
+        public static extern int Read(uint CID, CUSTOMER resultCustomer);
 
         static void Main(string[] args)
         {
             Console.WriteLine(_initEntity());
-
+            CUSTOMER C = new CUSTOMER();
             
 
             StringBuilder FirstName = new StringBuilder("Tobias");
@@ -33,6 +49,7 @@ namespace ____tobi_test_assembly
             StringBuilder Country = new StringBuilder("AUSTRIA");
 
             Console.WriteLine(Create(FirstName, LastName, Street, StreetNr, City, PostalCode, Country));
+            Console.WriteLine(Read(1,  C));
         }
     }
 }
