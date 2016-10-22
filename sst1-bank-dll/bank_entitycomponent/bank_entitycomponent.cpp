@@ -69,7 +69,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _getCustomerByCID(unsigned int CID, CUST
 	{
 		if (it->CID == CID)
 		{
-			*customer = *it;
+			//*customer = *it;
 			return 0;
 		}
 	}
@@ -155,7 +155,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char* FirstName, char* Last
 
 	CUSTOMER* C = new CUSTOMER;
 
-	C->CID = _createCID();
+	//C->CID = _createCID();
 	C->FirstName = FirstName;
 	C->LastName = LastName;
 	C->Street = Street;

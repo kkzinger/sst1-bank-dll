@@ -34,7 +34,7 @@ namespace ____tobi_test_assembly
         [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int Create(StringBuilder FirstName, StringBuilder LastName, StringBuilder Street, StringBuilder StreetNr, StringBuilder City, StringBuilder PostalCode, StringBuilder Country);
         //     [DllImport("../../../Release/bank_customers.dll")]
-        [DllImport("../../../Debug/bank_customers.dll")]
+        [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl, CharSet =CharSet.Ansi)]
         public static extern int Read(uint CID, CUSTOMER resultCustomer);
 
         static void Main(string[] args)
