@@ -7,18 +7,18 @@ using System.Runtime.InteropServices;     // DLL support
 namespace ____tobi_test_assembly
 {
     // Customer Data
-    [StructLayout(LayoutKind.Sequential)]
-    public class CUSTOMER
+    [StructLayout(LayoutKind.Sequential, CharSet =CharSet.Ansi)]
+    struct CUSTOMER
     {
-        public uint CID;
-        public String FirstName;
-        public String LastName;
-        public String Street;
-        public String StreetNr;
-        public String City;
-        public String PostalCode;
-        public String Country;
-        public Byte Active;
+         uint CID;
+         String FirstName;
+         String LastName;
+         String Street;
+         String StreetNr;
+         String City;
+         String PostalCode;
+         String Country;
+         Byte Active;
     };
 
     class Program
@@ -26,12 +26,15 @@ namespace ____tobi_test_assembly
         //[DllImport("../../../Release/bank_currency.dll")]
         //public static extern int bar();
 
-        [DllImport("../../../Release/bank_entitycomponent.dll")]
+        //[DllImport("../../../Release/bank_entitycomponent.dll")]
+        [DllImport("../../../Debug/bank_entitycomponent.dll")]
         public static extern int _initEntity();
 
-        [DllImport("../../../Release/bank_customers.dll")]
+        //   [DllImport("../../../Release/bank_customers.dll",CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int Create(StringBuilder FirstName, StringBuilder LastName, StringBuilder Street, StringBuilder StreetNr, StringBuilder City, StringBuilder PostalCode, StringBuilder Country);
-        [DllImport("../../../Release/bank_customers.dll")]
+        //     [DllImport("../../../Release/bank_customers.dll")]
+        [DllImport("../../../Debug/bank_customers.dll")]
         public static extern int Read(uint CID, CUSTOMER resultCustomer);
 
         static void Main(string[] args)
