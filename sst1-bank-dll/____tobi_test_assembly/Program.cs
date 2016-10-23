@@ -7,18 +7,21 @@ using System.Runtime.InteropServices;     // DLL support
 namespace ____tobi_test_assembly
 {
     // Customer Data
-    [StructLayout(LayoutKind.Sequential, CharSet =CharSet.Ansi)]
-    struct CUSTOMER
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CUSTOMER
     {
-         uint CID;
-         String FirstName;
-         String LastName;
-         String Street;
-         String StreetNr;
-         String City;
-         String PostalCode;
-         String Country;
-         Byte Active;
+
+        public uint CID;
+        public string FirstName;
+        public string LastName;
+        public string Street;
+        public string StreetNr;
+        public string City;
+        public string PostalCode;
+        public string Country;
+        public byte Active;
+
+
     };
 
     class Program
@@ -26,33 +29,39 @@ namespace ____tobi_test_assembly
         //[DllImport("../../../Release/bank_currency.dll")]
         //public static extern int bar();
 
+        CUSTOMER C = new CUSTOMER();
+
         //[DllImport("../../../Release/bank_entitycomponent.dll")]
         [DllImport("../../../Debug/bank_entitycomponent.dll")]
         public static extern int _initEntity();
 
         //   [DllImport("../../../Release/bank_customers.dll",CallingConvention = CallingConvention.Cdecl)]
-        [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int Create(StringBuilder FirstName, StringBuilder LastName, StringBuilder Street, StringBuilder StreetNr, StringBuilder City, StringBuilder PostalCode, StringBuilder Country);
+        [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int Create( string FirstName, string LastName, string Street, string StreetNr, string City, string PostalCode, string Country);
         //     [DllImport("../../../Release/bank_customers.dll")]
-        [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl, CharSet =CharSet.Ansi)]
-        public static extern int Read(uint CID, CUSTOMER resultCustomer);
+      
+        [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl/*, CharSet =CharSet.Ansi*/)]
+        public static extern int Read(uint CID,  ref CUSTOMER C);
 
         static void Main(string[] args)
         {
+  
             Console.WriteLine(_initEntity());
             CUSTOMER C = new CUSTOMER();
-            
 
-            StringBuilder FirstName = new StringBuilder("Tobias");
-            StringBuilder LastName = new StringBuilder("Mayer");
-            StringBuilder Street = new StringBuilder("Salzburger Str.");
-            StringBuilder StreetNr = new StringBuilder("17a");
-            StringBuilder City = new StringBuilder("Neumarkt");
-            StringBuilder PostalCode = new StringBuilder("5202");
-            StringBuilder Country = new StringBuilder("AUSTRIA");
+            string  FirstName =   "Tobias";
+            string  LastName =   "Mayer";
+            string  Street =   "Salzburger Str.";
+            string  StreetNr =   "17a";
+            string  City =   "Neumarkt";
+            string  PostalCode =   "5202";
+            string  Country =   "AUSTRIA";
 
             Console.WriteLine(Create(FirstName, LastName, Street, StreetNr, City, PostalCode, Country));
-            Console.WriteLine(Read(1,  C));
+            Console.WriteLine(Read(1,  ref C));
+            //Console.WriteLine(C.CID);
+            //Console.WriteLine(C.FirstName);
+           
         }
     }
 }

@@ -69,7 +69,8 @@ extern "C" BANK_ENTITYCOMPONENT_API int _getCustomerByCID(unsigned int CID, CUST
 	{
 		if (it->CID == CID)
 		{
-			//*customer = *it;
+			
+		
 			return 0;
 		}
 	}
@@ -150,12 +151,12 @@ extern "C" BANK_ENTITYCOMPONENT_API customer_list* _getCustomerListPtr()
 }
 
 // add new customer to allCustomers list
-extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char* FirstName, char* LastName, char* Street, char* StreetNr, char* City, char* PostalCode, char* Country)
+extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char* FirstName, char* LastName, char* Street, char* StreetNr,  char* City, char* PostalCode, char* Country)
 {
 
 	CUSTOMER* C = new CUSTOMER;
 
-	//C->CID = _createCID();
+	C->CID = _createCID();
 	C->FirstName = FirstName;
 	C->LastName = LastName;
 	C->Street = Street;

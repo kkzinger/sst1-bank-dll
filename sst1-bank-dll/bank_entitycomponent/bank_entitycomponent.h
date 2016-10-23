@@ -40,7 +40,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _getAccountsByCID(unsigned int CID, unsi
 //Search function, provides a list of CIDs for one given AID
 extern "C" BANK_ENTITYCOMPONENT_API int _getCustomersByAID(unsigned int AID, unsigned int* cidList);
 //Search function, provides data for CUSTOMER struct for given CID
-extern "C" BANK_ENTITYCOMPONENT_API int _getCustomerByCID(unsigned int CID, CUSTOMER* customer);
+extern "C" BANK_ENTITYCOMPONENT_API int _getCustomerByCID(unsigned int CID,  CUSTOMER* customer);
 //Search function, provides data for ACCOUNT struct for given AID
 extern "C" BANK_ENTITYCOMPONENT_API int _getAccountByAID(unsigned int AID, ACCOUNT* account);
 
