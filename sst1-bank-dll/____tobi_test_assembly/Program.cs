@@ -7,22 +7,22 @@ using System.Runtime.InteropServices;     // DLL support
 namespace ____tobi_test_assembly
 {
     // Customer Data
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct CUSTOMER
     {
 
         public uint CID;
-        public string FirstName;
-        public string LastName;
-        public string Street;
-        public string StreetNr;
-        public string City;
-        public string PostalCode;
-        public string Country;
-        public byte Active;
+        [MarshalAs(UnmanagedType.LPStr)] public String FirstName;
+        [MarshalAs(UnmanagedType.LPStr)] public String LastName;
+        [MarshalAs(UnmanagedType.LPStr)] public String Street;
+        [MarshalAs(UnmanagedType.LPStr)] public String StreetNr;
+        [MarshalAs(UnmanagedType.LPStr)] public String City;
+        [MarshalAs(UnmanagedType.LPStr)] public String PostalCode;
+        [MarshalAs(UnmanagedType.LPStr)] public String Country;
+         public Byte Active;
 
 
-    };
+    }
 
     class Program
     {
@@ -37,30 +37,30 @@ namespace ____tobi_test_assembly
 
         //   [DllImport("../../../Release/bank_customers.dll",CallingConvention = CallingConvention.Cdecl)]
         [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int Create( string FirstName, string LastName, string Street, string StreetNr, string City, string PostalCode, string Country);
+        public static extern int Create( String FirstName, String LastName, String Street, String StreetNr, String City, String PostalCode, String Country);
         //     [DllImport("../../../Release/bank_customers.dll")]
       
         [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl/*, CharSet =CharSet.Ansi*/)]
-        public static extern int Read(uint CID,  ref CUSTOMER C);
+        internal static extern int Read(uint CID, [In, Out]  ref CUSTOMER C);
 
-        static void Main(string[] args)
+        static void Main(String[] args)
         {
   
             Console.WriteLine(_initEntity());
             CUSTOMER C = new CUSTOMER();
 
-            string  FirstName =   "Tobias";
-            string  LastName =   "Mayer";
-            string  Street =   "Salzburger Str.";
-            string  StreetNr =   "17a";
-            string  City =   "Neumarkt";
-            string  PostalCode =   "5202";
-            string  Country =   "AUSTRIA";
+            String  FirstName =   "Tobias";
+            String  LastName =   "Mayer";
+            String  Street =   "Salzburger Str.";
+            String  StreetNr =   "17a";
+            String  City =   "Neumarkt";
+            String  PostalCode =   "5202";
+            String  Country =   "AUSTRIA";
 
             Console.WriteLine(Create(FirstName, LastName, Street, StreetNr, City, PostalCode, Country));
-            Console.WriteLine(Read(1,  ref C));
-            //Console.WriteLine(C.CID);
-            //Console.WriteLine(C.FirstName);
+            Console.WriteLine(Read(1,   ref C));
+            Console.WriteLine(C.CID);
+            Console.WriteLine(C.FirstName);
            
         }
     }
