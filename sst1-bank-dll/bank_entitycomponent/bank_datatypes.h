@@ -31,11 +31,11 @@ typedef list <ACCOUNT> account_list;
 struct CUSTOMER
 {
 	unsigned int CID;
-	const char* FirstName;
+	char FirstName [20];
 	const char* LastName;
 	const char* Street;
 	const char* StreetNr;
-	const const char* City;
+	const char* City;
 	const char* PostalCode;
 	const char* Country;
 	unsigned char Active;

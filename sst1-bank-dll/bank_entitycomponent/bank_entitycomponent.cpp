@@ -154,13 +154,14 @@ extern "C" BANK_ENTITYCOMPONENT_API customer_list* _getCustomerListPtr()
 }
 
 // add new customer to allCustomers list
-extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(const  char* FirstName, const char* LastName, const char* Street, const char* StreetNr,  const char* City, const char* PostalCode, const char* Country)
+extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char FirstName[], const char* LastName, const char* Street, const char* StreetNr,  const char* City, const char* PostalCode, const char* Country)
 {
 
 	CUSTOMER* C = new CUSTOMER;
 
 	C->CID = _createCID();
-	C->FirstName = FirstName;
+	//C->FirstName = FirstName;
+	strcpy_s(C->FirstName, sizeof(C->FirstName), FirstName);
 	C->LastName = LastName;
 	C->Street = Street;
 	C->StreetNr = StreetNr;
@@ -184,7 +185,8 @@ extern "C" BANK_ENTITYCOMPONENT_API int _updateCustomer(CUSTOMER* changedCustome
 	{
 		if (it->CID == changedCustomer->CID)
 		{
-			it->FirstName = changedCustomer->FirstName;
+			/*it->FirstName = changedCustomer->FirstName;*/
+			strcpy_s((char*)*it->FirstName, sizeof(*it->FirstName), (const char*)changedCustomer->FirstName);
 			it->LastName = changedCustomer->LastName;
 			it->Street = changedCustomer->Street;
 			it->StreetNr = changedCustomer->StreetNr;

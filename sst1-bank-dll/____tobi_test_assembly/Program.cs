@@ -53,29 +53,40 @@ namespace ____tobi_test_assembly
 
         static void Main(String[] args)
         {
+            IntPtr C = IntPtr.Zero;
+            try
+            {
+                //  http://stackoverflow.com/questions/8741879/pinvoke-how-to-marshal-for-sometype/8745154#8745154
+                //4+7*20+1 = 145
+                 C = Marshal.AllocHGlobal(145);
 
-            //4+7*20+1 = 145
-           IntPtr C = Marshal.AllocHGlobal(145);
+                Console.WriteLine(_initEntity());
 
-            Console.WriteLine(_initEntity());
-    
 
-            string FirstName =   "Tobias";
-            string LastName =   "Mayer";
-            string Street =   "Salzburger Str.";
-            string StreetNr =   "17a";
-            string City =   "Neumarkt";
-            string PostalCode =   "5202";
-            string Country =   "AUSTRIA";
+                string FirstName = "Tobias";
+                string LastName = "Mayer";
+                string Street = "Salzburger Str.";
+                string StreetNr = "17a";
+                string City = "Neumarkt";
+                string PostalCode = "5202";
+                string Country = "AUSTRIA";
 
-            Console.WriteLine(Create(FirstName, LastName, Street, StreetNr, City, PostalCode, Country));
-            Console.WriteLine(Read(1,  C));
+                Console.WriteLine(Create(FirstName, LastName, Street, StreetNr, City, PostalCode, Country));
+                Console.WriteLine(Read(1, C));
 
-            CUSTOMER C_instance = (CUSTOMER)Marshal.PtrToStructure(C, typeof(CUSTOMER));
+                CUSTOMER C_instance = (CUSTOMER)Marshal.PtrToStructure(C, typeof(CUSTOMER));
 
-            Console.WriteLine(C_instance.CID);
-            Console.WriteLine(C_instance.FirstName);
-           
-        }
+                Console.WriteLine(C_instance.CID);
+                Console.WriteLine(C_instance.FirstName);
+
+             }
+            finally
+            {
+                if (C != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(C);
+                }
+            }
+            }
     }
 }

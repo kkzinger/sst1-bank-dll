@@ -8,8 +8,8 @@
 #include "stdafx.h"
 #include "bank_customers.h"
 
-
-extern "C" BANK_CUSTOMERS_API int Create(const char* FirstName, const char* LastName, const char* Street, const char* StreetNr, const char* City, const char* PostalCode, const char* Country)
+ 
+extern "C" BANK_CUSTOMERS_API int Create(char FirstName[], const char* LastName, const char* Street, const char* StreetNr, const char* City, const char* PostalCode, const char* Country)
 {
 	/*struct holen von entity, pointer darauf returnen (CUSTOMER*)*/
 	if ((strlen(FirstName) >= 2) && (strlen(LastName) >= 2) && (strlen(Street) >= 3) && (strlen(StreetNr) >= 1) && (strlen(City) >= 3) && (strlen(PostalCode) >= 4) && (strlen(Country) >= 3))
@@ -43,7 +43,8 @@ extern "C" BANK_CUSTOMERS_API int Update(unsigned int CID, const char* FirstName
 
 
 	if (strlen(FirstName) >= 2)
-		C.FirstName = FirstName;
+		//		C.FirstName = FirstName;
+		strcpy_s(C.FirstName, sizeof(C.FirstName), FirstName);
 
 	if (strlen(LastName) >= 2)
 		C.LastName = LastName;
