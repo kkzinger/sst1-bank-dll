@@ -154,20 +154,19 @@ extern "C" BANK_ENTITYCOMPONENT_API customer_list* _getCustomerListPtr()
 }
 
 // add new customer to allCustomers list
-extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char FirstName[], const char* LastName, const char* Street, const char* StreetNr,  const char* City, const char* PostalCode, const char* Country)
+extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char FirstName[], char LastName[], char Street[], char StreetNr[],  char City[], char PostalCode[], char Country [])
 {
 
 	CUSTOMER* C = new CUSTOMER;
 
 	C->CID = _createCID();
-	//C->FirstName = FirstName;
 	strcpy_s(C->FirstName, sizeof(C->FirstName), FirstName);
-	C->LastName = LastName;
-	C->Street = Street;
-	C->StreetNr = StreetNr;
-	C->City = City;
-	C->PostalCode = PostalCode;
-	C->Country = Country;
+	strcpy_s(C->LastName, sizeof(C->LastName), LastName);
+	strcpy_s(C->Street, sizeof(C->Street), Street);
+	strcpy_s(C->StreetNr, sizeof(C->StreetNr), StreetNr);
+	strcpy_s(C->City, sizeof(C->City), City);
+	strcpy_s(C->PostalCode, sizeof(C->PostalCode), PostalCode);
+	strcpy_s(C->Country, sizeof(C->Country), Country);
 	C->Active = 1;
 
 	allCustomers->push_back(*C);
@@ -179,22 +178,21 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char FirstName[], const cha
 // update customer data through copy of the data of provided CUSTOMER struct
 extern "C" BANK_ENTITYCOMPONENT_API int _updateCustomer(CUSTOMER* changedCustomer)
 {
+	
 
 	customer_list::iterator it;
 	for (it = allCustomers->begin(); it != allCustomers->end(); it++)
 	{
 		if (it->CID == changedCustomer->CID)
 		{
-			/*it->FirstName = changedCustomer->FirstName;*/
-			strcpy_s((char*)*it->FirstName, sizeof(*it->FirstName), (const char*)changedCustomer->FirstName);
-			it->LastName = changedCustomer->LastName;
-			it->Street = changedCustomer->Street;
-			it->StreetNr = changedCustomer->StreetNr;
-			it->City = changedCustomer->City;
-			it->PostalCode = changedCustomer->PostalCode;
-			it->Country = changedCustomer->Country;
+			strcpy_s(it->FirstName, sizeof(it->FirstName), changedCustomer->FirstName);
+			strcpy_s(it->LastName, sizeof(it->LastName), changedCustomer->LastName);
+			strcpy_s(it->Street, sizeof(it->Street), changedCustomer->Street);
+			strcpy_s(it->StreetNr, sizeof(it->StreetNr), changedCustomer->StreetNr);
+			strcpy_s(it->City, sizeof(it->City), changedCustomer->City);
+			strcpy_s(it->PostalCode, sizeof(it->PostalCode), changedCustomer->PostalCode);
+			strcpy_s(it->Country, sizeof(it->Country), changedCustomer->Country);
 			it->Active = changedCustomer->Active;
-
 			return 0;
 		}
 	}

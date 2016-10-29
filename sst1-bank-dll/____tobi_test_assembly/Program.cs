@@ -33,25 +33,22 @@ namespace ____tobi_test_assembly
 
     class Program
     {
-        //[DllImport("../../../Release/bank_currency.dll")]
-        //public static extern int bar();
-      
-
-
-
-        //[DllImport("../../../Release/bank_entitycomponent.dll")]
+     
         [DllImport("../../../Debug/bank_entitycomponent.dll")]
-        public static extern int _initEntity();
+        internal static extern int _initEntity();
 
-        //   [DllImport("../../../Release/bank_customers.dll",CallingConvention = CallingConvention.Cdecl)]
+     
         [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern int Create( String FirstName, String LastName, String Street, String StreetNr, String City, String PostalCode, String Country);
-        //     [DllImport("../../../Release/bank_customers.dll")]
+        internal static extern int Create(string FirstName, string LastName, string Street, string StreetNr, string City, string PostalCode, string Country);
+      
       
         [DllImport("../../../Debug/bank_customers.dll", CharSet = CharSet.Auto, SetLastError = true)]
         internal static extern int Read(uint CID, IntPtr  C);
 
-        static void Main(String[] args)
+        [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern int Update(uint CID, string FirstName, string LastName, string Street, string StreetNr, string City, string PostalCode, string Country);
+
+        static void Main(string[] args)
         {
             IntPtr C = IntPtr.Zero;
             try
@@ -78,8 +75,25 @@ namespace ____tobi_test_assembly
 
                 Console.WriteLine(C_instance.CID);
                 Console.WriteLine(C_instance.FirstName);
+                Console.WriteLine(C_instance.LastName);
+                Console.WriteLine(C_instance.Street);
+                Console.WriteLine(C_instance.StreetNr);
+                Console.WriteLine(C_instance.City);
+                Console.WriteLine(C_instance.PostalCode);
+                Console.WriteLine(C_instance.Country);
 
-             }
+                Console.WriteLine(Update(C_instance.CID, "", "", "", "", "", "", "ÖSTERREICH"));
+
+                //Console.WriteLine(C_instance.CID);
+                //Console.WriteLine(C_instance.FirstName);
+                //Console.WriteLine(C_instance.LastName);
+                //Console.WriteLine(C_instance.Street);
+                //Console.WriteLine(C_instance.StreetNr);
+                //Console.WriteLine(C_instance.City);
+                //Console.WriteLine(C_instance.PostalCode);
+                //Console.WriteLine(C_instance.Country);
+
+            }
             finally
             {
                 if (C != IntPtr.Zero)

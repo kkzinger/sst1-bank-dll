@@ -9,7 +9,7 @@
 #include "bank_customers.h"
 
  
-extern "C" BANK_CUSTOMERS_API int Create(char FirstName[], const char* LastName, const char* Street, const char* StreetNr, const char* City, const char* PostalCode, const char* Country)
+extern "C" BANK_CUSTOMERS_API int Create(char FirstName[], char LastName[], char Street[], char StreetNr[], char City[], char PostalCode[], char Country[])
 {
 	/*struct holen von entity, pointer darauf returnen (CUSTOMER*)*/
 	if ((strlen(FirstName) >= 2) && (strlen(LastName) >= 2) && (strlen(Street) >= 3) && (strlen(StreetNr) >= 1) && (strlen(City) >= 3) && (strlen(PostalCode) >= 4) && (strlen(Country) >= 3))
@@ -35,40 +35,40 @@ extern "C" BANK_CUSTOMERS_API int Read(unsigned int CID, CUSTOMER* resultCustome
 
 }
 
-extern "C" BANK_CUSTOMERS_API int Update(unsigned int CID, const char* FirstName, const char* LastName, const char* Street, const char* StreetNr, const char* City, const char* PostalCode, const char* Country)
+extern "C" BANK_CUSTOMERS_API int Update(unsigned int CID, char FirstName[], char LastName[], char Street[], char StreetNr[], char City[], char PostalCode[], char Country[])
 {
 	CUSTOMER C;
+	printf("VOR _getCustomer in UPDATE\n");
 	if(_getCustomerByCID(CID, &C) != 0)
 		return -2; //Something gone wrong in Entity Component
-
+	printf("NACH _getCustomer in UPDATE\n");
 
 	if (strlen(FirstName) >= 2)
-		//		C.FirstName = FirstName;
 		strcpy_s(C.FirstName, sizeof(C.FirstName), FirstName);
 
 	if (strlen(LastName) >= 2)
-		C.LastName = LastName;
+		strcpy_s(C.LastName, sizeof(C.LastName), LastName);
 
 	if (strlen(Street) >= 3)
-		C.Street = Street;
+		strcpy_s(C.Street, sizeof(C.Street), Street);
 
 	if (strlen(StreetNr) >= 1)
-		C.StreetNr = StreetNr;
+		strcpy_s(C.StreetNr, sizeof(C.StreetNr), StreetNr);
 
 	if (strlen(City) >= 3)
-		C.City = City;
+		strcpy_s(C.City, sizeof(C.City), City);
 
 	if (strlen(PostalCode) >= 4)
-		C.PostalCode = PostalCode;
+		strcpy_s(C.PostalCode, sizeof(C.PostalCode), PostalCode);
 
 	if (strlen(Country) >= 3)
-		C.Country = Country;
+		strcpy_s(C.Country, sizeof(C.Country), Country);
 
-
+	printf("VOR _updateCustomer in UPDATE\n");
 		
 		if (_updateCustomer(&C) != 0)
 			return -2; //Something in went wrong in Entity Component
-		
+		printf("NACH _updateCustomer in UPDATE\n");
 	return 0;
 
 }

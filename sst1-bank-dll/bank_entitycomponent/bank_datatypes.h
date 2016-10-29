@@ -32,12 +32,12 @@ struct CUSTOMER
 {
 	unsigned int CID;
 	char FirstName [20];
-	const char* LastName;
-	const char* Street;
-	const char* StreetNr;
-	const char* City;
-	const char* PostalCode;
-	const char* Country;
+	char  LastName [20];
+	char  Street [20];
+	char  StreetNr [20];
+	char  City [20];
+	char  PostalCode [20];
+	char  Country [20];
 	unsigned char Active;
 };
 typedef list <CUSTOMER> customer_list;
