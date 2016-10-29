@@ -83,15 +83,16 @@ namespace ____tobi_test_assembly
                 Console.WriteLine(C_instance.Country);
 
                 Console.WriteLine(Update(C_instance.CID, "", "", "", "", "", "", "ÖSTERREICH"));
-
-                //Console.WriteLine(C_instance.CID);
-                //Console.WriteLine(C_instance.FirstName);
-                //Console.WriteLine(C_instance.LastName);
-                //Console.WriteLine(C_instance.Street);
-                //Console.WriteLine(C_instance.StreetNr);
-                //Console.WriteLine(C_instance.City);
-                //Console.WriteLine(C_instance.PostalCode);
-                //Console.WriteLine(C_instance.Country);
+                Console.WriteLine(Read(1, C));
+                C_instance = (CUSTOMER)Marshal.PtrToStructure(C, typeof(CUSTOMER));
+                Console.WriteLine(C_instance.CID);
+                Console.WriteLine(C_instance.FirstName);
+                Console.WriteLine(C_instance.LastName);
+                Console.WriteLine(C_instance.Street);
+                Console.WriteLine(C_instance.StreetNr);
+                Console.WriteLine(C_instance.City);
+                Console.WriteLine(C_instance.PostalCode);
+                Console.WriteLine(C_instance.Country);
 
             }
             finally

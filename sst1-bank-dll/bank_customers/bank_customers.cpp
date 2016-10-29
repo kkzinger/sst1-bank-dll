@@ -38,10 +38,10 @@ extern "C" BANK_CUSTOMERS_API int Read(unsigned int CID, CUSTOMER* resultCustome
 extern "C" BANK_CUSTOMERS_API int Update(unsigned int CID, char FirstName[], char LastName[], char Street[], char StreetNr[], char City[], char PostalCode[], char Country[])
 {
 	CUSTOMER C;
-	printf("VOR _getCustomer in UPDATE\n");
+	
 	if(_getCustomerByCID(CID, &C) != 0)
 		return -2; //Something gone wrong in Entity Component
-	printf("NACH _getCustomer in UPDATE\n");
+
 
 	if (strlen(FirstName) >= 2)
 		strcpy_s(C.FirstName, sizeof(C.FirstName), FirstName);
@@ -64,11 +64,11 @@ extern "C" BANK_CUSTOMERS_API int Update(unsigned int CID, char FirstName[], cha
 	if (strlen(Country) >= 3)
 		strcpy_s(C.Country, sizeof(C.Country), Country);
 
-	printf("VOR _updateCustomer in UPDATE\n");
+	
 		
 		if (_updateCustomer(&C) != 0)
 			return -2; //Something in went wrong in Entity Component
-		printf("NACH _updateCustomer in UPDATE\n");
+	
 	return 0;
 
 }

@@ -69,10 +69,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _getCustomerByCID(unsigned int CID, CUST
 	{
 		if (it->CID == CID)
 		{
-			printf("customer firstname before: %s\n", customer->FirstName);
-			printf("it firstname : %s\n", it->FirstName);
 			*customer = *it;
-			printf("customer firstname afterwards: %s\n", customer->FirstName);
 
 			return 0;
 		}
