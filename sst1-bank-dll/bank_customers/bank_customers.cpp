@@ -9,16 +9,17 @@
 #include "bank_customers.h"
 
  
-extern "C" BANK_CUSTOMERS_API int Create(char FirstName[], char LastName[], char Street[], char StreetNr[], char City[], char PostalCode[], char Country[])
+extern "C" BANK_CUSTOMERS_API unsigned int Create(char FirstName[], char LastName[], char Street[], char StreetNr[], char City[], char PostalCode[], char Country[])
 {
 	/*struct holen von entity, pointer darauf returnen (CUSTOMER*)*/
 	if ((strlen(FirstName) >= 2) && (strlen(LastName) >= 2) && (strlen(Street) >= 3) && (strlen(StreetNr) >= 1) && (strlen(City) >= 3) && (strlen(PostalCode) >= 4) && (strlen(Country) >= 3))
 	{
-		
-		if(_addCustomer(FirstName, LastName, Street, StreetNr, City, PostalCode, Country) != 0)
+		unsigned int temp = _addCustomer(FirstName, LastName, Street, StreetNr, City, PostalCode, Country);
+
+		if(temp< 0)
 			return -2; //Something gone wrong in Entity Component
 
-		return  0;
+		return  temp;
 	}
 	return -1; // Data did not meet required format/standards
 }

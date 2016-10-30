@@ -40,7 +40,7 @@ namespace Assembly_OwnDLLs_Customers
 
 
         [DllImport("../../../Debug/bank_customers.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern int Create(string FirstName, string LastName, string Street, string StreetNr, string City, string PostalCode, string Country);
+        internal static extern uint Create(string FirstName, string LastName, string Street, string StreetNr, string City, string PostalCode, string Country);
 
 
         [DllImport("../../../Debug/bank_customers.dll", CharSet = CharSet.Auto, SetLastError = true)]
@@ -70,8 +70,8 @@ namespace Assembly_OwnDLLs_Customers
                 //  http://stackoverflow.com/questions/8741879/pinvoke-how-to-marshal-for-sometype/8745154#8745154
                 //4+7*20+1 = 145
                 C = Marshal.AllocHGlobal(145);
-                Create(_FirstName, _LastName, _Street, _StreetNr, _City, _PostalCode, _Country);
-                Read(1, C);
+                uint ID = Create(_FirstName, _LastName, _Street, _StreetNr, _City, _PostalCode, _Country);
+                Read(ID, C);
                 CUSTOMER C_instance = (CUSTOMER)Marshal.PtrToStructure(C, typeof(CUSTOMER));
                 return C_instance;
             }
@@ -89,7 +89,7 @@ namespace Assembly_OwnDLLs_Customers
             Update(CustomerToUpdate.CID, _FirstName, _LastName, _Street, _StreetNr, _City, _PostalCode, _Country);
             //4+7*20+1 = 145
             IntPtr updatedCustomer = Marshal.AllocHGlobal(145);
-            Read(1, updatedCustomer);
+            Read(CustomerToUpdate.CID, updatedCustomer);
             CustomerToUpdate = (CUSTOMER)Marshal.PtrToStructure(updatedCustomer, typeof(CUSTOMER));
         }
 
@@ -98,7 +98,7 @@ namespace Assembly_OwnDLLs_Customers
             Activate(CustomerToActivate.CID);
             //4+7*20+1 = 145
             IntPtr updatedCustomer = Marshal.AllocHGlobal(145);
-            Read(1, updatedCustomer);
+            Read(CustomerToActivate.CID, updatedCustomer);
             CustomerToActivate = (CUSTOMER)Marshal.PtrToStructure(updatedCustomer, typeof(CUSTOMER));
         }
 
@@ -107,7 +107,7 @@ namespace Assembly_OwnDLLs_Customers
             Deactivate(CustomerToActivate.CID);
             //4+7*20+1 = 145
             IntPtr updatedCustomer = Marshal.AllocHGlobal(145);
-            Read(1, updatedCustomer);
+            Read(CustomerToActivate.CID, updatedCustomer);
             CustomerToActivate = (CUSTOMER)Marshal.PtrToStructure(updatedCustomer, typeof(CUSTOMER));
         }
 
