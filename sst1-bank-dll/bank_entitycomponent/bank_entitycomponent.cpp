@@ -151,7 +151,7 @@ extern "C" BANK_ENTITYCOMPONENT_API customer_list* _getCustomerListPtr()
 }
 
 // add new customer to allCustomers list
-extern "C" BANK_ENTITYCOMPONENT_API unsigned int _addCustomer(char FirstName[], char LastName[], char Street[], char StreetNr[],  char City[], char PostalCode[], char Country [])
+extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char FirstName[], char LastName[], char Street[], char StreetNr[],  char City[], char PostalCode[], char Country [])
 {
 
 	CUSTOMER* C = new CUSTOMER;
@@ -168,7 +168,7 @@ extern "C" BANK_ENTITYCOMPONENT_API unsigned int _addCustomer(char FirstName[], 
 
 	allCustomers->push_back(*C);
 
-	return C->CID;
+	return 0;
 }
 
 
@@ -207,7 +207,10 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addAccount(account_t type, currency_t c
 	A->type = type;
 	A->currency = currency;
 	A->balance = balance;
-	A->depositors = depositors;
+	
+	for (int i = 0; i < sizeof(A->depositors) / sizeof(A->depositors[0]); i++)
+		A->depositors[i] = depositors[i];
+
 	A->unfrozen = 1;
 	A->open = 1;
 
@@ -229,7 +232,10 @@ extern "C" BANK_ENTITYCOMPONENT_API int _updateAccount(ACCOUNT* changedAccount)
 			it->type = changedAccount->type;
 			it->currency = changedAccount->currency;
 			it->balance = changedAccount->balance;
-			it->depositors = changedAccount->depositors;
+
+			for (int i = 0; i < sizeof(it->depositors) / sizeof(it->depositors[0]); i++)
+				it->depositors[i] = changedAccount->depositors[i];
+
 			it->unfrozen = changedAccount->unfrozen;
 			it->open = changedAccount->open;
 

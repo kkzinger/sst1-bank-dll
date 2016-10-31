@@ -45,7 +45,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _getCustomerByCID(unsigned int CID,  CUS
 extern "C" BANK_ENTITYCOMPONENT_API int _getAccountByAID(unsigned int AID, ACCOUNT* account);
 
 //Add new Customer to allCustomers list. 
-extern "C" BANK_ENTITYCOMPONENT_API unsigned int _addCustomer(char FirstName[], char  LastName[], char  Street[], char  StreetNr[], char  City[], char  PostalCode[], char  Country[]);
+extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char FirstName[], char  LastName[], char  Street[], char  StreetNr[], char  City[], char  PostalCode[], char  Country[]);
 //Update a Customer with given CUSTOMER Struct. The calling entity should get the Customer through _getCustomerByCID, 
 //all changes should be applieded on the retrieved struct and this struct should be given back to _updateCustomer
 extern "C" BANK_ENTITYCOMPONENT_API int _updateCustomer(CUSTOMER* changedCustomer);

@@ -21,7 +21,7 @@ struct ACCOUNT
 	account_t type;
 	currency_t currency;
 	float balance;
-	unsigned int* depositors;
+	unsigned int depositors[20];
 	unsigned char unfrozen;
 	unsigned char open;
 };
