@@ -9,6 +9,7 @@
 
 extern "C" BANK_ACCOUNT_ACTIONS_API int withDraw(unsigned int AID, float amount)
 {
+	
 	ACCOUNT A;
 	if (_getAccountByAID(AID, &A) != 0)
 		return -2; //Something gone wrong in Entity Component
