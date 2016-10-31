@@ -47,23 +47,38 @@ namespace Assembly_OwnDLLs_AccountActions
         internal static extern int _initEntity();
 
 
+        static int withDrawFromAccount(uint _AID, float _amount)
+        {
+            return withDraw(_AID, _amount);
+        }
 
+        static int depositToAccount(uint _AID, float _amount)
+        {
+            return deposit(_AID, _amount);
+        }
+
+        static int transferBetweenAccounts(uint _SrcAccountID, uint _DestAccountID, uint _OrdererCID, float _amount)
+        {
+            return transfer(_SrcAccountID, _DestAccountID, _OrdererCID, _amount);
+        }
+
+        static int GetBankAccountStatement(uint AID, ref TRANSACTION)
 
 
         static void Main(string[] args)
         {
-            _initEntity();
-            withDraw(1, 1.1232656f);
-            deposit(1, 1.1232656f);
-            transfer(1, 2, 1, 1.1232656f);
-            TransactionList tl = new TransactionList();
-            TRANSACTION t1 = new TRANSACTION();
-            TRANSACTION t2 = new TRANSACTION();
-            tl.Add(t1);
-            tl.Add(t2);
-            TRANSACTION thelp = tl.First();//TTTTTTTTTTTTEEEEEEEEEEEEEEEEEEEEEEEEEEESSSSSSSSSSSSSSSSSTTTTTTTTTTTTTEEEEEEEEEEEEEEEEEEEEN
-            bankAccountStatement(1, ref  thelp, (uint) tl.Count());
-            balancing(1);
+            //_initEntity();
+            //withDraw(1, 1.1232656f);
+            //deposit(1, 1.1232656f);
+            //transfer(1, 2, 1, 1.1232656f);
+            //TransactionList tl = new TransactionList();
+            //TRANSACTION t1 = new TRANSACTION();
+            //TRANSACTION t2 = new TRANSACTION();
+            //tl.Add(t1);
+            //tl.Add(t2);
+            //TRANSACTION thelp = tl.First();//TTTTTTTTTTTTEEEEEEEEEEEEEEEEEEEEEEEEEEESSSSSSSSSSSSSSSSSTTTTTTTTTTTTTEEEEEEEEEEEEEEEEEEEEN
+            //bankAccountStatement(1, ref  thelp, (uint) tl.Count());
+            //balancing(1);
 
         }
     }

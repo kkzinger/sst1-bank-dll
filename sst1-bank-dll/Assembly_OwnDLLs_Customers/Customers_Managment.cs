@@ -115,16 +115,16 @@ namespace Assembly_OwnDLLs_Customers
 
         static void Main(string[] args)
         {
-            InitializeData();
-            CUSTOMER Kunde = createCustomer("Tobias", "Mayer", "Salzburger Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
-            Console.WriteLine(Kunde.LastName);
-            updateCustomer(ref Kunde, "", "Huber");
-            Console.WriteLine(Kunde.LastName);
-            Console.WriteLine(Kunde.Active);
-            deactivateCustomer(ref Kunde);
-            Console.WriteLine(Kunde.Active);
-            activateCustomer(ref Kunde);
-            Console.WriteLine(Kunde.Active);
+            //InitializeData();
+            //CUSTOMER Kunde = createCustomer("Tobias", "Mayer", "Salzburger Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
+            //Console.WriteLine(Kunde.LastName);
+            //updateCustomer(ref Kunde, "", "Huber");
+            //Console.WriteLine(Kunde.LastName);
+            //Console.WriteLine(Kunde.Active);
+            //deactivateCustomer(ref Kunde);
+            //Console.WriteLine(Kunde.Active);
+            //activateCustomer(ref Kunde);
+            //Console.WriteLine(Kunde.Active);
 
         }
     }
