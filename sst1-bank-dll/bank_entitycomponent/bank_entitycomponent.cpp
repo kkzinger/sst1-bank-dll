@@ -216,7 +216,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addAccount(account_t type, currency_t c
 
 	allAccounts->push_back(*A);
 
-	return 0;
+	return A->AID;
 }
 
 extern "C" BANK_ENTITYCOMPONENT_API int _updateAccount(ACCOUNT* changedAccount)

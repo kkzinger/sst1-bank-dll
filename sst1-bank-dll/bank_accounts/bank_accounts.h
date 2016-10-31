@@ -13,7 +13,7 @@
 #include "../bank_entitycomponent/bank_datatypes.h"
 
 //API (C)
-extern "C" BANK_ACCOUNTS_API unsigned int Open(unsigned int* Depositors, account_t Type, currency_t CurID, float Balance );
+extern "C" BANK_ACCOUNTS_API int Open(unsigned int* Depositors, account_t Type, currency_t CurID, float Balance );
 extern "C" BANK_ACCOUNTS_API unsigned int Close(unsigned int AID);
 extern "C" BANK_ACCOUNTS_API unsigned int getOwners(unsigned int AID, unsigned int* Depositors);
 extern "C" BANK_ACCOUNTS_API unsigned int addOwners(unsigned int AID, unsigned int* Depositors);

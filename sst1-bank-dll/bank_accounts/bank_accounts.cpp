@@ -12,7 +12,7 @@
 #include <list>
 using namespace std;
 
-extern "C" BANK_ACCOUNTS_API unsigned int Open(unsigned int* Depositors, account_t Type, currency_t CurID, float Balance)
+extern "C" BANK_ACCOUNTS_API int Open(unsigned int* Depositors, account_t Type, currency_t CurID, float Balance)
 {
 	if (sizeof(Depositors) / sizeof(Depositors[0]) > MAX_CUST_PER_ACCNT) //TODO Need other verification. sizeof is not suitable to control length of arrays that are obtained by pointer.
 		return -1; //provided array of cid is to big
@@ -24,11 +24,11 @@ extern "C" BANK_ACCOUNTS_API unsigned int Open(unsigned int* Depositors, account
 	for (int i = 0; i < sizeof(Depositors) / sizeof(Depositors[0]); i++)
 		_Depositors[i] = Depositors[i];
 
-
-		if (_addAccount(Type, CurID, Balance,  _Depositors) != 0)
+	int AID = _addAccount(Type, CurID, Balance, _Depositors);
+		if (AID < 0)
 			return -2; //Something gone wrong in Entity Component
 
-		return  0;
+		return AID;
 	
 }
 
@@ -60,7 +60,8 @@ unsigned int getOwners(unsigned int AID, unsigned int* Depositors)
 	if (_getAccountByAID(AID, &A) != 0)
 		return -2; //Something gone wrong in Entity Component
 
-	Depositors = A.depositors;
+	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
+		Depositors[i] = A.depositors[i];
 
 	return 0;
 }
@@ -76,20 +77,25 @@ extern "C" BANK_ACCOUNTS_API unsigned int addOwners(unsigned int AID, unsigned i
 		return -2; //Something gone wrong in Entity Component
 
 	unsigned int free_customers_of_account = 0;
+	unsigned int customers_to_add= 0;
 
+
+	//get number of customers that can be added
 	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
 	{
-		if (A.depositors[i] = 0)
+		if (A.depositors[i] == 0)
 			free_customers_of_account++;
 	}
 	
-	if (free_customers_of_account = 0)
+	if (free_customers_of_account == 0)
 		return -1; //reached max. amount of customers per account
 
-	unsigned int customers_to_add = sizeof(Depositors) / sizeof(Depositors[0]);
-
-	if(free_customers_of_account<customers_to_add)
-		return -1; //too many new customers
+	//get number of customers that should be added
+	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
+	{
+		if (Depositors[i] == 0)
+			customers_to_add++; 
+	}
 
 	for (int i = 0; i < customers_to_add; i++)
 	{
