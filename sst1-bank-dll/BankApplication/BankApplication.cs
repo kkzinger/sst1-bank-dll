@@ -383,18 +383,35 @@ namespace BankApplication
         {
             Console.WriteLine();
             Console.WriteLine("ACCOUNT Management Section:");
+            int number_of_customers = Customers_Management.listAllCustomers();
+            if (number_of_customers == -1)
+            {
+                Console.WriteLine("No customers found, create a customer first!");
+                Console.WriteLine("Press 'c' to get to the Create CUSTOMER Section, press 'b' to get back to the Main Menu");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == 'c')
+                {
+                    DisplayCreateCUSTOMERSection();
+                }
+                else if (info.KeyChar == 'b')
+                {
+                    DisplayMainMenu();
+                }
+            }
+            else
+            {
+
+            }
         }
 
 
         static void Main(string[] args)
         {
-            Console.WriteLine("WELCOME to the Management Application of the 'Wosnatso EasyBank'");
+            Console.WriteLine("WELCOME to the Management Application of the 'Wosnotso EasyBank'");
+            //necessary, or everything fails
             Customers_Management.InitializeData();
             DisplayMainMenu();
-
-
-
-
+            
         }
     }
 }
