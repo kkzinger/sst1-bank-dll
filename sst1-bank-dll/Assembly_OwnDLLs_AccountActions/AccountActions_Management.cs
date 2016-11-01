@@ -18,7 +18,7 @@ namespace Assembly_OwnDLLs_AccountActions
         public uint sourceAID;
         public uint destinationAID;
         public uint ordererCID;
-        public float amount;
+        public float amount; 
 
     };
 

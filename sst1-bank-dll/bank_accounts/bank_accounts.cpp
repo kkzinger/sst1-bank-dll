@@ -23,14 +23,14 @@ extern "C" BANK_ACCOUNTS_API int Open(unsigned int* Depositors, account_t Type, 
 		_Depositors[i] = Depositors[i];
 
 	int AID = _addAccount(Type, CurID, Balance, _Depositors);
-		if (AID < 0)
-			return -2; //Something gone wrong in Entity Component
+	if (AID < 0)
+		return -2; //Something gone wrong in Entity Component
 
-		return AID;
+	return AID;
 	
 }
 
-extern "C" BANK_ACCOUNTS_API unsigned int Close(unsigned int AID)
+extern "C" BANK_ACCOUNTS_API int Close(unsigned int AID)
 {
 	//ändert die open-Variable im struct auf false
 	ACCOUNT A;
@@ -43,12 +43,9 @@ extern "C" BANK_ACCOUNTS_API unsigned int Close(unsigned int AID)
 		return -2; //Something in went wrong in Entity Component
 	return 0;
 
-
-	return -1; // Data did not meet required format/standards
-
 }
 
-unsigned int getOwners(unsigned int AID, unsigned int* Depositors)
+extern "C" BANK_ACCOUNTS_API int getOwners(unsigned int AID, unsigned int* Depositors)
 {
 	//gibt eine Array an CID zurück
 	ACCOUNT A;
@@ -61,7 +58,7 @@ unsigned int getOwners(unsigned int AID, unsigned int* Depositors)
 	return 0;
 }
 
-extern "C" BANK_ACCOUNTS_API unsigned int addOwners(unsigned int AID, unsigned int* Depositors)
+extern "C" BANK_ACCOUNTS_API int addOwners(unsigned int AID, unsigned int* Depositors)
 {
 	//fügt CIDs dem Array hinzu
 	//if (sizeof(Depositors) / sizeof(Depositors[0]) > MAX_CUST_PER_ACCNT)
@@ -110,7 +107,7 @@ extern "C" BANK_ACCOUNTS_API unsigned int addOwners(unsigned int AID, unsigned i
 	return 0;
 }
 
-extern "C" BANK_ACCOUNTS_API unsigned int removeOwners(unsigned int AID, unsigned int* Depositors)
+extern "C" BANK_ACCOUNTS_API int removeOwners(unsigned int AID, unsigned int* Depositors)
 {
 
 	ACCOUNT A;
@@ -157,7 +154,7 @@ extern "C" BANK_ACCOUNTS_API unsigned int removeOwners(unsigned int AID, unsigne
 	return 0;
 }
 
-extern "C" BANK_ACCOUNTS_API unsigned int Freeze(unsigned int AID)
+extern "C" BANK_ACCOUNTS_API int Freeze(unsigned int AID)
 {
 	//ändert die frozen-Variable im struct auf true
 	ACCOUNT A;
@@ -172,7 +169,7 @@ extern "C" BANK_ACCOUNTS_API unsigned int Freeze(unsigned int AID)
 
 }
 
-extern "C" BANK_ACCOUNTS_API unsigned int Unfreeze(unsigned int AID)
+extern "C" BANK_ACCOUNTS_API int Unfreeze(unsigned int AID)
 {
 	//ändert die frozen-Variable im struct auf false
 	ACCOUNT A;
@@ -189,19 +186,19 @@ extern "C" BANK_ACCOUNTS_API unsigned int Unfreeze(unsigned int AID)
 	return -1; // Data did not meet required format/standards
 }
 
-int getType(unsigned int AID, account_t* type)
+extern "C" BANK_ACCOUNTS_API int getType(unsigned int AID, int* type)
 {
 	//gibt den Wert der Typ-Variable zurück
 	ACCOUNT A;
 	if (_getAccountByAID(AID, &A) != 0)
 		return -2; //Something gone wrong in Entity Component
 
-	type = &A.type;
+	*(type) = A.type;
 
 	return 0;
 }
 
-unsigned int IsUnFrozen(unsigned int AID)
+extern "C" BANK_ACCOUNTS_API int IsUnFrozen(unsigned int AID)
 {
 	//gibt den Wert der unfrozen-Variable zurück
 	ACCOUNT A;
@@ -214,17 +211,22 @@ unsigned int IsUnFrozen(unsigned int AID)
 		return 0; // Account is frozen
 }
 
-unsigned int IsOpen(unsigned int AID)
+extern "C" BANK_ACCOUNTS_API int IsOpen(unsigned int AID)
 {
 	//gibt den Wert der open-Variable zurück
 	ACCOUNT A;
 	if (_getAccountByAID(AID, &A) != 0)
 		return -2; //Something gone wrong in Entity Component
 
-	if (A.open)
+	if (A.open == 1)
+	{
 		return 1;  // Account is open
+	}
 	else
+	{
 		return 0; // Account is closed
+	}
+			
 }
 
 
