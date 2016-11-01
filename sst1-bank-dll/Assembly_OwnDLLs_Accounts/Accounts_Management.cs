@@ -172,13 +172,13 @@ namespace Assembly_OwnDLLs_Accounts
             //float bal = 25.80F;
 
             //AID = openAccount(dep, type, curr, bal);
-            //if (AID < 0) Console.WriteLine("Account created AID-> {0}", AID);
+            //if (AID > 0) Console.WriteLine("Account created AID-> {0}", AID);
 
             //AID = openAccount(dep, type, curr, bal);
-            //if (AID < 0) Console.WriteLine("Account created AID-> {0}", AID);
+            //if (AID > 0) Console.WriteLine("Account created AID-> {0}", AID);
 
             //AID = openAccount(dep, type, curr, bal);
-            //if (AID < 0) Console.WriteLine("Account created AID-> {0}", AID);
+            //if (AID > 0) Console.WriteLine("Account created AID-> {0}", AID);
 
             ////Read CIDs that are Depositors off Account and write to console
             //if(getAccountDepositors(AID, readDeps) == 0)
