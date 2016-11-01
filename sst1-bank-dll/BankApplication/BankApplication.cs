@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assembly_OwnDLLs_Customers;
+using Assembly_OwnDLLs_Accounts;
 
 namespace BankApplication
 {
@@ -20,7 +21,7 @@ namespace BankApplication
             }
             else if (info.KeyChar == 'a')
             {
-                DisplayACCOUNTRManagementSection();
+                DisplayACCOUNTManagementSection();
             }
          }
 
@@ -167,8 +168,8 @@ namespace BankApplication
                 Console.WriteLine("Last Name (2): " + CustomerToModify.LastName);
                 Console.WriteLine("Street Name (3): " + CustomerToModify.Street);
                 Console.WriteLine("Street Number (4): " + CustomerToModify.StreetNr);
-                Console.WriteLine("City (5): " + CustomerToModify.City);
-                Console.WriteLine("Postal Code (6): " + CustomerToModify.PostalCode);
+                Console.WriteLine("Postal Code (5): " + CustomerToModify.PostalCode);
+                Console.WriteLine("City (6): " + CustomerToModify.City);
                 Console.WriteLine("Country (7): " + CustomerToModify.Country);
                 Console.WriteLine("Press '0' to leave the Modify CUSTOMER Section, press the corresponding number to modify the values:");
                 ConsoleKeyInfo info = Console.ReadKey();
@@ -379,7 +380,7 @@ namespace BankApplication
                 }
             }
         }
-        static void DisplayACCOUNTRManagementSection()
+        static void DisplayACCOUNTManagementSection()
         {
             Console.WriteLine();
             Console.WriteLine("ACCOUNT Management Section:");
@@ -400,11 +401,113 @@ namespace BankApplication
             }
             else
             {
+                Console.WriteLine("Press 'o' to get to the Open Account Section, press 'b' to get back to the Main Menu");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == 'o')
+                {
+                    DisplayOpenACCOUNTSection();
+                }
+                else if (info.KeyChar == 'b')
+                {
+                    DisplayMainMenu();
+                }
 
             }
         }
 
+        static void DisplayOpenACCOUNTSection()
+        {
+            uint CID = 0;
+            string CID_str = "t";
 
+            while (!uint.TryParse(CID_str, out CID))
+            {
+
+                Console.WriteLine("Insert the ID of the CUSTOMER you want to open an account with:");
+                CID_str = Console.ReadLine();
+
+            }
+            CID = uint.Parse(CID_str);
+            CUSTOMER CustomerAsDepositor = Customers_Management.getCustomerByCID(CID);
+            if ((CustomerAsDepositor.CID == 0) || (CustomerAsDepositor.Active == 0))
+            {
+                Console.WriteLine("No (active) CUSTOMER found with the ID " + CID);
+                DisplayACCOUNTManagementSection();
+            }
+            uint[] depositor = new uint[20] { CID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            Console.WriteLine("Press '1' to open an SAVING account, '2' for CREDIT:");
+            account_t type = account_t.CREDIT;
+            ConsoleKeyInfo info = Console.ReadKey();
+            if (info.KeyChar == '1')
+            {
+                type = account_t.SAVING;
+            }
+            else if (info.KeyChar == '2')
+            {
+                type = account_t.CREDIT;
+            }
+
+            Console.WriteLine("Press '1' to use an EUR, '2' for USD, '3' for GBP and '4' for JPY:");
+            currency_t currency = currency_t.EUR;
+            info = Console.ReadKey();
+            if (info.KeyChar == '1')
+            {
+                currency = currency_t.EUR;
+            }
+            else if (info.KeyChar == '2')
+            {
+                currency = currency_t.USD;
+            }
+            else if (info.KeyChar == '3')
+            {
+                currency = currency_t.GBP;
+            }
+            else if (info.KeyChar == '4')
+            {
+                currency = currency_t.JPY;
+            }
+
+            float balance = -1.0f;
+            string bal_str = "t";
+            while (balance < 0)
+            {
+                while (!float.TryParse(bal_str, out balance))
+                {
+                    Console.WriteLine("Type in the balance you want to open the account with (at least 0):");
+                    bal_str = Console.ReadLine();
+                }
+
+                balance = float.Parse(bal_str);
+            }
+
+            int AID = Accounts_Management.openAccount(depositor, type, currency, balance);
+            Console.WriteLine("Account " + AID + " was opened:");
+
+            uint[] deps = new uint[20];
+            int c = 0;
+            Accounts_Management.getAccountDepositors(AID,  deps);
+            Console.WriteLine("Depositors:");
+            while (deps[c] != 0)
+                {
+                    CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine("ID: " + C.CID);
+                    Console.WriteLine("First Name: " + C.FirstName);
+                    Console.WriteLine("Last Name: " + C.LastName);
+                    Console.WriteLine("Street Name: " + C.Street);
+                    Console.WriteLine("Street Number: " + C.StreetNr);
+                    Console.WriteLine("City: " + C.City);
+                    Console.WriteLine("Postal Code: " + C.PostalCode);
+                    Console.WriteLine("Country: " + C.Country);
+                    Console.WriteLine("---------------------------------");
+                    c++;
+                }
+
+
+           
+
+            
+        }
         static void Main(string[] args)
         {
             Console.WriteLine("WELCOME to the Management Application of the 'Wosnotso EasyBank'");
