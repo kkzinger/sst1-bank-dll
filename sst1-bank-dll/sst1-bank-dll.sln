@@ -75,6 +75,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly_ExternDLLs_Account
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApplication", "BankApplication\BankApplication.csproj", "{15A0BF14-AA6F-4C18-9391-3B95D4643A3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test_Assembly_OwnDLLs_AccountActions", "test_Assembly_OwnDLLs_AccountActions\test_Assembly_OwnDLLs_AccountActions.csproj", "{2C3C0E2C-4607-42EB-B449-2D2109A75A02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -281,6 +283,18 @@ Global
 		{15A0BF14-AA6F-4C18-9391-3B95D4643A3B}.Release|x64.Build.0 = Release|Any CPU
 		{15A0BF14-AA6F-4C18-9391-3B95D4643A3B}.Release|x86.ActiveCfg = Release|Any CPU
 		{15A0BF14-AA6F-4C18-9391-3B95D4643A3B}.Release|x86.Build.0 = Release|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Debug|x64.Build.0 = Debug|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Debug|x86.Build.0 = Debug|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Release|x64.ActiveCfg = Release|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Release|x64.Build.0 = Release|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Release|x86.ActiveCfg = Release|Any CPU
+		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
