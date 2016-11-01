@@ -38,7 +38,7 @@ namespace Assembly_OwnDLLs_Accounts
     }
 
 
-    class Accounts_Management
+    public class Accounts_Management
     {
         [DllImport("../../../Debug/bank_entitycomponent.dll")]
         internal static extern int _initEntity();
