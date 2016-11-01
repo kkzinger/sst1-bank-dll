@@ -33,7 +33,7 @@ namespace Assembly_OwnDLLs_Customers
 
     }
 
-    class Customers_Management
+   public class Customers_Management
     {
         [DllImport("../../../Debug/bank_entitycomponent.dll")]
         internal static extern int _initEntity();
@@ -55,13 +55,13 @@ namespace Assembly_OwnDLLs_Customers
         [DllImport("../../../Debug/bank_customers.dll")]
         internal static extern int Deactivate(uint CID);
 
-        static int InitializeData()
+        public static int InitializeData()
         {
             return _initEntity();
 
         }
 
-        static CUSTOMER createCustomer(string _FirstName, string _LastName, string _Street, string _StreetNr, string _City, string _PostalCode, string _Country)
+        public static CUSTOMER createCustomer(string _FirstName, string _LastName, string _Street, string _StreetNr, string _City, string _PostalCode, string _Country)
         {
             IntPtr C = IntPtr.Zero;
             try
@@ -84,7 +84,7 @@ namespace Assembly_OwnDLLs_Customers
             }
         }
 
-        static void updateCustomer(ref CUSTOMER CustomerToUpdate, string _FirstName="", string _LastName="", string _Street="", string _StreetNr="", string _City="", string _PostalCode="", string _Country="")
+        public static void updateCustomer(ref CUSTOMER CustomerToUpdate, string _FirstName="", string _LastName="", string _Street="", string _StreetNr="", string _City="", string _PostalCode="", string _Country="")
         {
             Update(CustomerToUpdate.CID, _FirstName, _LastName, _Street, _StreetNr, _City, _PostalCode, _Country);
             //4+7*20+1 = 145
@@ -93,7 +93,7 @@ namespace Assembly_OwnDLLs_Customers
             CustomerToUpdate = (CUSTOMER)Marshal.PtrToStructure(updatedCustomer, typeof(CUSTOMER));
         }
 
-        static void activateCustomer(ref CUSTOMER CustomerToActivate)
+        public static void activateCustomer(ref CUSTOMER CustomerToActivate)
         {
             Activate(CustomerToActivate.CID);
             //4+7*20+1 = 145
@@ -102,7 +102,7 @@ namespace Assembly_OwnDLLs_Customers
             CustomerToActivate = (CUSTOMER)Marshal.PtrToStructure(updatedCustomer, typeof(CUSTOMER));
         }
 
-        static void deactivateCustomer(ref CUSTOMER CustomerToActivate)
+        public static void deactivateCustomer(ref CUSTOMER CustomerToActivate)
         {
             Deactivate(CustomerToActivate.CID);
             //4+7*20+1 = 145
@@ -115,16 +115,16 @@ namespace Assembly_OwnDLLs_Customers
 
         static void Main(string[] args)
         {
-            //InitializeData();
-            //CUSTOMER Kunde = createCustomer("Tobias", "Mayer", "Salzburger Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
-            //Console.WriteLine(Kunde.LastName);
-            //updateCustomer(ref Kunde, "", "Huber");
-            //Console.WriteLine(Kunde.LastName);
-            //Console.WriteLine(Kunde.Active);
-            //deactivateCustomer(ref Kunde);
-            //Console.WriteLine(Kunde.Active);
-            //activateCustomer(ref Kunde);
-            //Console.WriteLine(Kunde.Active);
+            InitializeData();
+            CUSTOMER Kunde = createCustomer("Tobias", "Mayer", "Salzburger Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
+            Console.WriteLine(Kunde.LastName);
+            updateCustomer(ref Kunde, "", "Huber");
+            Console.WriteLine(Kunde.LastName);
+            Console.WriteLine(Kunde.Active);
+            deactivateCustomer(ref Kunde);
+            Console.WriteLine(Kunde.Active);
+            activateCustomer(ref Kunde);
+            Console.WriteLine(Kunde.Active);
 
         }
     }
