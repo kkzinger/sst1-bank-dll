@@ -111,6 +111,27 @@ namespace Assembly_OwnDLLs_Customers
             CustomerToActivate = (CUSTOMER)Marshal.PtrToStructure(updatedCustomer, typeof(CUSTOMER));
         }
 
+        public static void listAllCustomers()
+        {
+            uint CID = 0;
+            IntPtr DummyCustomerPtr = Marshal.AllocHGlobal(145);
+            CUSTOMER DummyCustomer = (CUSTOMER)Marshal.PtrToStructure(DummyCustomerPtr, typeof(CUSTOMER));
+            while (Read(CID, DummyCustomerPtr)==0)
+            {
+                CID++;
+                DummyCustomer = (CUSTOMER)Marshal.PtrToStructure(DummyCustomerPtr, typeof(CUSTOMER));
+                Console.WriteLine(DummyCustomer.CID);
+                Console.WriteLine(DummyCustomer.FirstName);
+                Console.WriteLine(DummyCustomer.LastName);
+                Console.WriteLine(DummyCustomer.Street);
+                Console.WriteLine(DummyCustomer.StreetNr);
+                Console.WriteLine(DummyCustomer.PostalCode);
+                Console.WriteLine(DummyCustomer.City);
+                Console.WriteLine(DummyCustomer.Country);
+            }
+            Marshal.FreeHGlobal(DummyCustomerPtr);
+        }
+
 
 
         static void Main(string[] args)
