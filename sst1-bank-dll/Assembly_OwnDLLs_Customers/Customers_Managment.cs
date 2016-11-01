@@ -113,41 +113,62 @@ namespace Assembly_OwnDLLs_Customers
 
         public static int listAllCustomers()
         {
-            uint CID = 0;
+            uint CID =1;
+            int counter = 0;
             IntPtr DummyCustomerPtr = Marshal.AllocHGlobal(145);
-            CUSTOMER DummyCustomer = (CUSTOMER)Marshal.PtrToStructure(DummyCustomerPtr, typeof(CUSTOMER));
+            //CUSTOMER DummyCustomer = (CUSTOMER)Marshal.PtrToStructure(DummyCustomerPtr, typeof(CUSTOMER));
             while (Read(CID, DummyCustomerPtr)==0)
             {
                 CID++;
-                DummyCustomer = (CUSTOMER)Marshal.PtrToStructure(DummyCustomerPtr, typeof(CUSTOMER));
-                Console.WriteLine(DummyCustomer.CID);
-                Console.WriteLine(DummyCustomer.FirstName);
-                Console.WriteLine(DummyCustomer.LastName);
-                Console.WriteLine(DummyCustomer.Street);
-                Console.WriteLine(DummyCustomer.StreetNr);
-                Console.WriteLine(DummyCustomer.PostalCode);
-                Console.WriteLine(DummyCustomer.City);
-                Console.WriteLine(DummyCustomer.Country);
+                counter++;
+                //DummyCustomer = (CUSTOMER)Marshal.PtrToStructure(DummyCustomerPtr, typeof(CUSTOMER));
+                //Console.WriteLine(DummyCustomer.CID);
+                //Console.WriteLine(DummyCustomer.FirstName);
+                //Console.WriteLine(DummyCustomer.LastName);
+                //Console.WriteLine(DummyCustomer.Street);
+                //Console.WriteLine(DummyCustomer.StreetNr);
+                //Console.WriteLine(DummyCustomer.PostalCode);
+                //Console.WriteLine(DummyCustomer.City);
+                //Console.WriteLine(DummyCustomer.Country);
             }
             Marshal.FreeHGlobal(DummyCustomerPtr);
-            if (CID == 0) return -1;
-            return 0;
+            if (counter == 0) return -1;
+            return counter;
+        }
+
+        public static CUSTOMER getCustomerByCID(uint CID)
+        {
+            IntPtr DummyCustomerPtr = Marshal.AllocHGlobal(145);
+            CUSTOMER DummyCustomer = new CUSTOMER();
+           if ( Read(CID, DummyCustomerPtr)!=0)
+            {
+                return DummyCustomer;
+            }
+           else
+            {
+                return  DummyCustomer = (CUSTOMER)Marshal.PtrToStructure(DummyCustomerPtr, typeof(CUSTOMER));
+            }
         }
 
 
 
         static void Main(string[] args)
         {
-            InitializeData();
-            CUSTOMER Kunde = createCustomer("Tobias", "Mayer", "Salzburger Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
-            Console.WriteLine(Kunde.LastName);
-            updateCustomer(ref Kunde, "", "Huber");
-            Console.WriteLine(Kunde.LastName);
-            Console.WriteLine(Kunde.Active);
-            deactivateCustomer(ref Kunde);
-            Console.WriteLine(Kunde.Active);
-            activateCustomer(ref Kunde);
-            Console.WriteLine(Kunde.Active);
+            //InitializeData();
+            //CUSTOMER Kunde = createCustomer("Tobias", "Mayer", "Salzburger Str.", "17a", "Neumarkt", "5202", "AUSTRIA");
+            //CUSTOMER KundeZWEI = getCustomerByCID(Kunde.CID);
+            //CUSTOMER KundeDREI = getCustomerByCID(2);
+            //Console.WriteLine(KundeZWEI.CID);
+            //Console.WriteLine(KundeDREI.CID);
+            //listAllCustomers();
+            //Console.WriteLine(Kunde.LastName);
+            //updateCustomer(ref Kunde, "", "Huber");
+            //Console.WriteLine(Kunde.LastName);
+            //Console.WriteLine(Kunde.Active);
+            //deactivateCustomer(ref Kunde);
+            //Console.WriteLine(Kunde.Active);
+            //activateCustomer(ref Kunde);
+            //Console.WriteLine(Kunde.Active);
 
         }
     }
