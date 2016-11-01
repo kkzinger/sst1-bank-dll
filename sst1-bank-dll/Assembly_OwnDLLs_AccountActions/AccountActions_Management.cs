@@ -37,7 +37,7 @@ namespace Assembly_OwnDLLs_AccountActions
 
         [DllImport("../../../Debug/bank_account_actions.dll")]
         //Get a list of TRANSACTION structs which have AID eiter in FromAID or in ToAID. len has to be the length of the transactionsList Array (for TRANSACTIONS* transactionList[5] len should be 5)
-        internal static extern int bankAccountStatement(uint AID, ref TRANSACTION transactionsListBegin, uint len);
+        internal static extern int bankAccountStatement(uint AID, ref TRANSACTION transactionsListBegin, uint len); //---> anpassen!
 
         [DllImport("../../../Debug/bank_account_actions.dll")]
         //Get actual balance of AID.
@@ -62,7 +62,7 @@ namespace Assembly_OwnDLLs_AccountActions
             return transfer(_SrcAccountID, _DestAccountID, _OrdererCID, _amount);
         }
 
-        static int GetBankAccountStatement(uint AID, ref TRANSACTION)
+       
 
 
         static void Main(string[] args)
