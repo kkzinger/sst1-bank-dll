@@ -14,14 +14,12 @@ using namespace std;
 
 extern "C" BANK_ACCOUNTS_API int Open(unsigned int* Depositors, account_t Type, currency_t CurID, float Balance)
 {
-	if (sizeof(Depositors) / sizeof(Depositors[0]) > MAX_CUST_PER_ACCNT) //TODO Need other verification. sizeof is not suitable to control length of arrays that are obtained by pointer.
-		return -1; //provided array of cid is to big
 
 	if (Balance < 0)
 		return -1;//no negative balance supported
 
 	unsigned int _Depositors[MAX_CUST_PER_ACCNT] = {};
-	for (int i = 0; i < sizeof(Depositors) / sizeof(Depositors[0]); i++)
+	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
 		_Depositors[i] = Depositors[i];
 
 	int AID = _addAccount(Type, CurID, Balance, _Depositors);
@@ -117,40 +115,45 @@ extern "C" BANK_ACCOUNTS_API unsigned int addOwners(unsigned int AID, unsigned i
 
 extern "C" BANK_ACCOUNTS_API unsigned int removeOwners(unsigned int AID, unsigned int* Depositors)
 {
-	//entfernt CIDs aus dem Array
-	if (sizeof(Depositors) / sizeof(Depositors[0]) > MAX_CUST_PER_ACCNT)
-		return -1; //provided array of cid is to big
 
 	ACCOUNT A;
 	if (_getAccountByAID(AID, &A) != 0)
 		return -2; //Something gone wrong in Entity Component
 
-	unsigned int customers_to_remove = sizeof(Depositors) / sizeof(Depositors[0]);
-	unsigned int free_customers = 0;
-	unsigned int removed_customers = 0;
-	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
-	{
-		if (A.depositors[i] == 0)
-			free_customers++;
-	}
-
-	if ((MAX_CUST_PER_ACCNT - free_customers) < customers_to_remove)
-		return -1;//too few customers
+	unsigned int customers_to_remove = MAX_CUST_PER_ACCNT;
+	unsigned int temp[20] = { 0 };
 
 	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
 	{
-		if (A.depositors[i] == 0)
+		if (A.depositors[i] != 0)
 		{
-			if (removed_customers < customers_to_remove)
+			for (int j = 0; j < MAX_CUST_PER_ACCNT; j++)
 			{
-				A.depositors[i] = Depositors[removed_customers];
-				removed_customers++;
+				if (A.depositors[i] == Depositors[j])
+				{
+					A.depositors[i] = 0; //Found Depositor to delete. Deletion is made through setting to zero
+					break;
+				}
 			}
-			else
-				break;
 		}
 	}
 
+	//clean up array to have the CIDs at beginning of Array
+	int j = 0;
+	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
+	{
+		//Collect all CIDs of depositors Array for temporary saving and ordering
+		if (A.depositors[i] != 0)
+		{
+			temp[j] = A.depositors[i];
+			j++;
+		}
+	}
+	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
+	{
+		A.depositors[i] = temp[i];
+	}
+	
 	if (_updateAccount(&A) != 0)
 		return -2; //Something in went wrong in Entity Component
 
@@ -169,9 +172,6 @@ extern "C" BANK_ACCOUNTS_API unsigned int Freeze(unsigned int AID)
 	if (_updateAccount(&A) != 0)
 		return -2; //Something in went wrong in Entity Component
 	return 0;
-
-
-	return -1; // Data did not meet required format/standards
 
 }
 
