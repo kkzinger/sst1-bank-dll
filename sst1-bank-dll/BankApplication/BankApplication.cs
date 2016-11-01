@@ -60,6 +60,14 @@ namespace BankApplication
                 {
                     DisplayModifyCUSTOMERSection(0);
                 }
+                else if(info.KeyChar=='d')
+                {
+                    DisplayDeactivateCUSTOMERSection();
+                }
+                else if (info.KeyChar == 'r')
+                {
+                    DisplayReactivateCUSTOMERSection();
+                }
 
             }
         }
@@ -147,9 +155,9 @@ namespace BankApplication
             
             CID = uint.Parse(CID_str);
             CUSTOMER CustomerToModify = Customers_Management.getCustomerByCID(CID);
-            if (CustomerToModify.CID == 0)
+            if ((CustomerToModify.CID == 0)||(CustomerToModify.Active==0))
             {
-                Console.WriteLine("No CUSTOMER found with the ID " + CID);
+                Console.WriteLine("No (active) CUSTOMER found with the ID " + CID);
                 DisplayModifyCUSTOMERSection(0);
             }
             else
@@ -274,6 +282,103 @@ namespace BankApplication
            
         }
 
+        static void DisplayDeactivateCUSTOMERSection()
+        {
+            uint CID = 0;
+            string CID_str = "t";
+
+
+                while (!uint.TryParse(CID_str, out CID))
+                {
+
+                    Console.WriteLine("Insert the ID of the CUSTOMER you want to deactivate (press '0' to cancel):");
+                    CID_str = Console.ReadLine();
+                    if (CID_str == "0")
+                    {
+
+                        DisplayCUSTOMERManagementSection();
+                    }
+            }
+            CID = uint.Parse(CID_str);
+            CUSTOMER CustomerToDeactivate = Customers_Management.getCustomerByCID(CID);
+            if ((CustomerToDeactivate.CID == 0) || (CustomerToDeactivate.Active == 0))
+            {
+                Console.WriteLine("No (active) CUSTOMER found with the ID " + CID);        
+                    DisplayDeactivateCUSTOMERSection();
+               
+            }
+            else
+            {
+                Console.WriteLine("The CUSTOMER with the ID " + CID + " has the following data:");
+                Console.WriteLine("First Name: " + CustomerToDeactivate.FirstName);
+                Console.WriteLine("Last Name: " + CustomerToDeactivate.LastName);
+                Console.WriteLine("Street Name: " + CustomerToDeactivate.Street);
+                Console.WriteLine("Street Number: " + CustomerToDeactivate.StreetNr);
+                Console.WriteLine("City: " + CustomerToDeactivate.City);
+                Console.WriteLine("Postal Code: " + CustomerToDeactivate.PostalCode);
+                Console.WriteLine("Country: " + CustomerToDeactivate.Country);
+                Console.WriteLine("Press '0' to leave the Deactivate CUSTOMER Section, press '1' to deactivate the CUSTOMER:");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == '0')
+                {
+                    DisplayCUSTOMERManagementSection();
+                }
+                else if(info.KeyChar=='1')
+                {
+                    Customers_Management.deactivateCustomer(ref CustomerToDeactivate);
+                    DisplayDeactivateCUSTOMERSection();
+                }
+            }
+        }
+
+        static void DisplayReactivateCUSTOMERSection()
+        {
+            uint CID = 0;
+            string CID_str = "t";
+
+
+            while (!uint.TryParse(CID_str, out CID))
+            {
+
+                Console.WriteLine("Insert the ID of the CUSTOMER you want to deactivate (press '0' to cancel):");
+                CID_str = Console.ReadLine();
+                if (CID_str == "0")
+                {
+                  
+                    DisplayCUSTOMERManagementSection();
+                }
+
+            }
+            CID = uint.Parse(CID_str);
+            CUSTOMER CustomerToDeactivate = Customers_Management.getCustomerByCID(CID);
+            if ((CustomerToDeactivate.CID == 0) || (CustomerToDeactivate.Active == 1))
+            {
+                Console.WriteLine("No (deactivated) CUSTOMER found with the ID " + CID);
+                DisplayReactivateCUSTOMERSection();
+            }
+            else
+            {
+                Console.WriteLine("The CUSTOMER with the ID " + CID + " has the following data:");
+                Console.WriteLine("First Name: " + CustomerToDeactivate.FirstName);
+                Console.WriteLine("Last Name: " + CustomerToDeactivate.LastName);
+                Console.WriteLine("Street Name: " + CustomerToDeactivate.Street);
+                Console.WriteLine("Street Number: " + CustomerToDeactivate.StreetNr);
+                Console.WriteLine("City: " + CustomerToDeactivate.City);
+                Console.WriteLine("Postal Code: " + CustomerToDeactivate.PostalCode);
+                Console.WriteLine("Country: " + CustomerToDeactivate.Country);
+                Console.WriteLine("Press '0' to leave the Deactivate CUSTOMER Section, press '1' to re.activate the CUSTOMER:");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == '0')
+                {
+                    DisplayCUSTOMERManagementSection();
+                }
+                else if (info.KeyChar == '1')
+                {
+                    Customers_Management.activateCustomer(ref CustomerToDeactivate);
+                    DisplayReactivateCUSTOMERSection();
+                }
+            }
+        }
         static void DisplayACCOUNTRManagementSection()
         {
             Console.WriteLine();
