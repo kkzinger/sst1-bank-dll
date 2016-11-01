@@ -96,7 +96,7 @@ namespace Assembly_OwnDLLs_Accounts
             return 0;
         }
 
-        public static int getAccountDepositors(int AID, uint[] depositors)
+        public static int getAccountDepositors(int AID,  uint[] depositors)
         {
             if (AID <= 0) return -1; //not a valid AID
             uint[] readDepositors = new uint[20];
