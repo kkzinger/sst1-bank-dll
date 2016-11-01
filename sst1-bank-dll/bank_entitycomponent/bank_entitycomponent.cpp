@@ -168,7 +168,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addCustomer(char FirstName[], char Last
 
 	allCustomers->push_back(*C);
 
-	return 0;
+	return C->CID;
 }
 
 
