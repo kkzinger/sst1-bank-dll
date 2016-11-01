@@ -111,7 +111,7 @@ namespace Assembly_OwnDLLs_Customers
             CustomerToActivate = (CUSTOMER)Marshal.PtrToStructure(updatedCustomer, typeof(CUSTOMER));
         }
 
-        public static void listAllCustomers()
+        public static int listAllCustomers()
         {
             uint CID = 0;
             IntPtr DummyCustomerPtr = Marshal.AllocHGlobal(145);
@@ -130,6 +130,8 @@ namespace Assembly_OwnDLLs_Customers
                 Console.WriteLine(DummyCustomer.Country);
             }
             Marshal.FreeHGlobal(DummyCustomerPtr);
+            if (CID == 0) return -1;
+            return 0;
         }
 
 
