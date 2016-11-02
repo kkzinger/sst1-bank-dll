@@ -426,7 +426,7 @@ namespace BankApplication
                 {
                     int accounts = number_of_accounts_transable + number_of_frozen_accounts;
                     Console.WriteLine(accounts + " accounts found!");
-                    Console.WriteLine("Press 'b' to get back to the Main Menu, press 'o' to get to the Open ACCOUNT Section, press 'f' to get to the Freeze ACCOUNT Section, press 'u' to get to the Unfreeze ACCOUNT Section, press 'c' to get to the Close ACCOUNT Section ");
+                    Console.WriteLine("Press 'b' to get back to the Main Menu, press 'o' to get to the Open ACCOUNT Section, press 'f' to get to the Freeze ACCOUNT Section, press 'u' to get to the Unfreeze ACCOUNT Section, press 'c' to get to the Close ACCOUNT Section, press 't' to get to the Transfer ACCOUNT Section ");
                     ConsoleKeyInfo info = Console.ReadKey();
                     if (info.KeyChar == 'b')
                     {
@@ -443,6 +443,14 @@ namespace BankApplication
                     else if (info.KeyChar == 'u')
                     {
                         DisplayUnfreezeACCOUNTSection();
+                    }
+                    else if (info.KeyChar == 'c')
+                    {
+                        DisplayCloseACCOUNTSection();
+                    }
+                    else if(info.KeyChar=='t')
+                    {
+                        DisplayTransferACCOUNTSection();
                     }
 
                 }
@@ -678,7 +686,346 @@ namespace BankApplication
                 }
             }
           }
-            static void Main(string[] args)
+        static void DisplayCloseACCOUNTSection()
+        {
+            int AID = 0;
+            string AID_str = "t";
+
+
+            while (!int.TryParse(AID_str, out AID))
+            {
+
+                Console.WriteLine("Insert the ID of the ACCOUNT you want to close (= PERMANENT!!!!!!) (press '0' to cancel):");
+                AID_str = Console.ReadLine();
+                if (AID_str == "0")
+                {
+
+                    DisplayACCOUNTManagementSection();
+                }
+            }
+            AID = int.Parse(AID_str);
+            if ((Accounts_Management.isAccountOpen(AID) == -1))
+            {
+                Console.WriteLine("No (open) ACCOUNT found with the ID " + AID);
+                DisplayCloseACCOUNTSection();
+            }
+            else
+            {
+                Console.WriteLine("The ACCOUNT with the ID " + AID + " has the following data:");
+                account_t type_ = account_t.CREDIT;
+                Accounts_Management.getAccountType(AID, ref type_);
+                Console.WriteLine("Type: " + type_);
+                float balance_ = 0.0f;
+                AccountActions_Management.getAccountBalance(AID, ref balance_);
+                Console.WriteLine("Balance: " + balance_);
+                uint[] deps = new uint[20];
+                int c = 0;
+                Accounts_Management.getAccountDepositors(AID, deps);
+                Console.WriteLine("Depositors:");
+                while (deps[c] != 0)
+                {
+                    CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine("ID: " + C.CID);
+                    Console.WriteLine("First Name: " + C.FirstName);
+                    Console.WriteLine("Last Name: " + C.LastName);
+                    Console.WriteLine("Street Name: " + C.Street);
+                    Console.WriteLine("Street Number: " + C.StreetNr);
+                    Console.WriteLine("City: " + C.City);
+                    Console.WriteLine("Postal Code: " + C.PostalCode);
+                    Console.WriteLine("Country: " + C.Country);
+                    Console.WriteLine("---------------------------------");
+                    c++;
+                }
+                Console.WriteLine("Press '0' to leave the Close ACCOUNT Section, press '1' to close the ACCOUNT (=PERMANENT!!!!!!):");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == '0')
+                {
+                    DisplayACCOUNTManagementSection();
+                }
+                else if (info.KeyChar == '1')
+                {
+                    Accounts_Management.closeAccount(AID);
+                    DisplayCloseACCOUNTSection();
+                }
+            }
+
+        }
+        static void DisplayTransferACCOUNTSection()
+        {
+            int number_of_accounts_transable = 0;
+            Accounts_Management.countTransferableAIDs(ref number_of_accounts_transable);
+            if (number_of_accounts_transable <= 0)
+            {
+                Console.WriteLine("No (open/unfrozen) ACCOUNTS found! Press '0' to leave the Transfer ACCOUNT Section, press 'o' to get to the Open ACCOUNT Section:");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == '0')
+                {
+                    DisplayACCOUNTManagementSection();
+                }
+                else if (info.KeyChar == 'o')
+                {
+                    DisplayOpenACCOUNTSection();
+                }
+            }
+            else if (number_of_accounts_transable <2)
+            {
+                Console.WriteLine("There are at least 2 accounts needed to issue transfers! Press '0' to leave the Transfer ACCOUNT Section, press 'o' to get to the Open ACCOUNT Section:");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == '0')
+                {
+                    DisplayACCOUNTManagementSection();
+                }
+                else if (info.KeyChar == 'o')
+                {
+                    DisplayOpenACCOUNTSection();
+                }
+            }
+            else
+            {
+                int srcAID = 0;
+                string srcAID_str = "t";
+
+
+                while (!int.TryParse(srcAID_str, out srcAID))
+                {
+
+                    Console.WriteLine("Insert the ID of the ACCOUNT you want to transfer money FROM (press '0' to cancel):");
+                    srcAID_str = Console.ReadLine();
+                    if (srcAID_str == "0")
+                    {
+
+                        DisplayACCOUNTManagementSection();
+                    }
+                }
+                srcAID = int.Parse(srcAID_str);
+                if ((Accounts_Management.isAccountOpen(srcAID) == -1) || (Accounts_Management.isAccountUnfrozen(srcAID) == 0))
+                {
+                    Console.WriteLine("No (open/unfrozen) ACCOUNT found with the ID " + srcAID);
+                    DisplayTransferACCOUNTSection();
+                }
+
+                Console.WriteLine("The ACCOUNT with the ID " + srcAID + " has the following data:");
+                account_t type_ = account_t.CREDIT;
+                Accounts_Management.getAccountType(srcAID, ref type_);
+                Console.WriteLine("Type: " + type_);
+                float balance_ = 0.0f;
+                AccountActions_Management.getAccountBalance(srcAID, ref balance_);
+                Console.WriteLine("Balance: " + balance_);
+                uint[] deps = new uint[20];
+                int c = 0;
+                Accounts_Management.getAccountDepositors(srcAID, deps);
+                Console.WriteLine("Depositors:");
+                while (deps[c] != 0)
+                {
+                    CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine("ID: " + C.CID);
+                    Console.WriteLine("First Name: " + C.FirstName);
+                    Console.WriteLine("Last Name: " + C.LastName);
+                    Console.WriteLine("Street Name: " + C.Street);
+                    Console.WriteLine("Street Number: " + C.StreetNr);
+                    Console.WriteLine("City: " + C.City);
+                    Console.WriteLine("Postal Code: " + C.PostalCode);
+                    Console.WriteLine("Country: " + C.Country);
+                    Console.WriteLine("---------------------------------");
+                    c++;
+                }
+                Console.WriteLine("Press '0' to leave the Transfer ACCOUNT Section, press '1' to go on, press '2' to start over:");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == '0')
+                {
+                    DisplayACCOUNTManagementSection();
+                }
+                else if (info.KeyChar == '1')
+                {
+                    int destAID = 0;
+                    string destAID_str = "t";
+
+
+                    while (!int.TryParse(destAID_str, out destAID))
+                    {
+
+                        Console.WriteLine("Insert the ID of the ACCOUNT you want to transfer money TO (press '0' to cancel):");
+                        destAID_str = Console.ReadLine();
+                        if (destAID_str == "0")
+                        {
+
+                            DisplayACCOUNTManagementSection();
+                        }
+                    }
+                    destAID = int.Parse(destAID_str);
+                    if ((Accounts_Management.isAccountOpen(destAID) == -1) || (Accounts_Management.isAccountUnfrozen(destAID) == 0))
+                    {
+                        Console.WriteLine("No (open/unfrozen) ACCOUNT found with the ID " + destAID);
+                        DisplayTransferACCOUNTSection();
+                    }
+                    Console.WriteLine("The ACCOUNT with the ID " + destAID + " has the following data:");
+                     type_ = account_t.CREDIT;
+                    Accounts_Management.getAccountType(destAID, ref type_);
+                    Console.WriteLine("Type: " + type_);
+                     balance_ = 0.0f;
+                    AccountActions_Management.getAccountBalance(destAID, ref balance_);
+                    Console.WriteLine("Balance: " + balance_);
+                    c = 0;
+                    Accounts_Management.getAccountDepositors(destAID, deps);
+                    Console.WriteLine("Depositors:");
+                    while (deps[c] != 0)
+                    {
+                        CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                        Console.WriteLine("---------------------------------");
+                        Console.WriteLine("ID: " + C.CID);
+                        Console.WriteLine("First Name: " + C.FirstName);
+                        Console.WriteLine("Last Name: " + C.LastName);
+                        Console.WriteLine("Street Name: " + C.Street);
+                        Console.WriteLine("Street Number: " + C.StreetNr);
+                        Console.WriteLine("City: " + C.City);
+                        Console.WriteLine("Postal Code: " + C.PostalCode);
+                        Console.WriteLine("Country: " + C.Country);
+                        Console.WriteLine("---------------------------------");
+                        c++;
+                    }
+                    Console.WriteLine("Press '0' to leave the Transfer ACCOUNT Section, press '1' to go on, press '2' to start over:");
+                    info = Console.ReadKey();
+                    if (info.KeyChar == '0')
+                    {
+                        DisplayACCOUNTManagementSection();
+                    }
+                    else if (info.KeyChar == '1')
+                    {
+                        float amount =-1.00f;
+                        string amount_str = "t";
+                        float max_amount = 0;
+                        AccountActions_Management.getAccountBalance(srcAID, ref max_amount);
+                        while ((amount <= 0)||(amount>max_amount))
+                        {
+                            while (!float.TryParse(amount_str, out amount))
+                            {
+
+                                Console.WriteLine("Insert the amount (greater 0 and equal to or less than "+max_amount+") you want to transfer from ACCOUNT " + srcAID + " to ACCOUNT " + destAID + " (press '0' to cancel):");
+                                amount_str = Console.ReadLine();
+                                if (amount_str == "0")
+                                {
+
+                                    DisplayACCOUNTManagementSection();
+                                }
+                            }
+                            amount = float.Parse(amount_str);
+                            if (amount > max_amount)
+                            {
+                                amount_str = "t";
+                                Console.WriteLine("Amount was too big!");
+                            }
+                            else if(amount<0)
+                            {
+                                amount_str = "t";
+                                Console.WriteLine("Amount was too small!");
+                            }
+                       }
+
+                        int orderedCID = 0;
+                        int ok_transfer = -1;
+                        while (ok_transfer == -1)
+                        {
+                            uint CID = 0;
+                            string CID_str = "t";
+
+                            if (CID == 0)
+                            {
+                                while (!uint.TryParse(CID_str, out CID))
+                                {
+
+                                    Console.WriteLine("Insert the ID of the CUSTOMER you want to use as Orderer:");
+                                    CID_str = Console.ReadLine();
+
+
+                                }
+                            }
+                            else
+                            {
+                                CID_str = CID.ToString();
+                            }
+
+                            CID = uint.Parse(CID_str);
+                            CUSTOMER CustomerToModify = Customers_Management.getCustomerByCID(CID);
+                            if ((CustomerToModify.CID == 0) || (CustomerToModify.Active == 0))
+                            {
+                                Console.WriteLine("No (active) CUSTOMER found with the ID " + CID);
+                                continue;
+                            }
+                            orderedCID =(int) CID;
+                            ok_transfer =  AccountActions_Management.transferBetweenAccounts(srcAID, destAID, orderedCID, amount);
+
+                            Console.WriteLine("The ACCOUNT (FROM) with the ID " + srcAID + " has the following data:");
+                            type_ = account_t.CREDIT;
+                            Accounts_Management.getAccountType(srcAID, ref type_);
+                            Console.WriteLine("Type: " + type_);
+                            balance_ = 0.0f;
+                            AccountActions_Management.getAccountBalance(srcAID, ref balance_);
+                            Console.WriteLine("Balance: " + balance_);
+                            c = 0;
+                            Accounts_Management.getAccountDepositors(srcAID, deps);
+                            Console.WriteLine("Depositors:");
+                            while (deps[c] != 0)
+                            {
+                                CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                                Console.WriteLine("---------------------------------");
+                                Console.WriteLine("ID: " + C.CID);
+                                Console.WriteLine("First Name: " + C.FirstName);
+                                Console.WriteLine("Last Name: " + C.LastName);
+                                Console.WriteLine("Street Name: " + C.Street);
+                                Console.WriteLine("Street Number: " + C.StreetNr);
+                                Console.WriteLine("City: " + C.City);
+                                Console.WriteLine("Postal Code: " + C.PostalCode);
+                                Console.WriteLine("Country: " + C.Country);
+                                Console.WriteLine("---------------------------------");
+                                c++;
+                            }
+
+                            Console.WriteLine("The ACCOUNT (TO) with the ID " + destAID + " has the following data:");
+                            type_ = account_t.CREDIT;
+                            Accounts_Management.getAccountType(destAID, ref type_);
+                            Console.WriteLine("Type: " + type_);
+                            balance_ = 0.0f;
+                            AccountActions_Management.getAccountBalance(destAID, ref balance_);
+                            Console.WriteLine("Balance: " + balance_);
+                            c = 0;
+                            Accounts_Management.getAccountDepositors(destAID, deps);
+                            Console.WriteLine("Depositors:");
+                            while (deps[c] != 0)
+                            {
+                                CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                                Console.WriteLine("---------------------------------");
+                                Console.WriteLine("ID: " + C.CID);
+                                Console.WriteLine("First Name: " + C.FirstName);
+                                Console.WriteLine("Last Name: " + C.LastName);
+                                Console.WriteLine("Street Name: " + C.Street);
+                                Console.WriteLine("Street Number: " + C.StreetNr);
+                                Console.WriteLine("City: " + C.City);
+                                Console.WriteLine("Postal Code: " + C.PostalCode);
+                                Console.WriteLine("Country: " + C.Country);
+                                Console.WriteLine("---------------------------------");
+                                c++;
+                            }
+                        }
+                        DisplayTransferACCOUNTSection();
+
+                    }
+                    else if (info.KeyChar == '2')
+                    {
+                        DisplayTransferACCOUNTSection();
+                    }
+
+                }
+                else if(info.KeyChar=='2')
+                {
+                    DisplayTransferACCOUNTSection();
+                }
+
+            }
+        }
+
+        static void Main(string[] args)
         {
             Console.WriteLine("WELCOME to the Management Application of the 'Wosnotso EasyBank'");
             //necessary, or everything fails
