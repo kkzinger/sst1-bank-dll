@@ -403,9 +403,11 @@ namespace BankApplication
             else
             {
                 
-                int number_of_accounts = 0;
-                Accounts_Management.countTransferableAIDs(ref number_of_accounts);
-                if(number_of_accounts == 0)
+                int number_of_accounts_transable = 0;
+                int number_of_frozen_accounts = 0;
+                Accounts_Management.countTransferableAIDs(ref number_of_accounts_transable);
+                Accounts_Management.countFrozenAIDs(ref number_of_frozen_accounts);
+                if((number_of_accounts_transable == 0)&&(number_of_frozen_accounts==0))
                 {
                     Console.WriteLine("No accounts found!");
                
@@ -422,7 +424,8 @@ namespace BankApplication
                 }
                 else
                 {
-                    Console.WriteLine(number_of_accounts + " accounts found!");
+                    int accounts = number_of_accounts_transable + number_of_frozen_accounts;
+                    Console.WriteLine(accounts + " accounts found!");
                     Console.WriteLine("Press 'b' to get back to the Main Menu, press 'o' to get to the Open ACCOUNT Section, press 'f' to get to the Freeze ACCOUNT Section, press 'u' to get to the Unfreeze ACCOUNT Section, press 'c' to get to the Close ACCOUNT Section ");
                     ConsoleKeyInfo info = Console.ReadKey();
                     if (info.KeyChar == 'b')
