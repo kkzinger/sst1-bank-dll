@@ -243,6 +243,30 @@ namespace Assembly_OwnDLLs_Accounts
             return 0;
         }
 
+        public static int countTransferableAIDs(ref int count)
+        {
+            List<int> AIDlist = new List<int>();
+            int itAID = 1; 
+            bool status = true;
+
+            if (isAccountOpen(itAID) == -1) status = false;
+
+            while (status)
+            {
+                if ((isAccountOpen(itAID) == 1) && (isAccountUnfrozen(itAID) == 1))
+                {
+                    AIDlist.Add(itAID);
+                }
+                
+                itAID++;
+                if (isAccountOpen(itAID) == -1) status = false;
+            }
+
+            count = AIDlist.Count;
+
+            return 0;
+        }
+
         static void Main(string[] args)
         {
             //Console.WriteLine(_initEntity());
@@ -354,6 +378,13 @@ namespace Assembly_OwnDLLs_Accounts
             //Console.WriteLine(readType);
             //Console.WriteLine(getAccountType(AID, ref readType));
             //Console.WriteLine(readType);
+
+            //int tmpp = 0;
+            //Console.WriteLine(countTransferableAIDs(ref tmpp));
+            //Console.WriteLine("Number of Transferable Accounts {0}",tmpp);
+            //freezeAccount(1);
+            //Console.WriteLine(countTransferableAIDs(ref tmpp));
+            //Console.WriteLine("Number of Transferable Accounts {0}", tmpp);
         }
     }
 }
