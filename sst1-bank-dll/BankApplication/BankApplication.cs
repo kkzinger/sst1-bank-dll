@@ -341,7 +341,7 @@ namespace BankApplication
             while (!uint.TryParse(CID_str, out CID))
             {
 
-                Console.WriteLine("Insert the ID of the CUSTOMER you want to deactivate (press '0' to cancel):");
+                Console.WriteLine("Insert the ID of the CUSTOMER you want to re-activate (press '0' to cancel):");
                 CID_str = Console.ReadLine();
                 if (CID_str == "0")
                 {
