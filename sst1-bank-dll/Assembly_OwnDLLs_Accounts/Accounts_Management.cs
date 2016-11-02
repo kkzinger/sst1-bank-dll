@@ -44,26 +44,36 @@ namespace Assembly_OwnDLLs_Accounts
         internal static extern int _initEntity();
 
         [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern int Open(uint[] Depositors, account_t Type, currency_t CurID, float Balance);
+        internal static extern int Open(uint[] Depositors, [param: MarshalAs(UnmanagedType.U4)] account_t Type, currency_t CurID, float Balance);
 
         [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern int getOwners(uint AID, uint[] Depositors);
 
         [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern uint Close(uint AID);
+        internal static extern int Close(uint AID);
 
         [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern uint addOwners(uint AID, uint[] Depositors);
+        internal static extern int addOwners(uint AID, uint[] Depositors);
 
         [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern uint removeOwners(uint AID, uint[] Depositors);
+        internal static extern int removeOwners(uint AID, uint[] Depositors);
 
         [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern uint Freeze(uint AID);
+        internal static extern int Freeze(uint AID);
 
         [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern uint Unfreeze(uint AID);
+        internal static extern int Unfreeze(uint AID);
 
+        [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern int IsUnFrozen(uint AID);
+
+        [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern int IsOpen(uint AID);
+
+        [DllImport("../../../Debug/bank_accounts.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern int getType(uint AID, ref int type);
+
+        
 
         public static int openAccount(uint[] depositors, account_t accountType, currency_t currencyID, float balance)
         {
@@ -91,8 +101,7 @@ namespace Assembly_OwnDLLs_Accounts
         public static int closeAccount(int AID)
         {
             if (AID <= 0) return -1; //not a valid AID
-            uint[] readDepositors = new uint[20];
-            if (getOwners((uint)AID, readDepositors) < 0) return -1; //Account could not be closed because it does not exist.
+            if (Close((uint)AID) < 0) return -1; //Account could not be closed because it does not exist.
             return 0;
         }
 
@@ -185,6 +194,55 @@ namespace Assembly_OwnDLLs_Accounts
             return 0;
         }
 
+        public static int isAccountUnfrozen(int AID)
+        {
+            if (AID <= 0) return -1; //not a valid AID
+            int result = 0;
+            result = IsUnFrozen((uint)AID);
+
+            if(result == 0)
+            {
+                return 0; //Account is Frozen
+            }else if(result == 1)
+            {
+                return 1; //Account is _not_ Frozen
+            }else
+            {
+                return -1; //Account was not found
+            }
+
+        }
+
+        public static int isAccountOpen(int AID)
+        {
+            if (AID <= 0) return -1; //not a valid AID
+            int result = -1;
+            result = IsOpen((uint)AID);
+
+            if (result == 1)
+            {
+                return 1; //Account is Open
+            }
+            else if(result == 0)
+            {
+                return 0; //Account is _not_ Open
+            }else
+            {
+                return -1; //Account was not found
+            }
+            
+        }
+
+        public static int getAccountType(int AID, ref account_t type)
+        {
+            if (AID <= 0) return -1; //not a valid AID
+            int temp = -1;
+            if(getType((uint)AID,ref temp) != 0) return -1; //Account was not found
+
+            type = (account_t)temp;
+            return 0;
+        }
+
         static void Main(string[] args)
         {
             //Console.WriteLine(_initEntity());
@@ -228,7 +286,7 @@ namespace Assembly_OwnDLLs_Accounts
             //}
 
             //Console.WriteLine("Add Customers as Depositors");
-            //Console.WriteLine("ergebnis add: {0}",addAccountDepositors(AID, addDeps));
+            //Console.WriteLine("ergebnis add: {0}", addAccountDepositors(AID, addDeps));
 
             ////Read CIDs that are Depositors off Account and write to console
             //if (getAccountDepositors(AID, readDeps) == 0)
@@ -270,7 +328,7 @@ namespace Assembly_OwnDLLs_Accounts
             //Console.WriteLine("Search for all Accounts where Customer {0} is Depositor", CID);
             //getAIDsbyCID(CID, AIDlist);
 
-            //for(uint i = 0;i < AIDlist.Length; i++)
+            //for (uint i = 0; i < AIDlist.Length; i++)
             //{
             //    if (AIDlist[i] == 0)
             //    {
@@ -278,16 +336,24 @@ namespace Assembly_OwnDLLs_Accounts
             //        break;
             //    }
 
-            //    Console.Write("{0} ",AIDlist[i]);
-                
+            //    Console.Write("{0} ", AIDlist[i]);
+
             //}
 
+            //Console.WriteLine("Is Account {1} Unfrozen? -- {0}", isAccountUnfrozen(AID), AID);
             //freezeAccount(AID);
-
+            //Console.WriteLine("Is Account {1} Unfrozen ? -- {0}", isAccountUnfrozen(AID), AID);
             //unfreezeAccount(AID);
+            //Console.WriteLine("Is Account {1} Unfrozen ? -- {0}", isAccountUnfrozen(AID), AID);
 
+            //Console.WriteLine("Is Account {1} Open ? -- {0}", isAccountOpen(AID), AID);
             //closeAccount(AID);
+            //Console.WriteLine("Is Account {1} Open ? -- {0}", isAccountOpen(AID), AID);
 
+            //account_t readType = account_t.CREDIT;
+            //Console.WriteLine(readType);
+            //Console.WriteLine(getAccountType(AID, ref readType));
+            //Console.WriteLine(readType);
         }
     }
 }

@@ -20,7 +20,7 @@ extern "C" BANK_ACCOUNT_ACTIONS_API int transfer(unsigned int FromAID, unsigned 
 //Get a list of TRANSACTION structs which have AID eiter in FromAID or in ToAID. len has to be the length of the transactionsList Array (for TRANSACTIONS* transactionList[5] len should be 5)
 extern "C" BANK_ACCOUNT_ACTIONS_API int bankAccountStatement(unsigned int AID, TRANSACTION* transactionsList, unsigned int len);
 //Get actual balance of AID.
-extern "C" BANK_ACCOUNT_ACTIONS_API float balancing(unsigned int AID);
+extern "C" BANK_ACCOUNT_ACTIONS_API int balancing(unsigned int AID, float* balance);
 
 //INTERNAL (C++)
 //test if the given CID is depositor of given AID

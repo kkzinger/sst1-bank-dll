@@ -198,8 +198,6 @@ extern "C" BANK_ENTITYCOMPONENT_API int _updateCustomer(CUSTOMER* changedCustome
 
 extern "C" BANK_ENTITYCOMPONENT_API int _addAccount(account_t type, currency_t currency, float balance, unsigned int* depositors)
 {
-	if (sizeof(depositors) / sizeof(depositors[0]) > MAX_CUST_PER_ACCNT)
-		return -1; //provided array of cid is to big
 
 	ACCOUNT* A = new ACCOUNT;
 

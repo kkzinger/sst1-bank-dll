@@ -67,13 +67,14 @@ extern "C" BANK_ACCOUNT_ACTIONS_API int bankAccountStatement(unsigned int AID, T
 	}
 	return 0;
 }
-extern "C" BANK_ACCOUNT_ACTIONS_API float balancing(unsigned int AID)
+extern "C" BANK_ACCOUNT_ACTIONS_API int balancing(unsigned int AID, float* balance)
 {
 	ACCOUNT A;
 	if (_getAccountByAID(AID, &A) != 0)
 		return -2; //Something gone wrong in Entity Component
 
-	return A.balance;
+	*(balance) = A.balance;
+	return 0;
 }
 
 int _isOrdererAllowed(unsigned int CID, unsigned int AID)

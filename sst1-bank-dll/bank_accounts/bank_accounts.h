@@ -14,13 +14,14 @@
 
 //API (C)
 extern "C" BANK_ACCOUNTS_API int Open(unsigned int* Depositors, account_t Type, currency_t CurID, float Balance );
-extern "C" BANK_ACCOUNTS_API unsigned int Close(unsigned int AID);
-extern "C" BANK_ACCOUNTS_API unsigned int getOwners(unsigned int AID, unsigned int* Depositors);
-extern "C" BANK_ACCOUNTS_API unsigned int addOwners(unsigned int AID, unsigned int* Depositors);
-extern "C" BANK_ACCOUNTS_API unsigned int removeOwners(unsigned int AID, unsigned int* Depositors);
-extern "C" BANK_ACCOUNTS_API unsigned int Freeze(unsigned int AID);
-extern "C" BANK_ACCOUNTS_API unsigned int Unfreeze(unsigned int AID);
+extern "C" BANK_ACCOUNTS_API int Close(unsigned int AID);
+extern "C" BANK_ACCOUNTS_API int getOwners(unsigned int AID, unsigned int* Depositors);
+extern "C" BANK_ACCOUNTS_API int addOwners(unsigned int AID, unsigned int* Depositors);
+extern "C" BANK_ACCOUNTS_API int removeOwners(unsigned int AID, unsigned int* Depositors);
+extern "C" BANK_ACCOUNTS_API int Freeze(unsigned int AID);
+extern "C" BANK_ACCOUNTS_API int Unfreeze(unsigned int AID);
+
+extern "C" BANK_ACCOUNTS_API int getType(unsigned int AID, int* type);
+extern "C" BANK_ACCOUNTS_API int IsUnFrozen(unsigned int AID);
+extern "C" BANK_ACCOUNTS_API int IsOpen(unsigned int AID);
 //INTERNAL (C++)
-int getType(unsigned int AID, account_t* type);
-unsigned int IsUnFrozen(unsigned int AID);
-unsigned int IsOpen(unsigned int AID);
