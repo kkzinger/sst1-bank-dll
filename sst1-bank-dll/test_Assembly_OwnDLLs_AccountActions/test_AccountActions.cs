@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Assembly_OwnDLLs_Accounts;
 using Assembly_OwnDLLs_Customers;
+using Assembly_OwnDLLs_AccountActions;
 
 
 namespace test_Assembly_OwnDLLs_AccountActions
@@ -21,6 +22,7 @@ namespace test_Assembly_OwnDLLs_AccountActions
             //int CID = 3;
 
             uint[] dep = new uint[20] { 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            float readBal = 0.0F;
             //uint[] readDeps = new uint[20];
             //uint[] addDeps = new uint[] { 10, 11, 12, 13 };
             //uint[] removeDeps = new uint[] { 3, 12 };
@@ -37,6 +39,33 @@ namespace test_Assembly_OwnDLLs_AccountActions
 
             AID = Accounts_Management.openAccount(dep, type, curr, bal);
             if (AID > 0) Console.WriteLine("Account created AID-> {0}", AID);
+
+            //Get account balance
+            AccountActions_Management.getAccountBalance(AID, ref readBal);
+            Console.WriteLine("Balance of AID {0} is {1}", AID, readBal);
+
+            //Deposite
+            AccountActions_Management.depositToAccount(AID, 100.5F);
+            AccountActions_Management.getAccountBalance(AID, ref readBal);
+            Console.WriteLine("Balance of AID {0} is {1}", AID, readBal);
+
+            //Withdraw
+            AccountActions_Management.withdrawFromAccount(AID, 500.5F);
+            AccountActions_Management.getAccountBalance(AID, ref readBal);
+            Console.WriteLine("Balance of AID {0} is {1}", AID, readBal);
+
+            //Transfer
+            AccountActions_Management.getAccountBalance(AID, ref readBal);
+            Console.WriteLine("Balance of AID {0} is {1}", AID, readBal);
+            AccountActions_Management.getAccountBalance(AID-1, ref readBal);
+            Console.WriteLine("Balance of AID {0} is {1}", AID-1, readBal);
+
+            AccountActions_Management.transferBetweenAccounts(AID, AID - 1, 6, 600); //Problem 6 ist nicht berechtigt. transfer geht aber
+
+            AccountActions_Management.getAccountBalance(AID, ref readBal);
+            Console.WriteLine("Balance of AID {0} is {1}", AID, readBal);
+            AccountActions_Management.getAccountBalance(AID - 1, ref readBal);
+            Console.WriteLine("Balance of AID {0} is {1}", AID-1, readBal);
 
             ////Read CIDs that are Depositors off Account and write to console
             //if (getAccountDepositors(AID, readDeps) == 0)

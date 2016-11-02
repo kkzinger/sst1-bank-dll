@@ -23,7 +23,7 @@ namespace Assembly_OwnDLLs_AccountActions
     };
 
 
-    class AccountActions_Management
+    public class AccountActions_Management
     {
         [DllImport("../../../Debug/bank_account_actions.dll", CallingConvention = CallingConvention.Cdecl, SetLastError =true)]
         internal static extern int withDraw(uint AID, float amount);
@@ -41,28 +41,43 @@ namespace Assembly_OwnDLLs_AccountActions
 
         [DllImport("../../../Debug/bank_account_actions.dll")]
         //Get actual balance of AID.
-        internal static extern float balancing(uint AID);
+        internal static extern int balancing(uint AID, ref float balance);
 
         [DllImport("../../../Debug/bank_entitycomponent.dll")]
         internal static extern int _initEntity();
 
 
-        static int withDrawFromAccount(uint _AID, float _amount)
+        public static int withdrawFromAccount(int AID, float amount)
         {
-            return withDraw(_AID, _amount);
+            if (AID <= 0) return -1; //not a valid AID
+            return withDraw((uint)AID, amount);
         }
 
-        static int depositToAccount(uint _AID, float _amount)
+        public static int depositToAccount(int AID, float amount)
         {
-            return deposit(_AID, _amount);
+            if (AID <= 0) return -1; //not a valid AID
+            return deposit((uint)AID, amount);
         }
 
-        static int transferBetweenAccounts(uint _SrcAccountID, uint _DestAccountID, uint _OrdererCID, float _amount)
+        public static int transferBetweenAccounts(int sourceAID, int destinationAID, int ordererCID, float amount)
         {
-            return transfer(_SrcAccountID, _DestAccountID, _OrdererCID, _amount);
+            if (sourceAID <= 0) return -1; //not a valid AID
+            if (destinationAID <= 0) return -1; //not a valid AID
+            if (ordererCID <= 0) return -1; //not a valid CID
+            
+            return transfer((uint)sourceAID, (uint)destinationAID, (uint)ordererCID, amount);
         }
 
-       
+        public static int getAccountBalance(int AID, ref float balance)
+        {
+            if (AID <= 0) return -1; //not a valid AID
+            float temp = 0.0F;
+
+            if (balancing((uint)AID, ref temp) < 0) return -1; //Account was not found
+
+            balance = temp;
+            return 0;
+        }
 
 
         static void Main(string[] args)
