@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Assembly_OwnDLLs_Customers;
 using Assembly_OwnDLLs_Accounts;
+using Assembly_OwnDLLs_AccountActions;
 
 namespace BankApplication
 {
@@ -401,15 +402,46 @@ namespace BankApplication
             }
             else
             {
-                Console.WriteLine("Press 'o' to get to the Open Account Section, press 'b' to get back to the Main Menu");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == 'o')
+                
+                int number_of_accounts = 0;
+                Accounts_Management.countTransferableAIDs(ref number_of_accounts);
+                if(number_of_accounts == 0)
                 {
-                    DisplayOpenACCOUNTSection();
+                    Console.WriteLine("No accounts found!");
+               
+                    Console.WriteLine("Press 'o' to get to the Open ACCOUNT Section, press 'b' to get back to the Main Menu");
+                    ConsoleKeyInfo info = Console.ReadKey();
+                    if (info.KeyChar == 'o')
+                    {
+                        DisplayOpenACCOUNTSection();
+                    }
+                    else if (info.KeyChar == 'b')
+                    {
+                        DisplayMainMenu();
+                    }
                 }
-                else if (info.KeyChar == 'b')
+                else
                 {
-                    DisplayMainMenu();
+                    Console.WriteLine(number_of_accounts + " accounts found!");
+                    Console.WriteLine("Press 'b' to get back to the Main Menu, press 'o' to get to the Open ACCOUNT Section, press 'f' to get to the Freeze ACCOUNT Section, press 'u' to get to the Unfreeze ACCOUNT Section, press 'c' to get to the Close ACCOUNT Section ");
+                    ConsoleKeyInfo info = Console.ReadKey();
+                    if (info.KeyChar == 'b')
+                    {
+                        DisplayMainMenu();
+                    }
+                    else if (info.KeyChar == 'o')
+                    {
+                        DisplayOpenACCOUNTSection();
+                    }
+                    else if(info.KeyChar=='f')
+                    {
+                        DisplayFreezeACCOUNTSection();
+                    }
+                    else if (info.KeyChar == 'u')
+                    {
+                        DisplayUnfreezeACCOUNTSection();
+                    }
+
                 }
 
             }
@@ -485,6 +517,9 @@ namespace BankApplication
             account_t type_ = account_t.CREDIT;
             Accounts_Management.getAccountType(AID, ref type_);
             Console.WriteLine("Type: " + type_);
+            float balance_ = 0.0f;
+            AccountActions_Management.getAccountBalance(AID, ref balance_);
+            Console.WriteLine("Balance: " + balance_);
             uint[] deps = new uint[20];
             int c = 0;
             Accounts_Management.getAccountDepositors(AID,  deps);
@@ -505,12 +540,142 @@ namespace BankApplication
                     c++;
                 }
 
-
+            DisplayACCOUNTManagementSection();
            
 
             
         }
-        static void Main(string[] args)
+        static void DisplayFreezeACCOUNTSection()
+        {
+            int AID = 0;
+            string AID_str = "t";
+
+
+            while (!int.TryParse(AID_str, out AID))
+            {
+
+                Console.WriteLine("Insert the ID of the ACCOUNT you want to freeze (press '0' to cancel):");
+                AID_str = Console.ReadLine();
+                if (AID_str == "0")
+                {
+
+                    DisplayACCOUNTManagementSection();
+                }
+            }
+            AID = int.Parse(AID_str);
+            if((Accounts_Management.isAccountOpen(AID)==-1)|| (Accounts_Management.isAccountUnfrozen(AID) == 0))
+            {
+                Console.WriteLine("No (open/unfrozen) ACCOUNT found with the ID " + AID);
+                DisplayFreezeACCOUNTSection();
+            }
+            else
+            {
+                Console.WriteLine("The ACCOUNT with the ID " + AID + " has the following data:");
+                account_t type_ = account_t.CREDIT;
+                Accounts_Management.getAccountType(AID, ref type_);
+                Console.WriteLine("Type: " + type_);
+                float balance_ = 0.0f;
+                AccountActions_Management.getAccountBalance(AID, ref balance_);
+                Console.WriteLine("Balance: " + balance_);
+                uint[] deps = new uint[20];
+                int c = 0;
+                Accounts_Management.getAccountDepositors(AID, deps);
+                Console.WriteLine("Depositors:");
+                while (deps[c] != 0)
+                {
+                    CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine("ID: " + C.CID);
+                    Console.WriteLine("First Name: " + C.FirstName);
+                    Console.WriteLine("Last Name: " + C.LastName);
+                    Console.WriteLine("Street Name: " + C.Street);
+                    Console.WriteLine("Street Number: " + C.StreetNr);
+                    Console.WriteLine("City: " + C.City);
+                    Console.WriteLine("Postal Code: " + C.PostalCode);
+                    Console.WriteLine("Country: " + C.Country);
+                    Console.WriteLine("---------------------------------");
+                    c++;
+                }
+                Console.WriteLine("Press '0' to leave the Freeze ACCOUNT Section, press '1' to freeze the ACCOUNT:");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == '0')
+                {
+                    DisplayACCOUNTManagementSection();
+                }
+                else if (info.KeyChar == '1')
+                {
+                    Accounts_Management.freezeAccount(AID);
+                    DisplayFreezeACCOUNTSection();
+                }
+            }
+
+
+        }
+        static void DisplayUnfreezeACCOUNTSection()
+        {
+            int AID = 0;
+            string AID_str = "t";
+
+
+            while (!int.TryParse(AID_str, out AID))
+            {
+
+                Console.WriteLine("Insert the ID of the ACCOUNT you want to unfreeze (press '0' to cancel):");
+                AID_str = Console.ReadLine();
+                if (AID_str == "0")
+                {
+
+                    DisplayACCOUNTManagementSection();
+                }
+            }
+            AID = int.Parse(AID_str);
+            if ((Accounts_Management.isAccountOpen(AID) == -1) || (Accounts_Management.isAccountUnfrozen(AID) == 1))
+            {
+                Console.WriteLine("No (open/frozen) ACCOUNT found with the ID " + AID);
+                DisplayUnfreezeACCOUNTSection();
+            }
+            else
+            {
+                Console.WriteLine("The ACCOUNT with the ID " + AID + " has the following data:");
+                account_t type_ = account_t.CREDIT;
+                Accounts_Management.getAccountType(AID, ref type_);
+                Console.WriteLine("Type: " + type_);
+                float balance_ = 0.0f;
+                AccountActions_Management.getAccountBalance(AID, ref balance_);
+                Console.WriteLine("Balance: " + balance_);
+                uint[] deps = new uint[20];
+                int c = 0;
+                Accounts_Management.getAccountDepositors(AID, deps);
+                Console.WriteLine("Depositors:");
+                while (deps[c] != 0)
+                {
+                    CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine("ID: " + C.CID);
+                    Console.WriteLine("First Name: " + C.FirstName);
+                    Console.WriteLine("Last Name: " + C.LastName);
+                    Console.WriteLine("Street Name: " + C.Street);
+                    Console.WriteLine("Street Number: " + C.StreetNr);
+                    Console.WriteLine("City: " + C.City);
+                    Console.WriteLine("Postal Code: " + C.PostalCode);
+                    Console.WriteLine("Country: " + C.Country);
+                    Console.WriteLine("---------------------------------");
+                    c++;
+                }
+                Console.WriteLine("Press '0' to leave the Unfreeze ACCOUNT Section, press '1' to unfreeze the ACCOUNT:");
+                ConsoleKeyInfo info = Console.ReadKey();
+                if (info.KeyChar == '0')
+                {
+                    DisplayACCOUNTManagementSection();
+                }
+                else if (info.KeyChar == '1')
+                {
+                    Accounts_Management.unfreezeAccount(AID);
+                    DisplayUnfreezeACCOUNTSection();
+                }
+            }
+          }
+            static void Main(string[] args)
         {
             Console.WriteLine("WELCOME to the Management Application of the 'Wosnotso EasyBank'");
             //necessary, or everything fails

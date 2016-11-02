@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Assembly_OwnDLLs_AccountActions\Assembly_OwnDLLs_AccountActions.csproj">
+      <Project>{3eb93a62-a662-4069-afb9-c1ace9d476fd}</Project>
+      <Name>Assembly_OwnDLLs_AccountActions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Assembly_OwnDLLs_Accounts\Assembly_OwnDLLs_Accounts.csproj">
       <Project>{c8767103-b338-45cd-9d35-ba429f2402b5}</Project>
       <Name>Assembly_OwnDLLs_Accounts</Name>
