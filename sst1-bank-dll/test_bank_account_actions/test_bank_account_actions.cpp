@@ -22,21 +22,22 @@ int main()
 
 	Open(cid_1, SAVING, USD, 1000);
 	Open(cid_2, SAVING, USD, 3000);
-
+	float balance = 0.0f;
 	withDraw(1, 500);
-	printf("Balance: %.2f\n", balancing(1));
+	balancing(1, &balance);
+	printf("Balance: %.2f\n", balance);
 	deposit(1, 600);
-	printf("Balance: %.2f\n", balancing(1));
+	printf("Balance: %.2f\n", balancing(1, &balance));
 	withDraw(1, 1500);
-	printf("Balance: %.2f\n", balancing(1));
+	printf("Balance: %.2f\n", balancing(1, &balance));
 
 	printf("\n--- Transfer 500 from 1 to 2 ---\n\n");
-	printf("Balance 1: %.2f\n", balancing(1));
-	printf("Balance 2: %.2f\n", balancing(2));
+	printf("Balance 1: %.2f\n", balancing(1, &balance));
+	printf("Balance 2: %.2f\n", balancing(2, &balance));
 	printf("--- Transfer ---\n");
 	transfer(1, 2, 1, 500);
-	printf("Balance 1: %.2f\n", balancing(1));
-	printf("Balance 2: %.2f\n", balancing(2));
+	printf("Balance 1: %.2f\n", balancing(1, &balance));
+	printf("Balance 2: %.2f\n", balancing(2, &balance));
 	printf("\n--------------------------------\n\n");
 
 	transfer(1, 2, 1, 50);

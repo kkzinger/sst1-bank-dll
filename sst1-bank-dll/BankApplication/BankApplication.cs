@@ -482,7 +482,9 @@ namespace BankApplication
 
             int AID = Accounts_Management.openAccount(depositor, type, currency, balance);
             Console.WriteLine("Account " + AID + " was opened:");
-
+            account_t type_ = account_t.CREDIT;
+            Accounts_Management.getAccountType(AID, ref type_);
+            Console.WriteLine("Type: " + type_);
             uint[] deps = new uint[20];
             int c = 0;
             Accounts_Management.getAccountDepositors(AID,  deps);
