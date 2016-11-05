@@ -59,7 +59,7 @@ extern "C" BANK_ENTITYCOMPONENT_API int _updateAccount(ACCOUNT* changedAccount);
 //Add a Transaction Struct to allTransactions list. This provides functionality to store informations about a transfer between Accounts.
 extern "C" BANK_ENTITYCOMPONENT_API int _addTransaction(unsigned int sourceAID, unsigned int destinationAID, unsigned int ordererCID, float amount);
 //Search function, provides data for ACCOUNT struct for given AID
-extern "C" BANK_ENTITYCOMPONENT_API int _getTransactions(unsigned int AID, TRANSACTION* transactionList, unsigned int len);
+extern "C" BANK_ENTITYCOMPONENT_API int _getTransactions(unsigned int AID, TRANSACTION* transactionList, unsigned int* len);
 
 //not in use
 extern "C" BANK_ENTITYCOMPONENT_API char* _getTime();

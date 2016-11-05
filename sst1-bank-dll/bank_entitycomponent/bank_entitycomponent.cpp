@@ -418,17 +418,33 @@ unsigned long _createTimestamp()
 	return transactionSequenceNumber;
 }
 
-extern "C" BANK_ENTITYCOMPONENT_API int _getTransactions(unsigned int AID, TRANSACTION* transactionList, unsigned int len)
+extern "C" BANK_ENTITYCOMPONENT_API int _getTransactions(unsigned int AID, TRANSACTION* transactionList, unsigned int* len)
 {
 	unsigned int acc = 0;
+	unsigned int cnt = 0;
 
 	transaction_list::iterator it;
+
+	for (it = allTransactions->begin(); it != allTransactions->end(); it++)
+	{
+		cnt+=1;
+	}
+
+	//When len 0 is given to function return number of Transactions in allTransactions. 
+	//This provides a way for calling function to determine how large the array transactionList has to be.
+
+	//if ((*len) == 0)
+	//{
+		*len = cnt;
+		return 0;
+	//}
+
 	for (it = allTransactions->begin(); it != allTransactions->end(); it++)
 	{
 		//only search for Transactions where AID is present
 		if (it->destinationAID == AID || it->sourceAID == AID)
 		{
-			if (acc == len)
+			if (acc == *len)
 				return -1; //Transaction list is full but there would be more transactions
 
 			transactionList[acc].timestamp = it->timestamp;

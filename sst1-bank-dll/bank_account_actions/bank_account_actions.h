@@ -18,7 +18,7 @@ extern "C" BANK_ACCOUNT_ACTIONS_API int deposit(unsigned int AID, float amount);
 //transfer money between Accounts. ordereCID has to be depositor of FromAID Account.
 extern "C" BANK_ACCOUNT_ACTIONS_API int transfer(unsigned int FromAID, unsigned int ToAID, unsigned int ordererCID, float amount);
 //Get a list of TRANSACTION structs which have AID eiter in FromAID or in ToAID. len has to be the length of the transactionsList Array (for TRANSACTIONS* transactionList[5] len should be 5)
-extern "C" BANK_ACCOUNT_ACTIONS_API int bankAccountStatement(unsigned int AID, TRANSACTION* transactionsList, unsigned int len);
+extern "C" BANK_ACCOUNT_ACTIONS_API int bankAccountStatement(unsigned int AID, TRANSACTION* transactionsList, unsigned int* len);
 //Get actual balance of AID.
 extern "C" BANK_ACCOUNT_ACTIONS_API int balancing(unsigned int AID, float* balance);
 

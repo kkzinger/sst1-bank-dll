@@ -30,6 +30,7 @@ namespace test_Assembly_OwnDLLs_AccountActions
             account_t type = account_t.SAVING;
             currency_t curr = currency_t.EUR;
             float bal = 1000.00F;
+            List<TRANSACTION> transList = new List<TRANSACTION>();
 
             AID = Accounts_Management.openAccount(dep, type, curr, bal);
             if (AID > 0) Console.WriteLine("Account created AID-> {0}", AID);
@@ -60,13 +61,14 @@ namespace test_Assembly_OwnDLLs_AccountActions
             AccountActions_Management.getAccountBalance(AID-1, ref readBal);
             Console.WriteLine("Balance of AID {0} is {1}", AID-1, readBal);
 
-            AccountActions_Management.transferBetweenAccounts(AID, AID - 1, 6, 600); //Problem 6 ist nicht berechtigt. transfer geht aber
+            AccountActions_Management.transferBetweenAccounts(AID, AID - 1, 6, 600);
 
             AccountActions_Management.getAccountBalance(AID, ref readBal);
             Console.WriteLine("Balance of AID {0} is {1}", AID, readBal);
             AccountActions_Management.getAccountBalance(AID - 1, ref readBal);
             Console.WriteLine("Balance of AID {0} is {1}", AID-1, readBal);
 
+            Console.WriteLine(AccountActions_Management.getTransactionsByAID(AID, ref transList));
             ////Read CIDs that are Depositors off Account and write to console
             //if (getAccountDepositors(AID, readDeps) == 0)
             //{

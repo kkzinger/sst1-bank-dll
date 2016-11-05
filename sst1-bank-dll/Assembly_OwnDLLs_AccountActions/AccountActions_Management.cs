@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;     // DLL support
 
 
-using TransactionList = System.Collections.Generic.List<Assembly_OwnDLLs_AccountActions.TRANSACTION>;
+//using TransactionList = System.Collections.Generic.List<Assembly_OwnDLLs_AccountActions.TRANSACTION>;
 
 namespace Assembly_OwnDLLs_AccountActions
 {
@@ -37,7 +37,7 @@ namespace Assembly_OwnDLLs_AccountActions
 
         [DllImport("../../../Debug/bank_account_actions.dll")]
         //Get a list of TRANSACTION structs which have AID eiter in FromAID or in ToAID. len has to be the length of the transactionsList Array (for TRANSACTIONS* transactionList[5] len should be 5)
-        internal static extern int bankAccountStatement(uint AID, ref TRANSACTION transactionsList, uint len); //---> anpassen!
+        internal static extern int bankAccountStatement(uint AID, ref TRANSACTION transactionList,ref uint len); //---> anpassen!
 
         [DllImport("../../../Debug/bank_account_actions.dll")]
         //Get actual balance of AID.
@@ -77,6 +77,22 @@ namespace Assembly_OwnDLLs_AccountActions
 
             balance = temp;
             return 0;
+        }
+
+        public static int getTransactionsByAID(int AID, ref List<TRANSACTION> transactionList)
+        {
+            uint length = 1;
+            TRANSACTION temp = new TRANSACTION();
+
+
+            //Determine size of Array that is needed for store all Transaction
+            if(bankAccountStatement((uint)AID,ref temp,ref length) != 0)
+            {
+                return -1; //Something in Entity Dll gone terribly wrong
+            }
+
+            
+            return (int)length;
         }
 
 
