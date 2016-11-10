@@ -77,6 +77,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankApplication", "BankAppl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test_Assembly_OwnDLLs_AccountActions", "test_Assembly_OwnDLLs_AccountActions\test_Assembly_OwnDLLs_AccountActions.csproj", "{2C3C0E2C-4607-42EB-B449-2D2109A75A02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly_OwnDLLs_Currency", "Assembly_OwnDLLs_Currency\Assembly_OwnDLLs_Currency.csproj", "{629E1CBE-17BF-4720-8F92-36B959AB241F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -295,6 +297,18 @@ Global
 		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Release|x64.Build.0 = Release|Any CPU
 		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Release|x86.ActiveCfg = Release|Any CPU
 		{2C3C0E2C-4607-42EB-B449-2D2109A75A02}.Release|x86.Build.0 = Release|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Debug|x64.Build.0 = Debug|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Debug|x86.Build.0 = Debug|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Release|x64.ActiveCfg = Release|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Release|x64.Build.0 = Release|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Release|x86.ActiveCfg = Release|Any CPU
+		{629E1CBE-17BF-4720-8F92-36B959AB241F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
