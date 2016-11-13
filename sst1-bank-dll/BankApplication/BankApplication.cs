@@ -186,13 +186,13 @@ namespace BankApplication
                 Console.WriteLine("Postal Code (5): " + CustomerToModify.PostalCode);
                 Console.WriteLine("City (6): " + CustomerToModify.City);
                 Console.WriteLine("Country (7): " + CustomerToModify.Country);
-                Console.WriteLine("Enter '0' to leave the Modify CUSTOMER Section, enter the corresponding number to modify the values:");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == '0')
+                Console.WriteLine("Enter 'leave' to leave the Modify CUSTOMER Section, enter the corresponding number to modify the values:");
+                string cmd = Console.ReadLine();
+                if (cmd =="leave")
                 {
                     DisplayCUSTOMERManagementSection();
                 }
-                else if (info.KeyChar == '1')
+                else if (cmd == "1")
                 {
                     string FirstName = "";
                      while (FirstName.Length < 2)
@@ -206,7 +206,7 @@ namespace BankApplication
                  
 
                 }
-                else if (info.KeyChar == '2')
+                else if (cmd == "2")
                 {
                      string LastName = "";
              
@@ -220,7 +220,7 @@ namespace BankApplication
                     DisplayModifyCUSTOMERSection(CID);
 
                 }
-                else if (info.KeyChar == '3')
+                else if (cmd == "3")
                 {
                    
                     string Street = "";
@@ -235,7 +235,7 @@ namespace BankApplication
                     DisplayModifyCUSTOMERSection(CID);
 
                 }
-                else if (info.KeyChar == '4')
+                else if (cmd == "4")
                 {
 
                     string StreetNr = "";
@@ -250,7 +250,7 @@ namespace BankApplication
                     DisplayModifyCUSTOMERSection(CID);
 
                 }
-                else if (info.KeyChar == '5')
+                else if (cmd == "5")
                 {
 
                     string PostalCode = "";
@@ -266,7 +266,7 @@ namespace BankApplication
                     DisplayModifyCUSTOMERSection(CID);
 
                 }
-                else if (info.KeyChar == '6')
+                else if (cmd == "6")
                 {
    
                     string City = "";
@@ -280,7 +280,7 @@ namespace BankApplication
 
                     DisplayModifyCUSTOMERSection(CID);
                 }
-                else if (info.KeyChar == '7')
+                else if (cmd == "7")
                 {
 
                     string Country = "";
@@ -292,6 +292,11 @@ namespace BankApplication
                     }
                     Customers_Management.updateCustomer(ref CustomerToModify, "", "", "", "", "","",Country);
 
+                    DisplayModifyCUSTOMERSection(CID);
+                }
+                else
+                {
+                    Console.WriteLine("Command not found!");
                     DisplayModifyCUSTOMERSection(CID);
                 }
             }          
@@ -333,13 +338,13 @@ namespace BankApplication
                 Console.WriteLine("City: " + CustomerToDeactivate.City);
                 Console.WriteLine("Postal Code: " + CustomerToDeactivate.PostalCode);
                 Console.WriteLine("Country: " + CustomerToDeactivate.Country);
-                Console.WriteLine("Enter '0' to leave the Deactivate CUSTOMER Section, enter '1' to deactivate the CUSTOMER:");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == '0')
+                Console.WriteLine("Enter 'leave' to leave the Deactivate CUSTOMER Section, enter '1' to deactivate the CUSTOMER:");
+                string cmd = Console.ReadLine();
+                if (cmd =="leave")
                 {
                     DisplayCUSTOMERManagementSection();
                 }
-                else if(info.KeyChar=='1')
+                else if(cmd=="1")
                 {
                     Customers_Management.deactivateCustomer(ref CustomerToDeactivate);
                     DisplayDeactivateCUSTOMERSection();
@@ -382,13 +387,13 @@ namespace BankApplication
                 Console.WriteLine("City: " + CustomerToDeactivate.City);
                 Console.WriteLine("Postal Code: " + CustomerToDeactivate.PostalCode);
                 Console.WriteLine("Country: " + CustomerToDeactivate.Country);
-                Console.WriteLine("Enter '0' to leave the Deactivate CUSTOMER Section, enter '1' to re.activate the CUSTOMER:");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == '0')
+                Console.WriteLine("Enter 'leave' to leave the Deactivate CUSTOMER Section, enter '1' to re.activate the CUSTOMER:");
+                string cmd = Console.ReadLine();
+                if (cmd =="leave")
                 {
                     DisplayCUSTOMERManagementSection();
                 }
-                else if (info.KeyChar == '1')
+                else if (cmd == "1")
                 {
                     Customers_Management.activateCustomer(ref CustomerToDeactivate);
                     DisplayReactivateCUSTOMERSection();
@@ -403,13 +408,13 @@ namespace BankApplication
             if (number_of_customers == -1)
             {
                 Console.WriteLine("No customers found, create a customer first!");
-                Console.WriteLine("Enter 'c' to get to the Create CUSTOMER Section, enter 'back' to get back to the Main Menu");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == 'c')
+                Console.WriteLine("Enter 'create' to get to the Create CUSTOMER Section, enter 'back' to get back to the Main Menu");
+                string cmd = Console.ReadLine();
+                if (cmd == "create")
                 {
                     DisplayCreateCUSTOMERSection();
                 }
-                else if (info.KeyChar == 'b')
+                else if (cmd == "back")
                 {
                     DisplayMainMenu();
                 }
@@ -425,13 +430,13 @@ namespace BankApplication
                 {
                     Console.WriteLine("No accounts found!");
                
-                    Console.WriteLine("Enter 'o' to get to the Open ACCOUNT Section, enter 'back' to get back to the Main Menu");
-                    ConsoleKeyInfo info = Console.ReadKey();
-                    if (info.KeyChar == 'o')
+                    Console.WriteLine("Enter 'open' to get to the Open ACCOUNT Section, enter 'back' to get back to the Main Menu");
+                    string cmd = Console.ReadLine();
+                    if (cmd == "open")
                     {
                         DisplayOpenACCOUNTSection();
                     }
-                    else if (info.KeyChar == 'b')
+                    else if (cmd == "back")
                     {
                         DisplayMainMenu();
                     }
@@ -440,29 +445,29 @@ namespace BankApplication
                 {
                     int accounts = number_of_accounts_transable + number_of_frozen_accounts;
                     Console.WriteLine(accounts + " accounts found!");
-                    Console.WriteLine("Enter 'back' to get back to the Main Menu, enter 'o' to get to the Open ACCOUNT Section, enter 'f' to get to the Freeze ACCOUNT Section, enter 'u' to get to the Unfreeze ACCOUNT Section, enter 'c' to get to the Close ACCOUNT Section, enter 't' to get to the Transfer ACCOUNT Section ");
-                    ConsoleKeyInfo info = Console.ReadKey();
-                    if (info.KeyChar == 'b')
+                    Console.WriteLine("Enter 'back' to get back to the Main Menu, enter 'open' to get to the Open ACCOUNT Section, enter 'freeze' to get to the Freeze ACCOUNT Section, enter 'unfreeze' to get to the Unfreeze ACCOUNT Section, enter 'c' to get to the Close ACCOUNT Section, enter 'transfer' to get to the Transfer ACCOUNT Section ");
+                    string cmd = Console.ReadLine();
+                    if (cmd == "back")
                     {
                         DisplayMainMenu();
                     }
-                    else if (info.KeyChar == 'o')
+                    else if (cmd == "open")
                     {
                         DisplayOpenACCOUNTSection();
                     }
-                    else if(info.KeyChar=='f')
+                    else if(cmd=="freeze")
                     {
                         DisplayFreezeACCOUNTSection();
                     }
-                    else if (info.KeyChar == 'u')
+                    else if (cmd == "unfreeze")
                     {
                         DisplayUnfreezeACCOUNTSection();
                     }
-                    else if (info.KeyChar == 'c')
+                    else if (cmd == "close")
                     {
                         DisplayCloseACCOUNTSection();
                     }
-                    else if(info.KeyChar=='t')
+                    else if(cmd=="transfer")
                     {
                         DisplayTransferACCOUNTSection();
                     }
@@ -494,32 +499,32 @@ namespace BankApplication
             uint[] depositor = new uint[20] { CID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             Console.WriteLine("Enter '1' to open an SAVING account, '2' for CREDIT:");
             account_t type = account_t.CREDIT;
-            ConsoleKeyInfo info = Console.ReadKey();
-            if (info.KeyChar == '1')
+            string cmd = Console.ReadLine();
+            if (cmd == "1")
             {
                 type = account_t.SAVING;
             }
-            else if (info.KeyChar == '2')
+            else if (cmd == "2")
             {
                 type = account_t.CREDIT;
             }
 
             Console.WriteLine("Enter '1' to use an EUR, '2' for USD, '3' for GBP and '4' for JPY:");
             currency_t currency = currency_t.EUR;
-            info = Console.ReadKey();
-            if (info.KeyChar == '1')
+            cmd = Console.ReadLine();
+            if (cmd == "1")
             {
                 currency = currency_t.EUR;
             }
-            else if (info.KeyChar == '2')
+            else if (cmd == "2")
             {
                 currency = currency_t.USD;
             }
-            else if (info.KeyChar == '3')
+            else if (cmd == "3")
             {
                 currency = currency_t.GBP;
             }
-            else if (info.KeyChar == '4')
+            else if (cmd == "4")
             {
                 currency = currency_t.JPY;
             }
@@ -621,13 +626,13 @@ namespace BankApplication
                     Console.WriteLine("---------------------------------");
                     c++;
                 }
-                Console.WriteLine("Enter '0' to leave the Freeze ACCOUNT Section, enter '1' to freeze the ACCOUNT:");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == '0')
+                Console.WriteLine("Enter 'leave' to leave the Freeze ACCOUNT Section, enter '1' to freeze the ACCOUNT:");
+                string cmd = Console.ReadLine();
+                if (cmd =="leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
-                else if (info.KeyChar == '1')
+                else if (cmd == "1")
                 {
                     Accounts_Management.freezeAccount(AID);
                     DisplayFreezeACCOUNTSection();
@@ -687,13 +692,13 @@ namespace BankApplication
                     Console.WriteLine("---------------------------------");
                     c++;
                 }
-                Console.WriteLine("Enter '0' to leave the Unfreeze ACCOUNT Section, enter '1' to unfreeze the ACCOUNT:");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == '0')
+                Console.WriteLine("Enter 'leave' to leave the Unfreeze ACCOUNT Section, enter '1' to unfreeze the ACCOUNT:");
+                string cmd = Console.ReadLine();
+                if (cmd =="leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
-                else if (info.KeyChar == '1')
+                else if (cmd == "1")
                 {
                     Accounts_Management.unfreezeAccount(AID);
                     DisplayUnfreezeACCOUNTSection();
@@ -751,13 +756,13 @@ namespace BankApplication
                     Console.WriteLine("---------------------------------");
                     c++;
                 }
-                Console.WriteLine("Enter '0' to leave the Close ACCOUNT Section, enter '1' to close the ACCOUNT (=PERMANENT!!!!!!):");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == '0')
+                Console.WriteLine("Enter 'leave' to leave the Close ACCOUNT Section, enter '1' to close the ACCOUNT (=PERMANENT!!!!!!):");
+                string cmd = Console.ReadLine();
+                if (cmd =="leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
-                else if (info.KeyChar == '1')
+                else if (cmd == "1")
                 {
                     Accounts_Management.closeAccount(AID);
                     DisplayCloseACCOUNTSection();
@@ -771,26 +776,26 @@ namespace BankApplication
             Accounts_Management.countTransferableAIDs(ref number_of_accounts_transable);
             if (number_of_accounts_transable <= 0)
             {
-                Console.WriteLine("No (open/unfrozen) ACCOUNTS found! Enter '0' to leave the Transfer ACCOUNT Section, enter 'o' to get to the Open ACCOUNT Section:");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == '0')
+                Console.WriteLine("No (open/unfrozen) ACCOUNTS found! Enter 'leave' to leave the Transfer ACCOUNT Section, enter 'open' to get to the Open ACCOUNT Section:");
+                string cmd = Console.ReadLine();
+                if (cmd =="leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
-                else if (info.KeyChar == 'o')
+                else if (cmd == "open")
                 {
                     DisplayOpenACCOUNTSection();
                 }
             }
             else if (number_of_accounts_transable <2)
             {
-                Console.WriteLine("There are at least 2 accounts needed to issue transfers! Enter '0' to leave the Transfer ACCOUNT Section, enter 'o' to get to the Open ACCOUNT Section:");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == '0')
+                Console.WriteLine("There are at least 2 accounts needed to issue transfers! Enter 'leave' to leave the Transfer ACCOUNT Section, enter 'open' to get to the Open ACCOUNT Section:");
+                string cmd = Console.ReadLine();
+                if (cmd =="leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
-                else if (info.KeyChar == 'o')
+                else if (cmd == "open")
                 {
                     DisplayOpenACCOUNTSection();
                 }
@@ -845,13 +850,13 @@ namespace BankApplication
                     Console.WriteLine("---------------------------------");
                     c++;
                 }
-                Console.WriteLine("Enter '0' to leave the Transfer ACCOUNT Section, enter '1' to go on, enter '2' to start over:");
-                ConsoleKeyInfo info = Console.ReadKey();
-                if (info.KeyChar == '0')
+                Console.WriteLine("Enter 'leave' to leave the Transfer ACCOUNT Section, enter '1' to go on, enter '2' to start over:");
+                string cmd = Console.ReadLine();
+                if (cmd =="leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
-                else if (info.KeyChar == '1')
+                else if (cmd == "1")
                 {
                     int destAID = 0;
                     string destAID_str = "t";
@@ -899,13 +904,13 @@ namespace BankApplication
                         Console.WriteLine("---------------------------------");
                         c++;
                     }
-                    Console.WriteLine("Enter '0' to leave the Transfer ACCOUNT Section, enter '1' to go on, enter '2' to start over:");
-                    info = Console.ReadKey();
-                    if (info.KeyChar == '0')
+                    Console.WriteLine("Enter 'leave' to leave the Transfer ACCOUNT Section, enter '1' to go on, enter '2' to start over:");
+                    cmd = Console.ReadLine();
+                    if (cmd =="leave")
                     {
                         DisplayACCOUNTManagementSection();
                     }
-                    else if (info.KeyChar == '1')
+                    else if (cmd == "1")
                     {
                         float amount =-1.00f;
                         string amount_str = "t";
@@ -1025,13 +1030,13 @@ namespace BankApplication
                         DisplayTransferACCOUNTSection();
 
                     }
-                    else if (info.KeyChar == '2')
+                    else if (cmd == "2")
                     {
                         DisplayTransferACCOUNTSection();
                     }
 
                 }
-                else if(info.KeyChar=='2')
+                else if(cmd== "2")
                 {
                     DisplayTransferACCOUNTSection();
                 }
