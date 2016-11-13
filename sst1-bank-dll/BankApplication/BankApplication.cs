@@ -811,6 +811,11 @@ namespace BankApplication
                 {
                     DisplayOpenACCOUNTSection();
                 }
+                else
+                {
+                    Console.WriteLine("Command not found!");
+                    DisplayTransferACCOUNTSection();
+                }
             }
             else if (number_of_accounts_transable <2)
             {
@@ -823,6 +828,11 @@ namespace BankApplication
                 else if (cmd == "open")
                 {
                     DisplayOpenACCOUNTSection();
+                }
+                else
+                {
+                    Console.WriteLine("Command not found!");
+                    DisplayTransferACCOUNTSection();
                 }
             }
             else
@@ -1059,10 +1069,20 @@ namespace BankApplication
                     {
                         DisplayTransferACCOUNTSection();
                     }
+                    else
+                    {
+                        Console.WriteLine("Command not found!");
+                        DisplayTransferACCOUNTSection();
+                    }
 
                 }
                 else if(cmd== "2")
                 {
+                    DisplayTransferACCOUNTSection();
+                }
+                else
+                {
+                    Console.WriteLine("Command not found!");
                     DisplayTransferACCOUNTSection();
                 }
 
