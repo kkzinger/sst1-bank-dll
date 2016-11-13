@@ -340,16 +340,21 @@ namespace BankApplication
                 Console.WriteLine("Country: " + CustomerToDeactivate.Country);
                 Console.WriteLine("Enter 'leave' to leave the Deactivate CUSTOMER Section, enter '1' to deactivate the CUSTOMER:");
                 string cmd = Console.ReadLine();
-                if (cmd =="leave")
+                if (cmd == "leave")
                 {
                     DisplayCUSTOMERManagementSection();
                 }
-                else if(cmd=="1")
+                else if (cmd == "1")
                 {
                     Customers_Management.deactivateCustomer(ref CustomerToDeactivate);
                     DisplayDeactivateCUSTOMERSection();
                 }
-            }
+                else
+                {
+                    Console.WriteLine("Command not found!");
+                    DisplayDeactivateCUSTOMERSection();
+                }
+              }
         }
 
         static void DisplayReactivateCUSTOMERSection()
