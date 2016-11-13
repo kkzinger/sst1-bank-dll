@@ -778,13 +778,18 @@ namespace BankApplication
                 }
                 Console.WriteLine("Enter 'leave' to leave the Close ACCOUNT Section, enter '1' to close the ACCOUNT (=PERMANENT!!!!!!):");
                 string cmd = Console.ReadLine();
-                if (cmd =="leave")
+                if (cmd == "leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
                 else if (cmd == "1")
                 {
                     Accounts_Management.closeAccount(AID);
+                    DisplayCloseACCOUNTSection();
+                }
+                else
+                {
+                    Console.WriteLine("Command not found!");
                     DisplayCloseACCOUNTSection();
                 }
             }
