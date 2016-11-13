@@ -14,15 +14,20 @@ namespace BankApplication
         static void DisplayMainMenu()
         {
             Console.WriteLine();
-            Console.WriteLine("Press 'c' for the Customer Management section, press 'a' for the Account Management section...");
-            ConsoleKeyInfo info = Console.ReadKey();
-            if (info.KeyChar == 'c')
+            Console.WriteLine("Press 'customer' for the Customer Management section, press 'account' for the Account Management section...");
+            string cmd = Console.ReadLine();
+            if (cmd == "customer")
             {
                 DisplayCUSTOMERManagementSection();
             }
-            else if (info.KeyChar == 'a')
+            else if (cmd == "account")
             {
                 DisplayACCOUNTManagementSection();
+            }
+            else
+            {
+                Console.WriteLine("Command not found!");
+                DisplayMainMenu();
             }
          }
 
