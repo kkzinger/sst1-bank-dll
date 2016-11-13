@@ -403,6 +403,11 @@ namespace BankApplication
                     Customers_Management.activateCustomer(ref CustomerToDeactivate);
                     DisplayReactivateCUSTOMERSection();
                 }
+                else
+                {
+                    Console.WriteLine("Command not found!");
+                    DisplayReactivateCUSTOMERSection();
+                }
             }
         }
         static void DisplayACCOUNTManagementSection()
