@@ -2,6 +2,7 @@
 using Assembly_OwnDLLs_Customers;
 using Assembly_OwnDLLs_Accounts;
 using Assembly_OwnDLLs_AccountActions;
+using Assembly_OwnDLLs_Currency;
 
 namespace BankApplication
 {
@@ -10,7 +11,7 @@ namespace BankApplication
         static void DisplayMainMenu()
         {
             Console.WriteLine();
-            Console.WriteLine("Enter 'customer' for the Customer Management section, enter 'account' for the Account Management section...");
+            Console.WriteLine("Enter 'customer' for the Customer Management section, enter 'account' for the Account Management section, enter 'currency' for the Currency Management section...");
             string cmd = Console.ReadLine();
             if (cmd == "customer")
             {
@@ -19,6 +20,10 @@ namespace BankApplication
             else if (cmd == "account")
             {
                 DisplayACCOUNTManagementSection();
+            }
+            else if (cmd == "currency")
+            {
+                DisplayCURRENCYManagementSection();
             }
             else
             {
@@ -1083,6 +1088,101 @@ namespace BankApplication
                 }
 
             }
+        }
+        static void DisplayCURRENCYManagementSection()
+        {
+            Console.WriteLine();
+            Console.WriteLine("CURRENCY Management Section:");
+            Console.WriteLine("Enter 'back' to get back to the Main Menu, enter 'all' to list all CURRENCies supported, enter 'add' to add a new CURRENCY,enter 'get' to geht the current exchange rate of a CURRENCY, enter 'update' to update the exchange rate of a CURRENCY...");
+            string cmd = Console.ReadLine();
+            if (cmd == "back")
+            {
+                DisplayMainMenu();
+            }
+            else if (cmd == "all")
+            {
+                Console.WriteLine("NOT IMPLEMENTED YET");
+                DisplayCURRENCYManagementSection();
+            }
+            else if (cmd == "add")
+            {
+                DisplayAddCURRENCYSection();
+            }
+            else if (cmd == "get")
+            {
+                DisplayGetExRateOfCURRENCYSection();
+            }
+            else if (cmd == "update")
+            {
+                DisplayUpdateExRateOfCURRENCYSection();
+            }
+            else
+            {
+                Console.WriteLine("Command not found!");
+                DisplayCURRENCYManagementSection();
+            }
+        }
+
+        static void DisplayAddCURRENCYSection()
+        {
+            string currID = "";
+            Console.WriteLine("----------------------------TODO: IMPLEMENT CHECK OF DOUBLE IDs");
+            while (currID.Length != 3)
+            {
+                Console.WriteLine("Insert the ID of the CURRENCY to add (3 characters):");
+                currID = Console.ReadLine();
+            }
+            string exchangeRateToEUR_str = "t";
+            float exchangeRateToEUR = 0.0f;
+            while (!float.TryParse(exchangeRateToEUR_str, out exchangeRateToEUR))
+            {
+
+                Console.WriteLine("Insert the current exchange rate to EUR of the CURRENCY you want to add:");
+                exchangeRateToEUR_str = Console.ReadLine();
+            }
+            exchangeRateToEUR = float.Parse(exchangeRateToEUR_str);
+            Currency_Management.addCurrency(currID, exchangeRateToEUR);
+            Console.WriteLine("----------------------------TODO: IMPLEMENT DISPLAY OF ADDED CURRENCY");
+            DisplayCURRENCYManagementSection();
+        }
+
+        static void DisplayGetExRateOfCURRENCYSection()
+        {
+            string currID = "";
+            Console.WriteLine("----------------------------TODO: IMPLEMENT THE CHECK IF ID EXISTS");
+            while (currID.Length != 3)
+            {
+                Console.WriteLine("Insert the ID of the CURRENCY you want to get the exchange rate from:");
+                currID = Console.ReadLine();
+            }
+            float exchangeRate = 0.0f;
+            Currency_Management.getCurrencyExchangeRate(currID, ref exchangeRate);
+            Console.WriteLine("The exchange rate to EUR of the CURRENCY with the ID " + currID + " is:");
+            Console.WriteLine(exchangeRate);
+            DisplayCURRENCYManagementSection();
+        }
+
+        static void DisplayUpdateExRateOfCURRENCYSection()
+        {
+            string currID = "";
+            Console.WriteLine("----------------------------TODO: IMPLEMENT THE CHECK IF ID EXISTS");
+            while (currID.Length != 3)
+            {
+                Console.WriteLine("Insert the ID of the CURRENCY of which you want to update the exchange rate:");
+                currID = Console.ReadLine();
+            }
+            string exchangeRateToEUR_str = "t";
+            float exchangeRateToEUR = 0.0f;
+            while (!float.TryParse(exchangeRateToEUR_str, out exchangeRateToEUR))
+            {
+
+                Console.WriteLine("Insert the new current exchange rate to EUR of the CURRENCY:");
+                exchangeRateToEUR_str = Console.ReadLine();
+            }
+            exchangeRateToEUR = float.Parse(exchangeRateToEUR_str);
+            Currency_Management.changeCurrencyExchangeRate(currID, exchangeRateToEUR);
+            Console.WriteLine("----------------------------TODO: IMPLEMENT DISPLAY OF UPDATED CURRENCY");
+            DisplayCURRENCYManagementSection();
         }
 
         static void Main(string[] args)

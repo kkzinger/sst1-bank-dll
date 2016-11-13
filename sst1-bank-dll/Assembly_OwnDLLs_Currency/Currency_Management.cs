@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assembly_OwnDLLs_Currency
 {
-public    class Currency_Management
+    public class Currency_Management
     {
 
         public static int addCurrency(string currID, float exchangeRateToEUR)
