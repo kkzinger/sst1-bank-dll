@@ -647,6 +647,11 @@ namespace BankApplication
                     Accounts_Management.freezeAccount(AID);
                     DisplayFreezeACCOUNTSection();
                 }
+                else
+                {
+                    Console.WriteLine("Command not found!");
+                    DisplayFreezeACCOUNTSection();
+                }
             }
 
 
@@ -711,6 +716,11 @@ namespace BankApplication
                 else if (cmd == "1")
                 {
                     Accounts_Management.unfreezeAccount(AID);
+                    DisplayUnfreezeACCOUNTSection();
+                }
+                else
+                {
+                    Console.WriteLine("Command not found!");
                     DisplayUnfreezeACCOUNTSection();
                 }
             }
