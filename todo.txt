@@ -7,18 +7,21 @@ done -- Prototypen der Funktionen erstellen -> tobi 9.10
 
 -----------------------------------------------------------------------------
 
-Persistenz dll
-currency dll
-currency .net
-bank account statement dll
-testanleitung Applikation
+Persistenz dll -gerold
+currency dll -gerold
+currency .net -gerold
+bank account statement dll -gerold
+testanleitung Applikation -tobi
+einbindung fremdbank -tobi
 
-börse webapp - stubs für die definierten endpunkte
-börse webapp - (flask + dynamoDB auf aws)
-aktien app - depots speichern/abrufen (persistenz)
-aktien app - kunden verwaltung
-aktien app - depot anlegen/anzeigen/verwalten
-aktien app - aktien kaufen/verkaufen
-aktien app - order id (börse) tracking pro depot.
+
+börse webapp - stubs für die definierten endpunkte -gerold
+börse webapp - (flask + dynamoDB auf aws) -gerold
+aktien app - depots speichern/abrufen (persistenz) -tobias
+aktien app - kunden verwaltung -tobias
+aktien app - depot anlegen/anzeigen/verwalten -tobias
+aktien app - aktien kaufen/verkaufen -tobias
+aktien app - order id (börse) tracking pro depot. tobias
+aktien app frontend (console app)-tobias
 
 
