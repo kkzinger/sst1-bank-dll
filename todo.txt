@@ -1,8 +1,23 @@
 done -- Doku Vorlage besorgen -> tobi 8.10
 done -- Versionsverwaltung in VS integrieren -> gerold 8.10
 done -- Solution/Projektsetup in VS (Artikel Walkthrough)-> gerold 9.10
-Unterlagen lesen die Angegeben wurden -> 9.10
-Testing von DLLs -> gerold 10.10
+done -- Unterlagen lesen die Angegeben wurden -> 9.10
+done -- Testing von DLLs -> gerold 10.10
 done -- Prototypen der Funktionen erstellen -> tobi 9.10
+
+-----------------------------------------------------------------------------
+
+Persistenz dll
+currency dll
+currency .net
+bank account statement dll
+testanleitung Applikation
+
+börse webapplikation (flask + dynamoDB auf aws)
+aktien app - depots speichern/abrufen (persistenz)
+aktien app - kunden verwaltung
+aktien app - depot anlegen/anzeigen/verwalten
+aktien app - aktien kaufen/verkaufen
+aktien app - order id (börse) tracking pro depot.
 
 
