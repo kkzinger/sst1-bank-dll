@@ -13,7 +13,8 @@ currency .net
 bank account statement dll
 testanleitung Applikation
 
-börse webapplikation (flask + dynamoDB auf aws)
+börse webapp - stubs für die definierten endpunkte
+börse webapp - (flask + dynamoDB auf aws)
 aktien app - depots speichern/abrufen (persistenz)
 aktien app - kunden verwaltung
 aktien app - depot anlegen/anzeigen/verwalten
