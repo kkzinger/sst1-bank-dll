@@ -23,9 +23,9 @@ namespace ForeignBankComponentTestApp
                 Console.WriteLine($"Argument {s}");
             }
 
-            string email;
-            string password;
-            string toEmail;
+            string email = "wosnotsoeasybank@gmail.com";
+            string password = "WosnotsoEasyBank!1";
+            string toEmail="tobias.mayer1994@gmail.com";
 
             logger.Info($"Email: '{email}'");
             logger.Info($"Password: '{password}'");
