@@ -429,6 +429,11 @@ namespace BankApplication
                 {
                     DisplayMainMenu();
                 }
+                else
+                {
+                    Console.WriteLine("Command not found!");
+                    DisplayACCOUNTManagementSection();
+                }
             }
             else
             {
@@ -451,12 +456,17 @@ namespace BankApplication
                     {
                         DisplayMainMenu();
                     }
+                    else
+                    {
+                        Console.WriteLine("Command not found!");
+                        DisplayACCOUNTManagementSection();
+                    }
                 }
                 else
                 {
                     int accounts = number_of_accounts_transable + number_of_frozen_accounts;
                     Console.WriteLine(accounts + " accounts found!");
-                    Console.WriteLine("Enter 'back' to get back to the Main Menu, enter 'open' to get to the Open ACCOUNT Section, enter 'freeze' to get to the Freeze ACCOUNT Section, enter 'unfreeze' to get to the Unfreeze ACCOUNT Section, enter 'c' to get to the Close ACCOUNT Section, enter 'transfer' to get to the Transfer ACCOUNT Section ");
+                    Console.WriteLine("Enter 'back' to get back to the Main Menu, enter 'open' to get to the Open ACCOUNT Section, enter 'freeze' to get to the Freeze ACCOUNT Section, enter 'unfreeze' to get to the Unfreeze ACCOUNT Section, enter 'close' to get to the Close ACCOUNT Section, enter 'transfer' to get to the Transfer ACCOUNT Section ");
                     string cmd = Console.ReadLine();
                     if (cmd == "back")
                     {
@@ -481,6 +491,11 @@ namespace BankApplication
                     else if(cmd=="transfer")
                     {
                         DisplayTransferACCOUNTSection();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Command not found!");
+                        DisplayACCOUNTManagementSection();
                     }
 
                 }
@@ -804,7 +819,7 @@ namespace BankApplication
             {
                 Console.WriteLine("No (open/unfrozen) ACCOUNTS found! Enter 'leave' to leave the Transfer ACCOUNT Section, enter 'open' to get to the Open ACCOUNT Section:");
                 string cmd = Console.ReadLine();
-                if (cmd =="leave")
+                if (cmd == "leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
@@ -818,11 +833,36 @@ namespace BankApplication
                     DisplayTransferACCOUNTSection();
                 }
             }
-            else if (number_of_accounts_transable <2)
+            Console.WriteLine("Enter 'own' to transfer money between accounts managed by 'Wosnotso EasyBank', enter 'foreign' to transfer money to/from an account managed by another bank (enter '0' to cancel):");
+            string cmdb = Console.ReadLine();
+            if (cmdb == "own")
+            {
+                DisplayTransferOwnACCOUNT();
+            }
+            else if (cmdb == "foreign")
+            {
+                Console.WriteLine("NOT IMPLEMENTED YET");
+            }
+            else
+            {
+                Console.WriteLine("Command not found!");
+                DisplayTransferACCOUNTSection();
+            }
+
+
+
+        }
+
+
+        static void DisplayTransferOwnACCOUNT()
+        {
+            int number_of_accounts_transable = 0;
+            Accounts_Management.countTransferableAIDs(ref number_of_accounts_transable);
+            if (number_of_accounts_transable < 2)
             {
                 Console.WriteLine("There are at least 2 accounts needed to issue transfers! Enter 'leave' to leave the Transfer ACCOUNT Section, enter 'open' to get to the Open ACCOUNT Section:");
                 string cmd = Console.ReadLine();
-                if (cmd =="leave")
+                if (cmd == "leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
@@ -833,11 +873,12 @@ namespace BankApplication
                 else
                 {
                     Console.WriteLine("Command not found!");
-                    DisplayTransferACCOUNTSection();
+                    DisplayTransferOwnACCOUNT();
                 }
             }
             else
             {
+
                 int srcAID = 0;
                 string srcAID_str = "t";
 
@@ -857,7 +898,7 @@ namespace BankApplication
                 if ((Accounts_Management.isAccountOpen(srcAID) == -1) || (Accounts_Management.isAccountUnfrozen(srcAID) == 0))
                 {
                     Console.WriteLine("No (open/unfrozen) ACCOUNT found with the ID " + srcAID);
-                    DisplayTransferACCOUNTSection();
+                    DisplayTransferOwnACCOUNT();
                 }
 
                 Console.WriteLine("The ACCOUNT with the ID " + srcAID + " has the following data:");
@@ -888,7 +929,7 @@ namespace BankApplication
                 }
                 Console.WriteLine("Enter 'leave' to leave the Transfer ACCOUNT Section, enter '1' to go on, enter '2' to start over:");
                 string cmd = Console.ReadLine();
-                if (cmd =="leave")
+                if (cmd == "leave")
                 {
                     DisplayACCOUNTManagementSection();
                 }
@@ -913,13 +954,13 @@ namespace BankApplication
                     if ((Accounts_Management.isAccountOpen(destAID) == -1) || (Accounts_Management.isAccountUnfrozen(destAID) == 0))
                     {
                         Console.WriteLine("No (open/unfrozen) ACCOUNT found with the ID " + destAID);
-                        DisplayTransferACCOUNTSection();
+                        DisplayTransferOwnACCOUNT();
                     }
                     Console.WriteLine("The ACCOUNT with the ID " + destAID + " has the following data:");
-                     type_ = account_t.CREDIT;
+                    type_ = account_t.CREDIT;
                     Accounts_Management.getAccountType(destAID, ref type_);
                     Console.WriteLine("Type: " + type_);
-                     balance_ = 0.0f;
+                    balance_ = 0.0f;
                     AccountActions_Management.getAccountBalance(destAID, ref balance_);
                     Console.WriteLine("Balance: " + balance_);
                     c = 0;
@@ -942,22 +983,22 @@ namespace BankApplication
                     }
                     Console.WriteLine("Enter 'leave' to leave the Transfer ACCOUNT Section, enter '1' to go on, enter '2' to start over:");
                     cmd = Console.ReadLine();
-                    if (cmd =="leave")
+                    if (cmd == "leave")
                     {
                         DisplayACCOUNTManagementSection();
                     }
                     else if (cmd == "1")
                     {
-                        float amount =-1.00f;
+                        float amount = -1.00f;
                         string amount_str = "t";
                         float max_amount = 0;
                         AccountActions_Management.getAccountBalance(srcAID, ref max_amount);
-                        while ((amount <= 0)||(amount>max_amount))
+                        while ((amount <= 0) || (amount > max_amount))
                         {
                             while (!float.TryParse(amount_str, out amount))
                             {
 
-                                Console.WriteLine("Insert the amount (greater 0 and equal to or less than "+max_amount+") you want to transfer from ACCOUNT " + srcAID + " to ACCOUNT " + destAID + " (enter '0' to cancel):");
+                                Console.WriteLine("Insert the amount (greater 0 and equal to or less than " + max_amount + ") you want to transfer from ACCOUNT " + srcAID + " to ACCOUNT " + destAID + " (enter '0' to cancel):");
                                 amount_str = Console.ReadLine();
                                 if (amount_str == "0")
                                 {
@@ -971,12 +1012,12 @@ namespace BankApplication
                                 amount_str = "t";
                                 Console.WriteLine("Amount was too big!");
                             }
-                            else if(amount<0)
+                            else if (amount < 0)
                             {
                                 amount_str = "t";
                                 Console.WriteLine("Amount was too small!");
                             }
-                       }
+                        }
 
                         int orderedCID = 0;
                         int ok_transfer = -1;
@@ -1008,9 +1049,9 @@ namespace BankApplication
                                 Console.WriteLine("No (active) CUSTOMER found with the ID " + CID);
                                 continue;
                             }
-                            orderedCID =(int) CID;
-                            ok_transfer =  AccountActions_Management.transferBetweenAccounts(srcAID, destAID, orderedCID, amount);
-
+                            orderedCID = (int)CID;
+                            ok_transfer = AccountActions_Management.transferBetweenAccounts(srcAID, destAID, orderedCID, amount);
+                            Console.WriteLine("-------------------------OK_TRANSFER:" + ok_transfer + "---------------------------------------------");
                             Console.WriteLine("The ACCOUNT (FROM) with the ID " + srcAID + " has the following data:");
                             type_ = account_t.CREDIT;
                             Accounts_Management.getAccountType(srcAID, ref type_);
@@ -1073,22 +1114,26 @@ namespace BankApplication
                     else
                     {
                         Console.WriteLine("Command not found!");
-                        DisplayTransferACCOUNTSection();
+                        DisplayTransferOwnACCOUNT();
                     }
 
                 }
-                else if(cmd== "2")
+                else if (cmd == "2")
                 {
                     DisplayTransferACCOUNTSection();
                 }
                 else
                 {
                     Console.WriteLine("Command not found!");
-                    DisplayTransferACCOUNTSection();
+                    DisplayTransferOwnACCOUNT();
                 }
 
             }
         }
+    
+
+
+
         static void DisplayCURRENCYManagementSection()
         {
             Console.WriteLine();
