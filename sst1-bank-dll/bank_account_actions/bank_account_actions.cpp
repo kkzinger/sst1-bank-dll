@@ -44,6 +44,11 @@ extern "C" BANK_ACCOUNT_ACTIONS_API int transfer(unsigned int FromAID, unsigned 
 	if (_getAccountByAID(ToAID, &B) != 0)
 		return -2; //Something gone wrong in Entity Component
 
+	printf("\n\nIN TRANSFER DLL: A.balance %d, amount %d\n", A.balance, amount);
+	printf("IN TRANSFER DLL: A.unfrozen %i, B.unfrozen %i\n", A.unfrozen, B.unfrozen);
+	printf("IN TRANSFER DLL: A.open %i, B.open %i\n", A.open, B.open);
+	printf("IN TRANSFER DLL: ordererCID %i, FromAID %i, _isOrdererAllowed %i", ordererCID, FromAID, _isOrdererAllowed(ordererCID, FromAID));
+
 	//check if there is enough money on FromAID Account and if no account is frozen/closed and if orderCID is allowed to do transactions
 	if ((A.balance >= amount) && (A.unfrozen == 1) && (A.open == 1) && (B.unfrozen == 1) && (B.open == 1) && (_isOrdererAllowed(ordererCID,FromAID) == 0))
 	{

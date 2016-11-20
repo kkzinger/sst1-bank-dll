@@ -64,8 +64,9 @@ namespace Assembly_OwnDLLs_AccountActions
             if (sourceAID <= 0) return -1; //not a valid AID
             if (destinationAID <= 0) return -1; //not a valid AID
             if (ordererCID <= 0) return -1; //not a valid CID
-            
-            return transfer((uint)sourceAID, (uint)destinationAID, (uint)ordererCID, amount);
+            int TESTTRANSFER = transfer((uint)sourceAID, (uint)destinationAID, (uint)ordererCID, amount);
+            Console.WriteLine("------------------------RETURN OF transfer IN AccountsActions Assembly: " + TESTTRANSFER + "-------------------------------------------");
+            return TESTTRANSFER;
         }
 
         public static int getAccountBalance(int AID, ref float balance)
