@@ -3,6 +3,10 @@ using Assembly_OwnDLLs_Customers;
 using Assembly_OwnDLLs_Accounts;
 using Assembly_OwnDLLs_AccountActions;
 using Assembly_OwnDLLs_Currency;
+using ForeignComponent;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 namespace BankApplication
 {
@@ -841,7 +845,7 @@ namespace BankApplication
             }
             else if (cmdb == "foreign")
             {
-                Console.WriteLine("NOT IMPLEMENTED YET");
+                DisplayTransferForeignACCOUNT();
             }
             else
             {
@@ -1051,7 +1055,6 @@ namespace BankApplication
                             }
                             orderedCID = (int)CID;
                             ok_transfer = AccountActions_Management.transferBetweenAccounts(srcAID, destAID, orderedCID, amount);
-                            Console.WriteLine("-------------------------OK_TRANSFER:" + ok_transfer + "---------------------------------------------");
                             Console.WriteLine("The ACCOUNT (FROM) with the ID " + srcAID + " has the following data:");
                             type_ = account_t.CREDIT;
                             Accounts_Management.getAccountType(srcAID, ref type_);
@@ -1130,9 +1133,204 @@ namespace BankApplication
 
             }
         }
-    
+
+        static void DisplayTransferForeignACCOUNT()
+        {
+
+            string email = "wosnotsoeasybank@gmail.com";
+            string password = "WosnotsoEasyBank!1";
+
+            int ownAID = 0;
+            string ownAID_str = "t";
 
 
+            while (!int.TryParse(ownAID_str, out ownAID))
+            {
+
+                Console.WriteLine("Insert the ID of the ACCOUNT you want to make FOREIGN transactions with (enter '0' to cancel):");
+                ownAID_str = Console.ReadLine();
+                if (ownAID_str == "0")
+                {
+
+                    DisplayTransferACCOUNTSection();
+                }
+            }
+            ownAID = int.Parse(ownAID_str);
+            if ((Accounts_Management.isAccountOpen(ownAID) == -1) || (Accounts_Management.isAccountUnfrozen(ownAID) == 0))
+            {
+                Console.WriteLine("No (open/unfrozen) ACCOUNT found with the ID " + ownAID);
+                DisplayTransferForeignACCOUNT();
+            }
+
+            Console.WriteLine("The ACCOUNT with the ID " + ownAID + " has the following data:");
+            account_t type_ = account_t.CREDIT;
+            Accounts_Management.getAccountType(ownAID, ref type_);
+            Console.WriteLine("Type: " + type_);
+            float balance_ = 0.0f;
+            AccountActions_Management.getAccountBalance(ownAID, ref balance_);
+            Console.WriteLine("Balance: " + balance_);
+            uint[] deps = new uint[20];
+            int c = 0;
+            Accounts_Management.getAccountDepositors(ownAID, deps);
+            Console.WriteLine("Depositors:");
+            while (deps[c] != 0)
+            {
+                CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("ID: " + C.CID);
+                Console.WriteLine("First Name: " + C.FirstName);
+                Console.WriteLine("Last Name: " + C.LastName);
+                Console.WriteLine("Street Name: " + C.Street);
+                Console.WriteLine("Street Number: " + C.StreetNr);
+                Console.WriteLine("City: " + C.City);
+                Console.WriteLine("Postal Code: " + C.PostalCode);
+                Console.WriteLine("Country: " + C.Country);
+                Console.WriteLine("---------------------------------");
+                c++;
+            }
+            Console.WriteLine("Enter 'leave' to leave the Transfer Foreign ACCOUNT Section, enter '1' to go on: ");
+            string cmd = Console.ReadLine();
+            if (cmd == "leave")
+            {
+                DisplayTransferACCOUNTSection();
+            }
+            else if (cmd == "1")
+            {
+
+                int orderedCID = 0;
+                int ok_transfer = -1;
+                while (ok_transfer == -1)
+                {
+                    uint CID = 0;
+                    string CID_str = "t";
+
+                    if (CID == 0)
+                    {
+                        while (!uint.TryParse(CID_str, out CID))
+                        {
+
+                            Console.WriteLine("Insert the ID of the CUSTOMER you want to use as Orderer:");
+                            CID_str = Console.ReadLine();
+
+                        }
+                    }
+                    else
+                    {
+                        CID_str = CID.ToString();
+                    }
+
+                    CID = uint.Parse(CID_str);
+                    CUSTOMER CustomerToModify = Customers_Management.getCustomerByCID(CID);
+                    if ((CustomerToModify.CID == 0) || (CustomerToModify.Active == 0))
+                    {
+                        Console.WriteLine("No (active) CUSTOMER found with the ID " + CID);
+                        continue;
+                    }
+                    orderedCID = (int)CID;
+                    uint[] depositors = new uint[20];
+                    Accounts_Management.getAccountDepositors(ownAID, depositors);
+                    foreach (uint cid in depositors)
+                    {
+                        if (orderedCID == cid)
+                        {
+                            ok_transfer = 0;
+                            break;
+                        }
+
+                    }
+                }
+                Console.WriteLine("The CUSTOMER with the ID " + orderedCID + " has the following data: ");
+                CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("ID: " + C.CID);
+                Console.WriteLine("First Name: " + C.FirstName);
+                Console.WriteLine("Last Name: " + C.LastName);
+                Console.WriteLine("Street Name: " + C.Street);
+                Console.WriteLine("Street Number: " + C.StreetNr);
+                Console.WriteLine("City: " + C.City);
+                Console.WriteLine("Postal Code: " + C.PostalCode);
+                Console.WriteLine("Country: " + C.Country);
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("Enter 'leave' to leave the Transfer Foreign ACCOUNT Section, enter '1' to go on: ");
+                cmd = Console.ReadLine();
+                if (cmd == "leave")
+                {
+                    DisplayTransferACCOUNTSection();
+                }
+                else if (cmd == "1")
+                {
+                    string ForeignBankName = "";
+                    while (ForeignBankName.Length < 12)
+                    {
+
+                        Console.WriteLine("Enter the NAME of the FOREIGN BANK (at least 12 characters) (z.B.: testbank_1999@gmail.com), enter 'leave' to leave the Transfer Foreign ACCOUNT Section");
+                        cmd = Console.ReadLine();
+                        if (cmd == "leave")
+                        {
+                            DisplayTransferACCOUNTSection();
+                        }
+                        else
+                        {
+                            ForeignBankName = cmd;
+                        }
+                    }
+
+                    Console.WriteLine("Enter 'direct debit' to issue a direct debit authority against a foreign bank account, enter 'transfer' to transfer money TO a foreign bank account, enter 'leave' to leave the Transfer Foreign ACCOUNT Section");
+                    cmd = Console.ReadLine();
+                    if (cmd == "leave")
+                    {
+                        DisplayTransferACCOUNTSection();
+                    }
+                    else if(cmd == "direct debit")
+                    {
+
+                    }
+                    else if(cmd == "transfer")
+                    {
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Command not found!");
+                        DisplayTransferForeignACCOUNT();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Command not found!");
+                    DisplayTransferForeignACCOUNT();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Command not found!");
+                DisplayTransferForeignACCOUNT();
+            }
+        }
+        
+
+
+
+
+        private static void ConfigLogging()
+        {
+            // Step 1. Create configuration object 
+            var config = new LoggingConfiguration();
+
+            // Step 2. Create targets and add them to the configuration 
+            var consoleTarget = new ColoredConsoleTarget();
+            config.AddTarget("console", consoleTarget);
+            consoleTarget.Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}";
+            var rule1 = new LoggingRule("*", LogLevel.Trace, consoleTarget);
+            config.LoggingRules.Add(rule1);
+            LogManager.Configuration = config;
+        }
+
+        private static void ForeignBankComponent_MessageReceived(object sender, BankMessage.BankMessage e)
+        {
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Info($"Received Message from: '{e.AbsenderBankId}' to '{e.EmpfaengerBankId}'.");
+        }
 
         static void DisplayCURRENCYManagementSection()
         {
