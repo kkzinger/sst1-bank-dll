@@ -18,9 +18,12 @@ extern "C" BANK_ACCOUNTS_API int Open(unsigned int* Depositors, account_t Type, 
 	if (Balance < 0)
 		return -1;//no negative balance supported
 
-	unsigned int _Depositors[MAX_CUST_PER_ACCNT] = {};
+	unsigned int _Depositors[MAX_CUST_PER_ACCNT];
 	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
+	{
+		//printf("Accounts add CID -- %d\n", Depositors[i]);
 		_Depositors[i] = Depositors[i];
+	}
 
 	int AID = _addAccount(Type, CurID, Balance, _Depositors);
 	if (AID < 0)

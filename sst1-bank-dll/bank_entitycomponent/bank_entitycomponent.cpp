@@ -46,15 +46,17 @@ extern "C" BANK_ENTITYCOMPONENT_API int _getAccountsByCID(unsigned int CID, unsi
 extern "C" BANK_ENTITYCOMPONENT_API int _getCustomersByAID(unsigned int AID, unsigned int* cidList)
 {
 	//check if cidList has correct size
-	if (sizeof(cidList) / sizeof(unsigned int) < MAX_CUST_PER_ACCNT)
-		return -1; //provided array of cid is to small
+	//if (sizeof(cidList) / sizeof(unsigned int) < MAX_CUST_PER_ACCNT)
+	//	return -1; //provided array of cid is to small
 	
 	account_list::iterator it;
 	for (it = allAccounts->begin(); it != allAccounts->end(); it++)
 	{
+		//printf("getcustom by aid %d",it->AID);
 		if (it->AID == AID)
 		{
-			cidList = it->depositors;
+			for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
+				cidList[i] = it->depositors[i];
 			return 0; //Found Account and return depositor list
 		}
 	}
@@ -206,9 +208,11 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addAccount(account_t type, currency_t c
 	A->currency = currency;
 	A->balance = balance;
 	
-	for (int i = 0; i < sizeof(A->depositors) / sizeof(A->depositors[0]); i++)
+	for (int i = 0; i < MAX_CUST_PER_ACCNT; i++)
+	{
+		//printf("ENTITY add CID -- %d\n", depositors[i]);
 		A->depositors[i] = depositors[i];
-
+	}
 	A->unfrozen = 1;
 	A->open = 1;
 
@@ -219,8 +223,8 @@ extern "C" BANK_ENTITYCOMPONENT_API int _addAccount(account_t type, currency_t c
 
 extern "C" BANK_ENTITYCOMPONENT_API int _updateAccount(ACCOUNT* changedAccount)
 {
-	if (sizeof(changedAccount->depositors) / sizeof(changedAccount->depositors[0]) > MAX_CUST_PER_ACCNT)
-		return -1; //provided array of cid is to big
+	//if (sizeof(changedAccount->depositors) / sizeof(changedAccount->depositors[0]) > MAX_CUST_PER_ACCNT)
+	//	return -1; //provided array of cid is to big
 
 	account_list::iterator it;
 	for (it = allAccounts->begin(); it != allAccounts->end(); it++)
