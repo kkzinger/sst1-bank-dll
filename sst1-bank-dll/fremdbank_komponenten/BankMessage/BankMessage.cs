@@ -1,4 +1,7 @@
 ﻿//Sebastian Buchegger
+
+using System.Xml.Serialization;
+
 namespace BankMessage
 {
     using System;
@@ -10,7 +13,15 @@ namespace BankMessage
 
         public double Betrag { get; set; }
 
+        [XmlIgnore]
         public DateTimeOffset Ablaufdatum { get; set; }
+
+        [XmlElement("Ablaufdatum")]
+        public string AblaufdatumStr
+        {
+            get { return Ablaufdatum.ToString("O"); }
+            set { Ablaufdatum = DateTimeOffset.Parse(value); }
+        }
 
         public string AbsenderBankId { get; set; }
 

@@ -15,6 +15,8 @@ namespace ForeignComponent
         private readonly IBankCommunicationService _communicationService;
         private readonly string _email;
         private Random rand;
+        private readonly SentMessageSerializer _serializer;
+
 
         private readonly Dictionary<long, BankMessage.BankMessage> _sentMessages;
 
@@ -22,7 +24,6 @@ namespace ForeignComponent
         {
 
             _email = email;
-            _sentMessages = new Dictionary<long, BankMessage.BankMessage>();
             var smtpCredentials = new SmtpCredentials
             {
                 UserName = email,
@@ -53,6 +54,8 @@ namespace ForeignComponent
             {
                 throw new BankCommunicationException("Cannot communicate.", e);
             }
+            _serializer = new SentMessageSerializer();
+            _sentMessages = _serializer.Load();
 
             _communicationService.MessagesAvailable += communicationService_MessagesAvailable;
 
@@ -90,7 +93,7 @@ namespace ForeignComponent
                             //we received an expecetd ACK/NACK 
                             _logger.Info($"Expected ACK/NACK for message '{bankMessage.MessageID}' received. Removing message from list. Fire MessageReceived event.");
                             _sentMessages.Remove(bankMessage.MessageID);
-
+                          _serializer.Store(_sentMessages);
                             MessageReceived?.Invoke(this, bankMessage);
                         }
                         else
@@ -135,18 +138,25 @@ namespace ForeignComponent
                 SwitchReceipients(message);
                 MessageReceived?.Invoke(this, message);
                 _sentMessages.Remove(message.MessageID);
+                _serializer.Store(_sentMessages);
             }
         }
 
         public async void SendTransaction(BankMessage.BankMessage message)
         {
             _logger.Info($"Sending Message. Type: '{message.TransaktionsTyp}' Id: '{message.MessageID}' From: '{message.AbsenderBankId}' To: '{message.EmpfaengerBankId}'");
+
             if (message.TransaktionsTyp == TransactionType.Abbuchung ||
                 message.TransaktionsTyp == TransactionType.Ueberweisung)
             {
-
+                if (_sentMessages.ContainsKey(message.MessageID))
+                {
+                    _logger.Error($"Message with id {message.MessageID} already in list!");
+                    throw new BankCommunicationException("Message with same Id already Sent!", null);
+                }
                 //we expect an ACK/NACK for this message so we store it.
                 _sentMessages.Add(message.MessageID, message);
+                _serializer.Store(_sentMessages);
             }
             var messageString = BankMessageParser.BankMessageParser.Serialize(message);
             await _communicationService.Send(_email, message.EmpfaengerBankId, messageString);
