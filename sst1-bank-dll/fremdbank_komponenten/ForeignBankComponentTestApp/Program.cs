@@ -73,7 +73,7 @@ namespace ForeignBankComponentTestApp
         private static void ForeignBankComponent_MessageReceived(object sender, BankMessage.BankMessage e)
         {
             var logger = LogManager.GetCurrentClassLogger();
-            logger.Info($"Received Message  from: '{e.AbsenderBankId}' to '{e.EmpfaengerBankId}'.");
+            logger.Info($"Received Message ('{e.TransaktionsTyp}')  from: '{e.AbsenderBankId}' to '{e.EmpfaengerBankId}'.");
             
         }
     }
