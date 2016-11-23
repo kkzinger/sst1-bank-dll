@@ -1343,7 +1343,7 @@ namespace BankApplication
                         else if (cmd == "1")
                         {
                             AccountActions_Management.depositToAccount(ownAID, amount);
-                            BankMessage.BankMessage BM = new BankMessage.BankMessage(1, amount, DateTimeOffset.Now, email, ForeignBankName, "EUR", ownAID.ToString(), foreignAID.ToString(), BankMessage.TransactionType.Abbuchung, "from " + orderedCID, foreignBankComponent.GetRandomMessageID());
+                            BankMessage.BankMessage BM = new BankMessage.BankMessage(1, amount, DateTimeOffset.Now.AddHours(8), email, ForeignBankName, "EUR", ownAID.ToString(), foreignAID.ToString(), BankMessage.TransactionType.Abbuchung, "from " + orderedCID, foreignBankComponent.GetRandomMessageID());
                             foreignBankComponent.SendTransaction(BM);
                             SentMessages.Add(BM.MessageID, BM);
                             Console.WriteLine("The ACCOUNT with the ID " + ownAID + " has the following data:");
@@ -1425,7 +1425,7 @@ namespace BankApplication
                         else if (cmd == "1")
                         {
                             AccountActions_Management.withdrawFromAccount(ownAID, amount);
-                            BankMessage.BankMessage BM = new BankMessage.BankMessage(1, amount, DateTimeOffset.Now, email, ForeignBankName, "EUR", ownAID.ToString(), foreignAID.ToString(), BankMessage.TransactionType.Ueberweisung, "from " + orderedCID, foreignBankComponent.GetRandomMessageID());
+                            BankMessage.BankMessage BM = new BankMessage.BankMessage(1, amount, DateTimeOffset.Now.AddHours(8), email, ForeignBankName, "EUR", ownAID.ToString(), foreignAID.ToString(), BankMessage.TransactionType.Ueberweisung, "from " + orderedCID, foreignBankComponent.GetRandomMessageID());
                             foreignBankComponent.SendTransaction(BM);
                             SentMessages.Add(BM.MessageID, BM);
                             Console.WriteLine("The ACCOUNT with the ID " + ownAID + " has the following data:");
@@ -1510,60 +1510,122 @@ namespace BankApplication
         {
             logger = LogManager.GetCurrentClassLogger();
             logger.Info($"Received Message from: '{e.AbsenderBankId}' to '{e.EmpfaengerBankId}'.");
-            if(e.Ablaufdatum<=DateTimeOffset.Now)
+            if (e.Ablaufdatum>DateTimeOffset.Now)
             {
-                if(e.TransaktionsTyp==BankMessage.TransactionType.Abbuchung)
+                
+                if (e.TransaktionsTyp==BankMessage.TransactionType.Abbuchung)
                 {
-                    RECEIVE_DirectDebit();
+                    RECEIVE_DirectDebit(e.MessageID, e.EmpfaengerKonto, e.Betrag);
                 }
                 else if(e.TransaktionsTyp==BankMessage.TransactionType.Ueberweisung)
                 {
-                    RECEIVE_Transfer();
+                    RECEIVE_Transfer(e.MessageID, e.EmpfaengerKonto, e.Betrag);
                 }
                 else if(e.TransaktionsTyp==BankMessage.TransactionType.NACK)
                 {
-                    if (e.TransaktionsTyp == BankMessage.TransactionType.Abbuchung)
-                        ROLLBACK_DirectDebit();
-                    else
-                        ROLLBACK_Transfer();
+                    logger.Info($"NACK received for'{e.MessageID}'. Rolling back transaction...");
+                    ReceiveNACK(e.MessageID);
+                    
                 }
                 else if(e.TransaktionsTyp==BankMessage.TransactionType.ACK)
                 {
                     
+                    logger.Info($"ACK received for'{e.MessageID}'.");
                 }
             }
 
         }
 
-        static void RECEIVE_Transfer()
+        static void RECEIVE_Transfer(long _MessageID, string _AID, double _amount)
         {
-            Console.WriteLine("NOT IMPLEMENTED YET");
-            
+            int AID = int.Parse(_AID);
+            float amount = (float)_amount;
+            float curr_amount = 0.0f;
+            AccountActions_Management.getAccountBalance(AID, ref curr_amount);
+            if ((Accounts_Management.isAccountOpen(AID) == -1) || (Accounts_Management.isAccountUnfrozen(AID) == 0))
+            {
+                SendNACK(_MessageID);
+
+            }
+            else
+            {
+                SendACK(_MessageID);
+            }
+
         }
 
-        static void RECEIVE_DirectDebit()
+        static void RECEIVE_DirectDebit(long _MessageID, string _AID, double _amount)
         {
-            Console.WriteLine("NOT IMPLEMENTED YET");
+            int AID = int.Parse(_AID);
+            float amount = (float)_amount;
+            float curr_amount = 0.0f;
+            AccountActions_Management.getAccountBalance(AID, ref curr_amount);
+            if ((Accounts_Management.isAccountOpen(AID) == -1) || (Accounts_Management.isAccountUnfrozen(AID) == 0))
+            {
+                SendNACK(_MessageID);
+           
+            }
+            else if(curr_amount<amount)
+            {
+                SendNACK(_MessageID);
+               
+            }
+            else
+            {
+                SendACK(_MessageID);
+            }
+
         }
 
-        static void ROLLBACK_Transfer()
+        static void ReceiveNACK(long _MessageID)
         {
-            Console.WriteLine("NOT IMPLEMENTED YET");
+            BankMessage.BankMessage BM = SentMessages[_MessageID];
+            if (BM.TransaktionsTyp == BankMessage.TransactionType.Abbuchung)
+            {
+                ROLLBACK_DirectDebit(BM.MessageID, BM.AbsenderKonto, BM.Betrag);
+            }
+            else if (BM.TransaktionsTyp == BankMessage.TransactionType.Ueberweisung)
+            {
+                ROLLBACK_Transfer(BM.MessageID, BM.AbsenderKonto, BM.Betrag);
+            }
         }
 
-        static void ROLLBACK_DirectDebit()
+        static void ROLLBACK_Transfer(long _MessageID, string _AID, double _amount)
         {
-            Console.WriteLine("NOT IMPLEMENTED YET");
+            int AID = int.Parse(_AID);
+            float amount = (float)_amount;
+            AccountActions_Management.depositToAccount(AID, amount);
+            logger.Info($"Successfully rolled back:'{_MessageID}'.");
         }
 
-        static void SendACK()
+        static void ROLLBACK_DirectDebit(long _MessageID, string _AID, double _amount)
         {
-            Console.WriteLine("NOT IMPLEMENTED YET");
+            int AID = int.Parse(_AID);
+            float amount = (float)_amount;
+            AccountActions_Management.withdrawFromAccount(AID, amount);
+            logger.Info($"Successfully rolled back:'{_MessageID}'.");
         }
 
-        static void SendNACK()
+        static void SendACK(long _MessageID)
         {
-            Console.WriteLine("NOT IMPLEMENTED YET");
+            BankMessage.BankMessage BM = SentMessages[_MessageID];
+            if(BM.TransaktionsTyp==BankMessage.TransactionType.Abbuchung)
+            {
+                AccountActions_Management.withdrawFromAccount(int.Parse(BM.EmpfaengerKonto), (float)BM.Betrag);
+            }
+            else if (BM.TransaktionsTyp == BankMessage.TransactionType.Ueberweisung)
+            {
+                AccountActions_Management.depositToAccount(int.Parse(BM.EmpfaengerKonto), (float)BM.Betrag);
+            }
+            BankMessage.BankMessage BM_ACK = new BankMessage.BankMessage(BM.Version, BM.Betrag, BM.Ablaufdatum.AddHours(8), BM.EmpfaengerBankId, BM.AbsenderBankId, BM.Waehrung, BM.AbsenderKonto, BM.EmpfaengerKonto, BankMessage.TransactionType.ACK, "ACKACKACK", BM.MessageID);
+            foreignBankComponent.SendTransaction(BM_ACK);
+        }
+
+        static void SendNACK(long _MessageID)
+        {
+            BankMessage.BankMessage BM = SentMessages[_MessageID];
+            BankMessage.BankMessage BM_NACK = new BankMessage.BankMessage(BM.Version, BM.Betrag, BM.Ablaufdatum.AddHours(8), BM.EmpfaengerBankId, BM.AbsenderBankId, BM.Waehrung, BM.AbsenderKonto, BM.EmpfaengerKonto, BankMessage.TransactionType.NACK, "NACKNACKNACK", BM.MessageID);
+            foreignBankComponent.SendTransaction(BM_NACK);
         }
 
         static void DisplayCURRENCYManagementSection()
