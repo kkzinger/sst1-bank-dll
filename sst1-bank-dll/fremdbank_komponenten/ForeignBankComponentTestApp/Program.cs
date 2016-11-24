@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using ForeignComponent;
@@ -23,9 +23,23 @@ namespace ForeignBankComponentTestApp
                 Console.WriteLine($"Argument {s}");
             }
 
-            string email = "wosnotsoeasybank@gmail.com";
-            string password = "WosnotsoEasyBank!1";
-            string toEmail="tobias.mayer1994@gmail.com";
+            string email;
+            string password;
+            string toEmail;
+
+            if (args.Any())
+            {
+                email = "bank1.reimar@gmail.com";
+                password = "EXouaPiL";
+                toEmail = "bank.reimar@gmail.com";
+                toEmail = "bankssd0@gmail.com";
+            }
+            else
+            {
+                email = "bank.reimar@gmail.com";
+                password = "pVXbeaYs";
+                toEmail = "bank1.reimar@gmail.com";
+            }
 
             logger.Info($"Email: '{email}'");
             logger.Info($"Password: '{password}'");

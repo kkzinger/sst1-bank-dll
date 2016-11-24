@@ -1,13 +1,24 @@
 ﻿using System;
+using System.Threading;
+using System.Collections.Generic;
 using Assembly_OwnDLLs_Customers;
 using Assembly_OwnDLLs_Accounts;
 using Assembly_OwnDLLs_AccountActions;
 using Assembly_OwnDLLs_Currency;
+using ForeignComponent;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 namespace BankApplication
 {
     class BankApplication
     {
+        static ForeignBankComponent foreignBankComponent;
+        static string email = "wosnotsoeasybank@gmail.com";
+        static string password = "WosnotsoEasyBank!1";
+        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Dictionary<long, BankMessage.BankMessage> SentMessages = new Dictionary<long , BankMessage.BankMessage>();
         static void DisplayMainMenu()
         {
             Console.WriteLine();
@@ -841,7 +852,11 @@ namespace BankApplication
             }
             else if (cmdb == "foreign")
             {
-                Console.WriteLine("NOT IMPLEMENTED YET");
+                DisplayTransferForeignACCOUNT();
+            }
+            else if(cmdb=="0")
+            {
+                DisplayACCOUNTManagementSection();
             }
             else
             {
@@ -1051,7 +1066,6 @@ namespace BankApplication
                             }
                             orderedCID = (int)CID;
                             ok_transfer = AccountActions_Management.transferBetweenAccounts(srcAID, destAID, orderedCID, amount);
-                            Console.WriteLine("-------------------------OK_TRANSFER:" + ok_transfer + "---------------------------------------------");
                             Console.WriteLine("The ACCOUNT (FROM) with the ID " + srcAID + " has the following data:");
                             type_ = account_t.CREDIT;
                             Accounts_Management.getAccountType(srcAID, ref type_);
@@ -1130,9 +1144,489 @@ namespace BankApplication
 
             }
         }
-    
+
+        static void DisplayTransferForeignACCOUNT()
+        {
 
 
+            int ownAID = 0;
+            string ownAID_str = "t";
+
+
+            while (!int.TryParse(ownAID_str, out ownAID))
+            {
+
+                Console.WriteLine("Insert the ID of the ACCOUNT you want to make FOREIGN transactions with (enter '0' to cancel):");
+                ownAID_str = Console.ReadLine();
+                if (ownAID_str == "0")
+                {
+
+                    DisplayTransferACCOUNTSection();
+                }
+            }
+            ownAID = int.Parse(ownAID_str);
+            if ((Accounts_Management.isAccountOpen(ownAID) == -1) || (Accounts_Management.isAccountUnfrozen(ownAID) == 0))
+            {
+                Console.WriteLine("No (open/unfrozen) ACCOUNT found with the ID " + ownAID);
+                DisplayTransferForeignACCOUNT();
+            }
+
+            Console.WriteLine("The ACCOUNT with the ID " + ownAID + " has the following data:");
+            account_t type_ = account_t.CREDIT;
+            Accounts_Management.getAccountType(ownAID, ref type_);
+            Console.WriteLine("Type: " + type_);
+            float balance_ = 0.0f;
+            AccountActions_Management.getAccountBalance(ownAID, ref balance_);
+            Console.WriteLine("Balance: " + balance_);
+            uint[] deps = new uint[20];
+            int c = 0;
+            Accounts_Management.getAccountDepositors(ownAID, deps);
+            Console.WriteLine("Depositors:");
+            while (deps[c] != 0)
+            {
+                CUSTOMER C = Customers_Management.getCustomerByCID(deps[c]);
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("ID: " + C.CID);
+                Console.WriteLine("First Name: " + C.FirstName);
+                Console.WriteLine("Last Name: " + C.LastName);
+                Console.WriteLine("Street Name: " + C.Street);
+                Console.WriteLine("Street Number: " + C.StreetNr);
+                Console.WriteLine("City: " + C.City);
+                Console.WriteLine("Postal Code: " + C.PostalCode);
+                Console.WriteLine("Country: " + C.Country);
+                Console.WriteLine("---------------------------------");
+                c++;
+            }
+            Console.WriteLine("Enter 'leave' to leave the Transfer Foreign ACCOUNT Section, enter '1' to go on: ");
+            string cmd = Console.ReadLine();
+            if (cmd == "leave")
+            {
+                DisplayTransferACCOUNTSection();
+            }
+            else if (cmd == "1")
+            {
+
+                int orderedCID = 0;
+                int ok_transfer = -1;
+                while (ok_transfer == -1)
+                {
+                    uint CID = 0;
+                    string CID_str = "t";
+
+                    if (CID == 0)
+                    {
+                        while (!uint.TryParse(CID_str, out CID))
+                        {
+
+                            Console.WriteLine("Insert the ID of the CUSTOMER you want to use as Orderer:");
+                            CID_str = Console.ReadLine();
+
+                        }
+                    }
+                    else
+                    {
+                        CID_str = CID.ToString();
+                    }
+
+                    CID = uint.Parse(CID_str);
+                    CUSTOMER CustomerToModify = Customers_Management.getCustomerByCID(CID);
+                    if ((CustomerToModify.CID == 0) || (CustomerToModify.Active == 0))
+                    {
+                        Console.WriteLine("No (active) CUSTOMER found with the ID " + CID);
+                        continue;
+                    }
+                    orderedCID = (int)CID;
+                    uint[] depositors = new uint[20];
+                    Accounts_Management.getAccountDepositors(ownAID, depositors);
+                    foreach (uint cid in depositors)
+                    {
+                        if (orderedCID == cid)
+                        {
+                            ok_transfer = 0;
+                            break;
+                        }
+
+                    }
+                }
+                Console.WriteLine("The CUSTOMER with the ID " + orderedCID + " has the following data: ");
+                CUSTOMER C = Customers_Management.getCustomerByCID((uint)orderedCID);
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("ID: " + C.CID);
+                Console.WriteLine("First Name: " + C.FirstName);
+                Console.WriteLine("Last Name: " + C.LastName);
+                Console.WriteLine("Street Name: " + C.Street);
+                Console.WriteLine("Street Number: " + C.StreetNr);
+                Console.WriteLine("City: " + C.City);
+                Console.WriteLine("Postal Code: " + C.PostalCode);
+                Console.WriteLine("Country: " + C.Country);
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("Enter 'leave' to leave the Transfer Foreign ACCOUNT Section, enter '1' to go on: ");
+                cmd = Console.ReadLine();
+                if (cmd == "leave")
+                {
+                    DisplayTransferACCOUNTSection();
+                }
+                else if (cmd == "1")
+                {
+                    string ForeignBankName = "";
+                    while (ForeignBankName.Length < 12)
+                    {
+
+                        Console.WriteLine("Enter the NAME of the FOREIGN BANK (at least 12 characters) (z.B.: testbank_1999@gmail.com), enter 'leave' to leave the Transfer Foreign ACCOUNT Section");
+                        cmd = Console.ReadLine();
+                        if (cmd == "leave")
+                        {
+                            DisplayTransferACCOUNTSection();
+                        }
+                        else
+                        {
+                            ForeignBankName = cmd;
+                        }
+                    }
+
+                    int foreignAID = 0;
+                    string foreignAID_str = "t";
+
+
+                    while (!int.TryParse(foreignAID_str, out foreignAID))
+                    {
+
+                        Console.WriteLine("Insert the ID of the FOREIGN ACCOUNT you want to make FOREIGN transactions with (enter '0' to cancel):");
+                        foreignAID_str = Console.ReadLine();
+                        if (foreignAID_str == "0")
+                        {
+
+                            DisplayTransferACCOUNTSection();
+                        }
+                    }
+                    foreignAID = int.Parse(foreignAID_str);
+
+                    Console.WriteLine("Enter 'direct debit' to issue a direct debit authority against a foreign bank account, enter 'transfer' to transfer money TO a foreign bank account, enter 'leave' to leave the Transfer Foreign ACCOUNT Section");
+                    cmd = Console.ReadLine();
+                    if (cmd == "leave")
+                    {
+                        DisplayTransferACCOUNTSection();
+                    }
+                    else if(cmd == "direct debit")
+                    {
+                        
+
+                        float amount = -1.00f;
+                        string amount_str = "t";
+                        while (amount <= 0)
+                        {
+                            while (!float.TryParse(amount_str, out amount))
+                            {
+
+                                Console.WriteLine("Insert the amount (greater 0) you want to transfer TO your ACCOUNT " + ownAID + " FROM the FOREIGN ACCOUNT " + foreignAID + "(" + ForeignBankName + ") (enter '0' to cancel):");
+                                amount_str = Console.ReadLine();
+                                if (amount_str == "0")
+                                {
+
+                                    DisplayTransferForeignACCOUNT();
+                                }
+                            }
+                            amount = float.Parse(amount_str);
+                            if (amount < 0)
+                            {
+                                amount_str = "t";
+                                Console.WriteLine("Amount was too small!");
+                            }
+                        }
+
+                        Console.WriteLine("Enter 'leave' to leave the Transfer Foreign ACCOUNT Section, enter '1' to transfer " + amount + " TO ACCOUNT " + ownAID + " FROM the FOREIGN ACCOUNT " + foreignAID + "(" + ForeignBankName + ") as CUSTOMER " + orderedCID + ": ");
+                        cmd = Console.ReadLine();
+                        if (cmd == "leave")
+                        {
+                            DisplayTransferACCOUNTSection();
+                        }
+                        else if (cmd == "1")
+                        {
+                            AccountActions_Management.depositToAccount(ownAID, amount);
+                            BankMessage.BankMessage BM = new BankMessage.BankMessage(1, amount, DateTimeOffset.Now.AddHours(8), email, ForeignBankName, "EUR", ownAID.ToString(), foreignAID.ToString(), BankMessage.TransactionType.Abbuchung, "from " + orderedCID, foreignBankComponent.GetRandomMessageID());
+                            foreignBankComponent.SendTransaction(BM);
+                            SentMessages.Add(BM.MessageID, BM);
+                            Console.WriteLine("The ACCOUNT with the ID " + ownAID + " has the following data:");
+                            type_ = account_t.CREDIT;
+                            Accounts_Management.getAccountType(ownAID, ref type_);
+                            Console.WriteLine("Type: " + type_);
+                            balance_ = 0.0f;
+                            AccountActions_Management.getAccountBalance(ownAID, ref balance_);
+                            Console.WriteLine("Balance: " + balance_);
+                            deps = new uint[20];
+                            c = 0;
+                            Accounts_Management.getAccountDepositors(ownAID, deps);
+                            Console.WriteLine("Depositors:");
+                            while (deps[c] != 0)
+                            {
+                                C = Customers_Management.getCustomerByCID(deps[c]);
+                                Console.WriteLine("---------------------------------");
+                                Console.WriteLine("ID: " + C.CID);
+                                Console.WriteLine("First Name: " + C.FirstName);
+                                Console.WriteLine("Last Name: " + C.LastName);
+                                Console.WriteLine("Street Name: " + C.Street);
+                                Console.WriteLine("Street Number: " + C.StreetNr);
+                                Console.WriteLine("City: " + C.City);
+                                Console.WriteLine("Postal Code: " + C.PostalCode);
+                                Console.WriteLine("Country: " + C.Country);
+                                Console.WriteLine("---------------------------------");
+                                c++;
+                            }
+
+
+
+                            DisplayTransferACCOUNTSection();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Command not found!");
+                            DisplayTransferForeignACCOUNT();
+                        }
+
+                    }
+                    else if(cmd == "transfer")
+                    {
+                         float amount = -1.00f;
+                         string amount_str = "t";
+                        float max_amount = 0;
+                        AccountActions_Management.getAccountBalance(ownAID, ref max_amount);
+                        while ((amount <= 0) || (amount > max_amount))
+                        {
+                            while (!float.TryParse(amount_str, out amount))
+                            {
+
+                                Console.WriteLine("Insert the amount (greater 0 and equal to or less than " + max_amount + ") you want to transfer from ACCOUNT " + ownAID + " to the FOREIGN ACCOUNT "+foreignAID+"("+ForeignBankName+") (enter '0' to cancel):");
+                                amount_str = Console.ReadLine();
+                                if (amount_str == "0")
+                                {
+
+                                    DisplayTransferForeignACCOUNT();
+                                }
+                            }
+                            amount = float.Parse(amount_str);
+                            if (amount > max_amount)
+                            {
+                                amount_str = "t";
+                                Console.WriteLine("Amount was too big!");
+                            }
+                            else if (amount < 0)
+                            {
+                                amount_str = "t";
+                                Console.WriteLine("Amount was too small!");
+                            }
+                        }
+
+                        Console.WriteLine("Enter 'leave' to leave the Transfer Foreign ACCOUNT Section, enter '1' to to transfer "+amount+" from ACCOUNT " + ownAID + " to the FOREIGN ACCOUNT " + foreignAID + "(" + ForeignBankName + ") as CUSTOMER "+orderedCID+": ");
+                        cmd = Console.ReadLine();
+                        if (cmd == "leave")
+                        {
+                            DisplayTransferACCOUNTSection();
+                        }
+                        else if (cmd == "1")
+                        {
+                            AccountActions_Management.withdrawFromAccount(ownAID, amount);
+                            BankMessage.BankMessage BM = new BankMessage.BankMessage(1, amount, DateTimeOffset.Now.AddHours(8), email, ForeignBankName, "EUR", ownAID.ToString(), foreignAID.ToString(), BankMessage.TransactionType.Ueberweisung, "from " + orderedCID, foreignBankComponent.GetRandomMessageID());
+                            foreignBankComponent.SendTransaction(BM);
+                            SentMessages.Add(BM.MessageID, BM);
+                            Console.WriteLine("The ACCOUNT with the ID " + ownAID + " has the following data:");
+                             type_ = account_t.CREDIT;
+                            Accounts_Management.getAccountType(ownAID, ref type_);
+                            Console.WriteLine("Type: " + type_);
+                             balance_ = 0.0f;
+                            AccountActions_Management.getAccountBalance(ownAID, ref balance_);
+                            Console.WriteLine("Balance: " + balance_);
+                             deps = new uint[20];
+                             c = 0;
+                            Accounts_Management.getAccountDepositors(ownAID, deps);
+                            Console.WriteLine("Depositors:");
+                            while (deps[c] != 0)
+                            {
+                                 C = Customers_Management.getCustomerByCID(deps[c]);
+                                Console.WriteLine("---------------------------------");
+                                Console.WriteLine("ID: " + C.CID);
+                                Console.WriteLine("First Name: " + C.FirstName);
+                                Console.WriteLine("Last Name: " + C.LastName);
+                                Console.WriteLine("Street Name: " + C.Street);
+                                Console.WriteLine("Street Number: " + C.StreetNr);
+                                Console.WriteLine("City: " + C.City);
+                                Console.WriteLine("Postal Code: " + C.PostalCode);
+                                Console.WriteLine("Country: " + C.Country);
+                                Console.WriteLine("---------------------------------");
+                                c++;
+                            }
+
+
+
+                            DisplayTransferACCOUNTSection();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Command not found!");
+                            DisplayTransferForeignACCOUNT();
+                        }
+
+
+
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Command not found!");
+                        DisplayTransferForeignACCOUNT();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Command not found!");
+                    DisplayTransferForeignACCOUNT();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Command not found!");
+                DisplayTransferForeignACCOUNT();
+            }
+        }
+        
+
+
+
+
+        private static void ConfigLogging()
+        {
+            // Step 1. Create configuration object 
+            var config = new LoggingConfiguration();
+
+            // Step 2. Create targets and add them to the configuration 
+            var consoleTarget = new ColoredConsoleTarget();
+            config.AddTarget("console", consoleTarget);
+            consoleTarget.Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}";
+            var rule1 = new LoggingRule("*", LogLevel.Trace, consoleTarget);
+            config.LoggingRules.Add(rule1);
+            LogManager.Configuration = config;
+        }
+
+        private static void ForeignBankComponent_MessageReceived(object sender, BankMessage.BankMessage e)
+        {
+            logger = LogManager.GetCurrentClassLogger();
+            logger.Info($"Received Message from: '{e.AbsenderBankId}' to '{e.EmpfaengerBankId}'.");
+            if (e.Ablaufdatum>DateTimeOffset.Now)
+            {
+                
+                if (e.TransaktionsTyp==BankMessage.TransactionType.Abbuchung)
+                {
+                    RECEIVE_DirectDebit(e.MessageID, e.EmpfaengerKonto, e.Betrag);
+                }
+                else if(e.TransaktionsTyp==BankMessage.TransactionType.Ueberweisung)
+                {
+                    RECEIVE_Transfer(e.MessageID, e.EmpfaengerKonto, e.Betrag);
+                }
+                else if(e.TransaktionsTyp==BankMessage.TransactionType.NACK)
+                {
+                    logger.Info($"NACK received for'{e.MessageID}'. Rolling back transaction...");
+                    ReceiveNACK(e.MessageID);
+                    
+                }
+                else if(e.TransaktionsTyp==BankMessage.TransactionType.ACK)
+                {
+                    
+                    logger.Info($"ACK received for'{e.MessageID}'.");
+                }
+            }
+
+        }
+
+        static void RECEIVE_Transfer(long _MessageID, string _AID, double _amount)
+        {
+            int AID = int.Parse(_AID);
+            float amount = (float)_amount;
+            float curr_amount = 0.0f;
+            AccountActions_Management.getAccountBalance(AID, ref curr_amount);
+            if ((Accounts_Management.isAccountOpen(AID) == -1) || (Accounts_Management.isAccountUnfrozen(AID) == 0))
+            {
+                SendNACK(_MessageID);
+
+            }
+            else
+            {
+                SendACK(_MessageID);
+            }
+
+        }
+
+        static void RECEIVE_DirectDebit(long _MessageID, string _AID, double _amount)
+        {
+            int AID = int.Parse(_AID);
+            float amount = (float)_amount;
+            float curr_amount = 0.0f;
+            AccountActions_Management.getAccountBalance(AID, ref curr_amount);
+            if ((Accounts_Management.isAccountOpen(AID) == -1) || (Accounts_Management.isAccountUnfrozen(AID) == 0))
+            {
+                SendNACK(_MessageID);
+           
+            }
+            else if(curr_amount<amount)
+            {
+                SendNACK(_MessageID);
+               
+            }
+            else
+            {
+                SendACK(_MessageID);
+            }
+
+        }
+
+        static void ReceiveNACK(long _MessageID)
+        {
+            BankMessage.BankMessage BM = SentMessages[_MessageID];
+            if (BM.TransaktionsTyp == BankMessage.TransactionType.Abbuchung)
+            {
+                ROLLBACK_DirectDebit(BM.MessageID, BM.AbsenderKonto, BM.Betrag);
+            }
+            else if (BM.TransaktionsTyp == BankMessage.TransactionType.Ueberweisung)
+            {
+                ROLLBACK_Transfer(BM.MessageID, BM.AbsenderKonto, BM.Betrag);
+            }
+        }
+
+        static void ROLLBACK_Transfer(long _MessageID, string _AID, double _amount)
+        {
+            int AID = int.Parse(_AID);
+            float amount = (float)_amount;
+            AccountActions_Management.depositToAccount(AID, amount);
+            logger.Info($"Successfully rolled back:'{_MessageID}'.");
+        }
+
+        static void ROLLBACK_DirectDebit(long _MessageID, string _AID, double _amount)
+        {
+            int AID = int.Parse(_AID);
+            float amount = (float)_amount;
+            AccountActions_Management.withdrawFromAccount(AID, amount);
+            logger.Info($"Successfully rolled back:'{_MessageID}'.");
+        }
+
+        static void SendACK(long _MessageID)
+        {
+            BankMessage.BankMessage BM = SentMessages[_MessageID];
+            if(BM.TransaktionsTyp==BankMessage.TransactionType.Abbuchung)
+            {
+                AccountActions_Management.withdrawFromAccount(int.Parse(BM.EmpfaengerKonto), (float)BM.Betrag);
+            }
+            else if (BM.TransaktionsTyp == BankMessage.TransactionType.Ueberweisung)
+            {
+                AccountActions_Management.depositToAccount(int.Parse(BM.EmpfaengerKonto), (float)BM.Betrag);
+            }
+            BankMessage.BankMessage BM_ACK = new BankMessage.BankMessage(BM.Version, BM.Betrag, BM.Ablaufdatum.AddHours(8), BM.EmpfaengerBankId, BM.AbsenderBankId, BM.Waehrung, BM.AbsenderKonto, BM.EmpfaengerKonto, BankMessage.TransactionType.ACK, "ACKACKACK", BM.MessageID);
+            foreignBankComponent.SendTransaction(BM_ACK);
+        }
+
+        static void SendNACK(long _MessageID)
+        {
+            BankMessage.BankMessage BM = SentMessages[_MessageID];
+            BankMessage.BankMessage BM_NACK = new BankMessage.BankMessage(BM.Version, BM.Betrag, BM.Ablaufdatum.AddHours(8), BM.EmpfaengerBankId, BM.AbsenderBankId, BM.Waehrung, BM.AbsenderKonto, BM.EmpfaengerKonto, BankMessage.TransactionType.NACK, "NACKNACKNACK", BM.MessageID);
+            foreignBankComponent.SendTransaction(BM_NACK);
+        }
 
         static void DisplayCURRENCYManagementSection()
         {
@@ -1235,7 +1729,11 @@ namespace BankApplication
             Console.WriteLine("WELCOME to the Management Application of the 'Wosnotso EasyBank'");
             //necessary, or everything fails
             Customers_Management.InitializeData();
+            ConfigLogging();
+            foreignBankComponent = new ForeignBankComponent(email, password);
+            foreignBankComponent.MessageReceived += ForeignBankComponent_MessageReceived;
             DisplayMainMenu();
+            
             
         }
     }
